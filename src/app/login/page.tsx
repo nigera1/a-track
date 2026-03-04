@@ -20,7 +20,7 @@ export default function LoginPage() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setLoading(true);
-        await new Promise(r => setTimeout(r, 400));
+        await new Promise(r => setTimeout(r, 300));
         if (mode === 'login') {
             const ok = login(email, password);
             if (ok) { toast.success('Welcome back'); router.push('/dashboard'); }
@@ -34,22 +34,28 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen min-h-[100dvh] flex items-center justify-center p-4" style={{ background: 'var(--background)' }}>
-            <div className="w-full max-w-sm">
-                {/* Logo */}
-                <div className="text-center mb-6">
-                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg mb-3 font-bold text-lg" style={{ background: 'var(--gold)', color: '#111' }}>A</div>
-                    <h1 className="text-xl font-bold">A-Track</h1>
-                    <p className="text-xs mt-1" style={{ color: 'var(--muted-foreground)' }}>Order tracking for workshops</p>
-                </div>
+        <div className="min-h-screen min-h-[100dvh] flex flex-col" style={{ background: 'var(--nav-bg)' }}>
+            {/* Top bar */}
+            <div className="px-6 py-4 flex items-center" style={{ borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
+                <span className="font-black text-white italic text-xl tracking-tight">A-TRACK</span>
+                <span className="ml-3 text-xs font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>Order Tracking</span>
+            </div>
 
-                {/* Card */}
-                <div className="glass-card p-5">
-                    {/* Tabs */}
-                    <div className="flex rounded-md p-0.5 mb-5" style={{ background: 'var(--muted)' }}>
+            {/* Center card */}
+            <div className="flex-1 flex items-center justify-center p-6">
+                <div className="w-full max-w-sm neo-card p-6" style={{ background: 'var(--nav-bg)', border: '2px solid rgba(255,255,255,0.15)', boxShadow: 'none' }}>
+                    <h1 className="text-2xl font-black text-white mb-1">
+                        {mode === 'login' ? 'WELCOME BACK' : 'CREATE ACCOUNT'}
+                    </h1>
+                    <p className="text-sm mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                        {mode === 'login' ? 'Sign in to your account' : 'Set up your workshop account'}
+                    </p>
+
+                    {/* Toggle */}
+                    <div className="flex rounded-lg p-0.5 mb-5" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)' }}>
                         {(['login', 'register'] as const).map(m => (
-                            <button key={m} onClick={() => setMode(m)} className="flex-1 py-1.5 rounded text-xs font-medium"
-                                style={{ background: mode === m ? 'var(--gold)' : 'transparent', color: mode === m ? '#111' : 'var(--muted-foreground)' }}>
+                            <button key={m} onClick={() => setMode(m)} className="flex-1 py-1.5 rounded text-xs font-black uppercase tracking-wide transition-all"
+                                style={{ background: mode === m ? '#d4a832' : 'transparent', color: mode === m ? '#111' : 'rgba(255,255,255,0.5)' }}>
                                 {m === 'login' ? 'Sign In' : 'Register'}
                             </button>
                         ))}
@@ -59,14 +65,14 @@ export default function LoginPage() {
                         {mode === 'register' && (
                             <>
                                 <div>
-                                    <label className="section-label mb-1 block">Name</label>
+                                    <div className="section-label mb-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Name</div>
                                     <input value={name} onChange={e => setName(e.target.value)} required placeholder="Your name"
-                                        className="w-full px-3 py-2 rounded-md text-sm" style={{ border: '1px solid var(--border)' }} />
+                                        className="w-full" style={{ background: 'rgba(255,255,255,0.08) !important', color: '#fff !important', border: '2px solid rgba(255,255,255,0.2) !important' }} />
                                 </div>
                                 <div>
-                                    <label className="section-label mb-1 block">Role</label>
+                                    <div className="section-label mb-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Role</div>
                                     <select value={role} onChange={e => setRole(e.target.value as any)}
-                                        className="w-full px-3 py-2 rounded-md text-sm" style={{ border: '1px solid var(--border)' }}>
+                                        className="w-full" style={{ background: 'rgba(255,255,255,0.08) !important', color: '#fff !important', border: '2px solid rgba(255,255,255,0.2) !important' }}>
                                         <option value="admin">Admin</option>
                                         <option value="artisan">Artisan</option>
                                     </select>
@@ -74,24 +80,28 @@ export default function LoginPage() {
                             </>
                         )}
                         <div>
-                            <label className="section-label mb-1 block">Email</label>
-                            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="admin@atelier.com"
-                                className="w-full px-3 py-2 rounded-md text-sm" style={{ border: '1px solid var(--border)' }} />
+                            <div className="section-label mb-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Email</div>
+                            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="you@example.com"
+                                className="w-full" style={{ background: 'rgba(255,255,255,0.08) !important', color: '#fff !important', border: '2px solid rgba(255,255,255,0.2) !important' }} />
                         </div>
                         <div>
-                            <label className="section-label mb-1 block">Password</label>
+                            <div className="section-label mb-1.5" style={{ color: 'rgba(255,255,255,0.5)' }}>Password</div>
                             <div className="relative">
                                 <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••"
-                                    className="w-full px-3 py-2 rounded-md text-sm pr-9" style={{ border: '1px solid var(--border)' }} />
-                                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-2.5 top-1/2 -translate-y-1/2 opacity-40 hover:opacity-80">
+                                    className="w-full pr-10" style={{ background: 'rgba(255,255,255,0.08) !important', color: '#fff !important', border: '2px solid rgba(255,255,255,0.2) !important' }} />
+                                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 opacity-40 hover:opacity-80 text-white">
                                     {showPw ? <EyeOff style={{ width: 14, height: 14 }} /> : <Eye style={{ width: 14, height: 14 }} />}
                                 </button>
                             </div>
-                            {mode === 'login' && <p className="text-[11px] mt-1.5" style={{ color: 'var(--muted-foreground)' }}>Demo: <span style={{ color: 'var(--gold)' }}>admin@atelier.com</span> / any password</p>}
+                            {mode === 'login' && (
+                                <p className="text-[11px] mt-1.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                                    Demo: <span style={{ color: '#d4a832' }}>admin@atelier.com</span> / any password
+                                </p>
+                            )}
                         </div>
-                        <button type="submit" disabled={loading} className="w-full py-2 rounded-md font-semibold text-sm mt-1"
-                            style={{ background: 'var(--gold)', color: '#111', opacity: loading ? 0.7 : 1 }}>
-                            {loading ? 'Please wait…' : mode === 'login' ? 'Sign In' : 'Create Account'}
+                        <button type="submit" disabled={loading} className="w-full py-2.5 rounded-lg font-black text-sm uppercase tracking-wide mt-1"
+                            style={{ background: '#fff', color: '#111', border: '2px solid rgba(255,255,255,0.3)', opacity: loading ? 0.7 : 1 }}>
+                            {loading ? 'Please wait…' : mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
                         </button>
                     </form>
                 </div>

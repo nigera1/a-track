@@ -40,18 +40,17 @@ export default function CustomersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-lg font-semibold">Customers</h1>
-                        <p className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{customers.length} clients</p>
+                        <h1 className="text-2xl font-black uppercase tracking-tight">Customers</h1>
+                        <p className="text-sm font-semibold" style={{ color: '#888' }}>{customers.length} clients</p>
                     </div>
-                    <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold"
-                        style={{ background: 'var(--gold)', color: '#0c0b0e' }}>
-                        <Plus style={{ width: 14, height: 14 }} /> Add Customer
+                    <button onClick={() => setShowForm(!showForm)} className="neo-btn neo-btn-primary">
+                        <Plus style={{ width: 13, height: 13 }} /> Add Customer
                     </button>
                 </div>
 
                 {/* Add form */}
                 {showForm && (
-                    <form onSubmit={handleAdd} className="glass-card p-5 flex flex-col gap-4">
+                    <form onSubmit={handleAdd} className="neo-card p-5 flex flex-col gap-4">
                         <div className="section-label">New Customer</div>
                         <div className="grid grid-cols-2 gap-3">
                             <div>
@@ -72,8 +71,8 @@ export default function CustomersPage() {
                             </div>
                         </div>
                         <div className="flex gap-2">
-                            <button type="submit" className="px-4 py-2 rounded-lg text-xs font-semibold" style={{ background: 'var(--gold)', color: '#0c0b0e' }}>Add Customer</button>
-                            <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 rounded-lg text-xs" style={{ color: 'var(--muted-foreground)' }}>Cancel</button>
+                            <button type="submit" className="neo-btn neo-btn-primary">Save Customer</button>
+                            <button type="button" onClick={() => setShowForm(false)} className="neo-btn" style={{ color: '#888' }}>Cancel</button>
                         </div>
                     </form>
                 )}
@@ -92,18 +91,18 @@ export default function CustomersPage() {
                         const totalSpend = customerOrders.filter(o => o.status === 'completed').reduce((s, o) => s + (o.price ?? 0), 0);
                         const activeOrders = customerOrders.filter(o => o.status !== 'completed').length;
                         return (
-                            <div key={customer.id} className="glass-card p-4 flex flex-col gap-3 cursor-pointer group"
+                            <div key={customer.id} className="neo-card p-4 flex flex-col gap-3 cursor-pointer group"
                                 onClick={() => router.push(`/customers/${customer.id}`)}>
                                 {/* Header */}
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                                            style={{ background: 'var(--gold-muted)', color: 'var(--gold)' }}>
+                                        <div className="w-9 h-9 rounded flex items-center justify-center text-xs font-black flex-shrink-0"
+                                            style={{ background: '#111', color: '#fff' }}>
                                             {customer.name.split(' ').map(n => n[0]).join('')}
                                         </div>
                                         <div>
-                                            <div className="font-medium text-sm">{customer.name}</div>
-                                            <div className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)', fontSize: '0.65rem' }}>Since {formatDate(customer.created_at)}</div>
+                                            <div className="font-black text-sm">{customer.name}</div>
+                                            <div className="text-xs mt-0.5" style={{ color: '#888', fontSize: '0.65rem' }}>Since {formatDate(customer.created_at)}</div>
                                         </div>
                                     </div>
                                     <button onClick={e => { e.stopPropagation(); if (confirm('Delete customer?')) { deleteCustomer(customer.id); toast.success('Deleted'); } }}
@@ -117,18 +116,18 @@ export default function CustomersPage() {
                                     {customer.email && <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--muted-foreground)' }}><Mail style={{ width: 11, height: 11 }} />{customer.email}</div>}
                                 </div>
                                 {/* Stats */}
-                                <div className="flex gap-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
+                                <div className="flex gap-3 pt-3" style={{ borderTop: '2px solid #111' }}>
                                     <div className="flex-1 text-center">
-                                        <div className="text-sm font-bold">{customerOrders.length}</div>
-                                        <div className="text-xs" style={{ color: 'var(--muted-foreground)', fontSize: '0.6rem' }}>Orders</div>
+                                        <div className="text-sm font-black">{customerOrders.length}</div>
+                                        <div className="section-label" style={{ color: '#aaa' }}>Orders</div>
                                     </div>
                                     <div className="flex-1 text-center">
-                                        <div className="text-sm font-bold">{activeOrders}</div>
-                                        <div className="text-xs" style={{ color: 'var(--muted-foreground)', fontSize: '0.6rem' }}>Active</div>
+                                        <div className="text-sm font-black">{activeOrders}</div>
+                                        <div className="section-label" style={{ color: '#aaa' }}>Active</div>
                                     </div>
                                     <div className="flex-1 text-center">
-                                        <div className="text-sm font-bold" style={{ color: 'var(--gold)' }}>€{(totalSpend / 1000).toFixed(1)}k</div>
-                                        <div className="text-xs" style={{ color: 'var(--muted-foreground)', fontSize: '0.6rem' }}>Spent</div>
+                                        <div className="text-sm font-black" style={{ color: '#22c55e' }}>€{(totalSpend / 1000).toFixed(1)}k</div>
+                                        <div className="section-label" style={{ color: '#aaa' }}>Spent</div>
                                     </div>
                                 </div>
                             </div>

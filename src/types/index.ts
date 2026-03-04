@@ -45,6 +45,7 @@ export interface Gemstone {
     category: StoneCategory;
     stone_type: StoneType;
     carat: number;
+    diameter_mm?: number;
     quantity: number;
     notes?: string;
 }
@@ -56,6 +57,23 @@ export interface Customer {
     email?: string;
     notes?: string;
     created_at: string;
+}
+
+// ── Stage time tracking ──────────────────────────────────────────────────────
+export interface StageTimeLog {
+    stage: OrderStatus;
+    started_at: string;   // ISO timestamp
+    finished_at?: string; // ISO timestamp — undefined means in progress
+    duration_minutes?: number;
+}
+
+// ── Supplier ─────────────────────────────────────────────────────────────────
+export interface Supplier {
+    id: string;
+    name: string;
+    specialty: 'casting' | 'setting' | 'both';
+    contact?: string;
+    notes?: string;
 }
 
 export interface Order {
@@ -73,6 +91,10 @@ export interface Order {
     due_date?: string;
     notes?: string;
     gemstones?: Gemstone[];
+    // Supplier assigned for casting/setting stages
+    supplier_id?: string;
+    // Stage time tracking
+    stage_times?: StageTimeLog[];
     created_at: string;
     updated_at: string;
 }
@@ -85,14 +107,14 @@ export interface User {
 }
 
 export const ORDER_STAGES: { key: OrderStatus; label: string; color: string }[] = [
-    { key: '3d_modeling', label: '3D Modeling', color: '#8b8ead' },
-    { key: '3d_printing', label: '3D Printing', color: '#7b9eb8' },
-    { key: 'casting', label: 'Casting', color: '#d4a04a' },
-    { key: 'sanding', label: 'Sanding', color: '#b8956a' },
-    { key: 'setting', label: 'Setting', color: '#c9a227' },
-    { key: 'polishing', label: 'Polishing', color: '#a89070' },
-    { key: 'quality_control', label: 'Quality Control', color: '#7aad8b' },
-    { key: 'completed', label: 'Completed', color: '#5a9a6b' },
+    { key: '3d_modeling', label: '3D Modeling', color: '#3b82f6' },
+    { key: '3d_printing', label: '3D Printing', color: '#f97316' },
+    { key: 'casting', label: 'Casting', color: '#8b5cf6' },
+    { key: 'sanding', label: 'Sanding', color: '#22c55e' },
+    { key: 'setting', label: 'Setting', color: '#ef4444' },
+    { key: 'polishing', label: 'Polishing', color: '#ec4899' },
+    { key: 'quality_control', label: 'Quality Control', color: '#14b8a6' },
+    { key: 'completed', label: 'Completed', color: '#6b7280' },
 ];
 
 export const ITEM_TYPE_LABELS: Record<ItemType, string> = {

@@ -11,15 +11,15 @@ import { ORDER_STAGES, MATERIAL_LABELS } from '@/types';
 import { formatCurrency, getStatusColor } from '@/lib/helpers';
 import { TrendingUp, Clock, Package, Euro } from 'lucide-react';
 
-const WARM_PALETTE = ['#c9a227', '#e0be42', '#9a7c1a', '#b8956a', '#a89070', '#7aad8b', '#7b9eb8', '#8b8ead'];
+const NEO_PALETTE = ['#3b82f6', '#ef4444', '#f97316', '#22c55e', '#8b5cf6', '#ec4899', '#14b8a6', '#6b7280'];
 
 function CustomTooltip({ active, payload, label }: any) {
     if (!active || !payload?.length) return null;
     return (
-        <div className="glass-card p-3 text-sm" style={{ border: '1px solid rgba(212,168,50,0.2)' }}>
-            <div className="font-semibold mb-1">{label}</div>
+        <div className="neo-card p-3 text-sm">
+            <div className="font-black mb-1 uppercase text-xs tracking-wide">{label}</div>
             {payload.map((p: any, i: number) => (
-                <div key={i} style={{ color: p.color }}>{p.name}: {typeof p.value === 'number' && p.value > 100 ? `€${p.value.toLocaleString()}` : p.value}</div>
+                <div key={i} style={{ color: p.color, fontWeight: 700 }}>{p.name}: {typeof p.value === 'number' && p.value > 100 ? `€${p.value.toLocaleString()}` : p.value}</div>
             ))}
         </div>
     );
@@ -91,20 +91,37 @@ export default function AnalyticsPage() {
         })).sort((a, b) => b.spend - a.spend).slice(0, 5);
     }, [customers, orders]);
 
+    // Avg time per stage (from QR scan records)
+    const avgStageTimes = useMemo(() => {
+        const acc: Record<string, { total: number; count: number }> = {};
+        orders.forEach(o => {
+            o.stage_times?.forEach(t => {
+                if (t.duration_minutes != null) {
+                    if (!acc[t.stage]) acc[t.stage] = { total: 0, count: 0 };
+                    acc[t.stage].total += t.duration_minutes;
+                    acc[t.stage].count += 1;
+                }
+            });
+        });
+        return ORDER_STAGES
+            .map(s => ({ name: s.label, avgDays: acc[s.key] ? +(acc[s.key].total / acc[s.key].count / 1440).toFixed(1) : 0, color: s.color }))
+            .filter(s => s.avgDays > 0);
+    }, [orders]);
+
     return (
         <AppShell>
             <div className="flex flex-col gap-6">
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-lg font-semibold">Analytics</h1>
-                        <p className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)' }}>Workshop performance overview</p>
+                        <h1 className="text-2xl font-black uppercase tracking-tight">Analytics</h1>
+                        <p className="text-sm font-semibold" style={{ color: '#888' }}>Workshop performance overview</p>
                     </div>
-                    <div className="flex gap-1 rounded-lg p-1" style={{ background: 'var(--muted)' }}>
-                        {([30, 90, 365] as const).map(r => (
+                    <div className="flex rounded-lg overflow-hidden" style={{ border: '2px solid #111', boxShadow: '2px 2px 0 0 #111' }}>
+                        {([30, 90, 365] as const).map((r, i) => (
                             <button key={r} onClick={() => setRange(r)}
-                                className="px-3 py-1 rounded-md text-xs font-medium transition-all"
-                                style={{ background: range === r ? 'var(--gold)' : 'transparent', color: range === r ? '#0c0b0e' : 'var(--muted-foreground)' }}>
+                                className="px-3 py-1.5 text-xs font-black uppercase tracking-wide transition-all"
+                                style={{ background: range === r ? '#111' : '#fff', color: range === r ? '#fff' : '#111', borderLeft: i > 0 ? '2px solid #111' : 'none' }}>
                                 {r === 365 ? '1y' : `${r}d`}
                             </button>
                         ))}
@@ -114,20 +131,15 @@ export default function AnalyticsPage() {
                 {/* KPI cards */}
                 <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
                     {[
-                        { label: 'Revenue', value: formatCurrency(totalRevenue), sub: `${completedOrders.length} completed`, icon: Euro },
-                        { label: 'Pipeline', value: formatCurrency(pendingRevenue), sub: `${rangeOrders.length - completedOrders.length} active`, icon: Package },
-                        { label: 'Avg. Order Value', value: formatCurrency(avgPrice), icon: TrendingUp },
-                        { label: 'Avg. Turnaround', value: `${avgTurnaround} days`, icon: Clock },
-                    ].map(kpi => (
-                        <div key={kpi.label} className="glass-card p-4 flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--gold-subtle)' }}>
-                                <kpi.icon style={{ width: 16, height: 16, color: 'var(--gold)' }} />
-                            </div>
-                            <div>
-                                <div className="font-bold text-lg">{kpi.value}</div>
-                                <div className="text-xs font-medium" style={{ color: 'var(--muted-foreground)' }}>{kpi.label}</div>
-                                {kpi.sub && <div className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)', fontSize: '0.65rem' }}>{kpi.sub}</div>}
-                            </div>
+                        { label: 'Revenue', value: formatCurrency(totalRevenue), sub: `${completedOrders.length} completed`, color: '#22c55e' },
+                        { label: 'Pipeline', value: formatCurrency(pendingRevenue), sub: `${rangeOrders.length - completedOrders.length} active`, color: '#3b82f6' },
+                        { label: 'Avg. Order', value: formatCurrency(avgPrice), color: '#f97316' },
+                        { label: 'Turnaround', value: `${avgTurnaround}d`, color: '#8b5cf6' },
+                    ].map((kpi, i) => (
+                        <div key={kpi.label} className="neo-card p-4" style={{ borderColor: kpi.color, boxShadow: `4px 4px 0 0 ${kpi.color}` }}>
+                            <div className="section-label mb-1" style={{ color: kpi.color }}>{kpi.label}</div>
+                            <div className="text-2xl font-black">{kpi.value}</div>
+                            {kpi.sub && <div className="text-xs font-semibold mt-0.5" style={{ color: '#888' }}>{kpi.sub}</div>}
                         </div>
                     ))}
                 </div>
@@ -135,21 +147,21 @@ export default function AnalyticsPage() {
                 {/* Charts row 1 */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* Monthly revenue */}
-                    <div className="glass-card p-4">
-                        <div className="text-sm font-medium mb-3">Monthly Revenue</div>
+                    <div className="neo-card p-4">
+                        <div className="section-label mb-3">Monthly Revenue</div>
                         <ResponsiveContainer width="100%" height={200}>
                             <BarChart data={monthlyRevenue}>
-                                <XAxis dataKey="month" tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `€${(v / 1000).toFixed(0)}k`} />
+                                <XAxis dataKey="month" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `€${(v / 1000).toFixed(0)}k`} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="revenue" fill="#c9a227" radius={[3, 3, 0, 0]} name="Revenue" />
+                                <Bar dataKey="revenue" fill="#3b82f6" radius={[3, 3, 0, 0]} name="Revenue" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
 
                     {/* Orders by stage */}
-                    <div className="glass-card p-4">
-                        <div className="text-sm font-medium mb-3">Orders by Stage</div>
+                    <div className="neo-card p-4">
+                        <div className="section-label mb-3">Orders by Stage</div>
                         <ResponsiveContainer width="100%" height={200}>
                             <BarChart data={byStage} layout="vertical">
                                 <XAxis type="number" tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} />
@@ -166,13 +178,13 @@ export default function AnalyticsPage() {
                 {/* Charts row 2 */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* By material */}
-                    <div className="glass-card p-4">
-                        <div className="text-sm font-medium mb-3">Orders by Material</div>
+                    <div className="neo-card p-4">
+                        <div className="section-label mb-3">Orders by Material</div>
                         {byMaterial.length > 0 ? (
                             <ResponsiveContainer width="100%" height={200}>
                                 <PieChart>
                                     <Pie data={byMaterial} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={75} label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
-                                        {byMaterial.map((_, i) => <Cell key={i} fill={WARM_PALETTE[i % WARM_PALETTE.length]} />)}
+                                        {byMaterial.map((_, i) => <Cell key={i} fill={NEO_PALETTE[i % NEO_PALETTE.length]} />)}
                                     </Pie>
                                     <Tooltip content={<CustomTooltip />} />
                                 </PieChart>
@@ -181,8 +193,8 @@ export default function AnalyticsPage() {
                     </div>
 
                     {/* By item type */}
-                    <div className="glass-card p-4">
-                        <div className="text-sm font-medium mb-3">Orders by Item Type</div>
+                    <div className="neo-card p-4">
+                        <div className="section-label mb-3">Orders by Item Type</div>
                         {byItemType.length > 0 ? (
                             <ResponsiveContainer width="100%" height={200}>
                                 <BarChart data={byItemType}>
@@ -190,7 +202,7 @@ export default function AnalyticsPage() {
                                     <YAxis tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} />
                                     <Tooltip content={<CustomTooltip />} />
                                     <Bar dataKey="count" radius={[3, 3, 0, 0]} name="Orders">
-                                        {byItemType.map((_, i) => <Cell key={i} fill={WARM_PALETTE[i % WARM_PALETTE.length]} />)}
+                                        {byItemType.map((_, i) => <Cell key={i} fill={NEO_PALETTE[i % NEO_PALETTE.length]} />)}
                                     </Bar>
                                 </BarChart>
                             </ResponsiveContainer>
@@ -198,25 +210,45 @@ export default function AnalyticsPage() {
                     </div>
                 </div>
 
+                {/* Stage time chart */}
+                {avgStageTimes.length > 0 && (
+                    <div className="neo-card p-4">
+                        <div className="section-label mb-1">Avg. Time per Stage</div>
+                        <div className="text-xs font-semibold mb-3" style={{ color: '#888' }}>Based on QR scan records (days)</div>
+                        <ResponsiveContainer width="100%" height={200}>
+                            <BarChart data={avgStageTimes}>
+                                <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}d`} />
+                                <Tooltip content={<CustomTooltip />} formatter={(v: any) => [`${v} days`, 'Avg time']} />
+                                <Bar dataKey="avgDays" radius={[3, 3, 0, 0]} name="Avg Days">
+                                    {avgStageTimes.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                )}
+
                 {/* Top customers */}
-                <div className="glass-card overflow-hidden">
-                    <div className="px-4 py-3 text-sm font-medium" style={{ borderBottom: '1px solid var(--border)' }}>Top Customers</div>
+                <div className="neo-card overflow-hidden">
+                    <div className="px-4 py-3 section-label" style={{ borderBottom: '2px solid #111' }}>Top Customers</div>
                     <table className="w-full text-sm">
                         <thead>
-                            <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                                {['Customer', 'Total Orders', 'Lifetime Spend'].map(h => (
+                            <tr style={{ borderBottom: '1px solid #eee', background: '#f8f8f8' }}>
+                                {['Customer', 'Orders', 'Lifetime Spend'].map(h => (
                                     <th key={h} className="text-left px-4 py-2.5 section-label">{h}</th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
                             {topCustomers.map((c, i) => (
-                                <tr key={c.name} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                                    <td className="px-4 py-2.5 font-medium text-sm flex items-center gap-2">
-                                        <span className="text-xs font-bold w-4 text-center" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>#{i + 1}</span> {c.name}
+                                <tr key={c.name} style={{ borderBottom: '1px solid #eee' }}
+                                    onMouseEnter={e => (e.currentTarget.style.background = '#fafafa')}
+                                    onMouseLeave={e => (e.currentTarget.style.background = '')}>
+                                    <td className="px-4 py-2.5 font-semibold flex items-center gap-2">
+                                        <span className="text-xs font-black" style={{ color: ['#f97316', '#6b7280', '#3b82f6'][i] ?? '#888' }}>#{i + 1}</span> {c.name}
                                     </td>
-                                    <td className="px-4 py-2.5 text-sm">{c.orders}</td>
-                                    <td className="px-4 py-2.5 text-sm font-semibold" style={{ color: 'var(--gold)' }}>{formatCurrency(c.spend)}</td>
+                                    <td className="px-4 py-2.5">{c.orders}</td>
+                                    <td className="px-4 py-2.5 font-black" style={{ color: '#22c55e' }}>{formatCurrency(c.spend)}</td>
                                 </tr>
                             ))}
                         </tbody>

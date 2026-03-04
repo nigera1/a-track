@@ -5,20 +5,22 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { LayoutDashboard, Package, Users, BarChart3, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, Users, BarChart3, LogOut, Menu, X, Plus, ScanLine } from 'lucide-react';
 
 const NAV = [
-    { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/orders', icon: Package, label: 'Orders' },
-    { href: '/customers', icon: Users, label: 'Customers' },
-    { href: '/analytics', icon: BarChart3, label: 'Analytics' },
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/orders', label: 'Orders' },
+    { href: '/customers', label: 'Customers' },
+    { href: '/suppliers', label: 'Suppliers' },
+    { href: '/analytics', label: 'Analytics' },
+    { href: '/scan', label: '▣ Scan QR' },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
     const { currentUser, logout, orders } = useStore();
-    const [open, setOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const urgent = orders.filter(o => {
         if (!o.due_date || o.status === 'completed') return false;
@@ -30,70 +32,79 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
     function doLogout() { logout(); toast.success('Signed out'); router.push('/login'); }
 
-    const Sidebar = () => (
-        <div className="flex flex-col h-full">
-            <div className="px-4 py-4 flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-md flex items-center justify-center font-bold text-xs" style={{ background: 'var(--gold)', color: '#111' }}>A</div>
-                <span className="font-semibold text-sm">A-Track</span>
-            </div>
-            <div className="mx-3 mb-2" style={{ borderTop: '1px solid var(--border)' }} />
-            <nav className="flex-1 px-2 flex flex-col gap-0.5">
-                {NAV.map(item => (
-                    <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
-                        className={`nav-link ${pathname.startsWith(item.href) ? 'active' : ''}`}>
-                        <item.icon style={{ width: 16, height: 16 }} />
-                        <span>{item.label}</span>
-                        {item.href === '/dashboard' && urgent > 0 && (
-                            <span className="ml-auto text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold" style={{ background: '#d4432015', color: '#d44' }}>{urgent}</span>
-                        )}
-                    </Link>
-                ))}
-            </nav>
-            <div className="px-2 pb-3">
-                <div className="flex items-center gap-2 px-3 py-2 rounded-md" style={{ background: 'var(--muted)' }}>
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ background: 'rgba(212,168,50,0.15)', color: 'var(--gold)' }}>
-                        {currentUser.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <div className="text-xs font-medium truncate">{currentUser.name}</div>
-                    </div>
-                    <button onClick={doLogout} className="p-1 rounded opacity-50 hover:opacity-100" title="Sign out">
-                        <LogOut style={{ width: 13, height: 13 }} />
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-
     return (
-        <div className="flex h-screen h-[100dvh] overflow-hidden">
-            {/* Desktop sidebar */}
-            <aside className="hidden md:flex flex-col w-52 flex-shrink-0 h-full" style={{ background: 'var(--card)', borderRight: '1px solid var(--border)' }}>
-                <Sidebar />
-            </aside>
+        <div className="flex flex-col min-h-screen min-h-[100dvh]" style={{ background: 'var(--background)' }}>
 
-            {/* Mobile overlay */}
-            {open && (
-                <div className="fixed inset-0 z-50 md:hidden">
-                    <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
-                    <aside className="absolute left-0 top-0 bottom-0 w-52" style={{ background: 'var(--card)', borderRight: '1px solid var(--border)' }}>
-                        <Sidebar />
-                    </aside>
+            {/* ── Top Navbar ── */}
+            <header style={{ background: 'var(--nav-bg)', borderBottom: '3px solid #000' }}>
+                <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px', display: 'flex', alignItems: 'center', height: 48, gap: 24 }}>
+
+                    {/* Logo */}
+                    <Link href="/dashboard" className="flex items-center gap-2 mr-2">
+                        <span className="font-black text-white italic text-lg tracking-tight">A-TRACK</span>
+                    </Link>
+
+                    {/* Desktop nav */}
+                    <nav className="hidden md:flex items-center gap-1 flex-1">
+                        {NAV.map(item => (
+                            <Link key={item.href} href={item.href}
+                                className={`nav-link ${pathname.startsWith(item.href) ? 'active' : ''}`}>
+                                {item.label}
+                                {item.href === '/dashboard' && urgent > 0 && (
+                                    <span className="text-[9px] px-1.5 py-0.5 rounded-full font-black" style={{ background: '#ef4444', color: '#fff' }}>{urgent}</span>
+                                )}
+                            </Link>
+                        ))}
+                    </nav>
+
+                    {/* Right side */}
+                    <div className="ml-auto flex items-center gap-2">
+                        <Link href="/orders/new" className="hidden md:flex neo-btn neo-btn-gold text-[11px]">
+                            <Plus style={{ width: 12, height: 12 }} /> New Order
+                        </Link>
+                        <div className="hidden md:flex items-center gap-2 px-2 py-1 rounded-md" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black" style={{ background: '#d4a832', color: '#111' }}>
+                                {currentUser.name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            <span className="text-xs font-semibold text-white">{currentUser.name.split(' ')[0]}</span>
+                        </div>
+                        <button onClick={doLogout} className="hidden md:flex items-center gap-1.5 text-[11px] font-bold uppercase px-2 py-1 rounded" style={{ color: 'rgba(255,255,255,0.5)' }}
+                            title="Sign out">
+                            <LogOut style={{ width: 13, height: 13 }} /> Out
+                        </button>
+
+                        {/* Mobile hamburger */}
+                        <button className="md:hidden p-1 text-white" onClick={() => setMenuOpen(!menuOpen)}>
+                            {menuOpen ? <X style={{ width: 20, height: 20 }} /> : <Menu style={{ width: 20, height: 20 }} />}
+                        </button>
+                    </div>
                 </div>
-            )}
 
-            {/* Main */}
-            <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-                {/* Mobile header */}
-                <header className="md:hidden flex items-center gap-3 px-3 py-2.5 flex-shrink-0" style={{ borderBottom: '1px solid var(--border)', background: 'var(--card)' }}>
-                    <button onClick={() => setOpen(true)} className="p-1"><Menu style={{ width: 20, height: 20 }} /></button>
-                    <span className="font-semibold text-sm flex-1">A-Track</span>
-                    {urgent > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{ background: '#d4432015', color: '#d44' }}>{urgent}</span>}
-                </header>
-                <main className="flex-1 overflow-y-auto p-4 md:p-6 page-enter">
+                {/* Mobile menu */}
+                {menuOpen && (
+                    <div className="md:hidden px-8 pb-3" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        {NAV.map(item => (
+                            <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
+                                className={`nav-link block py-2 ${pathname.startsWith(item.href) ? 'active' : ''}`}>
+                                {item.label}
+                            </Link>
+                        ))}
+                        <Link href="/orders/new" onClick={() => setMenuOpen(false)} className="nav-link block py-2" style={{ color: '#d4a832' }}>
+                            + New Order
+                        </Link>
+                        <button onClick={doLogout} className="nav-link w-full text-left py-2" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                            Sign Out
+                        </button>
+                    </div>
+                )}
+            </header>
+
+            {/* ── Main content ── */}
+            <main style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+                <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 48px' }} className="page-enter">
                     {children}
-                </main>
-            </div>
+                </div>
+            </main>
         </div>
     );
 }
