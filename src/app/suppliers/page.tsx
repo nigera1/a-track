@@ -18,7 +18,7 @@ export default function SuppliersPage() {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [form, setForm] = useState(emptyForm());
 
-    const inputStyle = { width: '100%', border: '2px solid #111', borderRadius: 8, padding: '8px 12px', fontSize: 13, fontWeight: 600, background: '#fff' };
+    const inputStyle = { width: '100%', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 12px', fontSize: 13, fontWeight: 600, background: '#fff' };
 
     function handleAdd() {
         if (!form.name.trim()) { toast.error('Name is required'); return; }
@@ -54,7 +54,7 @@ export default function SuppliersPage() {
     );
 
     const InlineForm = ({ onSave, onCancel }: { onSave: () => void; onCancel: () => void }) => (
-        <div className="flex flex-col gap-3 mt-3 pt-3" style={{ borderTop: '1px solid #eee' }}>
+        <div className="flex flex-col gap-3 mt-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
             <div className="grid grid-cols-2 gap-3">
                 <FormRow label="Name">
                     <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Supplier name" style={inputStyle} />
@@ -98,7 +98,7 @@ export default function SuppliersPage() {
 
                 {/* Add form */}
                 {showAdd && (
-                    <div className="neo-card p-5" style={{ borderColor: '#3b82f6', boxShadow: '4px 4px 0 0 #3b82f6' }}>
+                    <div className="neo-card p-5" style={{ borderLeft: '3px solid #3b82f6' }}>
                         <div className="section-label flex items-center gap-2">
                             <Building2 style={{ width: 13, height: 13, color: '#3b82f6' }} /> New Supplier
                         </div>
@@ -119,15 +119,15 @@ export default function SuppliersPage() {
                         const color = SPECIALTY_COLORS[s.specialty];
                         const isEditing = editingId === s.id;
                         return (
-                            <div key={s.id} className="neo-card p-5" style={isEditing ? { borderColor: color, boxShadow: `4px 4px 0 0 ${color}` } : {}}>
+                            <div key={s.id} className="neo-card p-5" style={isEditing ? { borderLeft: `3px solid ${color}` } : {}}>
                                 <div className="flex items-start justify-between gap-4 flex-wrap">
                                     <div className="flex items-center gap-3">
                                         <div className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm flex-shrink-0"
-                                            style={{ background: color + '15', border: `2px solid ${color}`, color }}>
+                                            style={{ background: color + '15', border: `1px solid ${color}40`, color }}>
                                             {s.name.charAt(0)}
                                         </div>
                                         <div>
-                                            <div className="font-black text-base">{s.name}</div>
+                                            <div className="font-black text-base hover:underline cursor-pointer" onClick={() => window.location.href = `/suppliers/${s.id}`}>{s.name}</div>
                                             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                                                 <span className="status-pill" style={{ color }}>{SPECIALTY_LABELS[s.specialty]}</span>
                                                 {s.contact && (
@@ -145,7 +145,7 @@ export default function SuppliersPage() {
                                                 <Pencil style={{ width: 11, height: 11 }} /> Edit
                                             </button>
                                             <button onClick={() => handleDelete(s.id, s.name)} className="neo-btn text-xs"
-                                                style={{ color: '#ef4444', borderColor: '#ef4444', boxShadow: '2px 2px 0 0 #ef4444' }}>
+                                                style={{ color: '#ef4444', borderColor: '#fecaca' }}>
                                                 <Trash2 style={{ width: 11, height: 11 }} /> Delete
                                             </button>
                                         </div>

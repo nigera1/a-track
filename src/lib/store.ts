@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import {
-    Order, Customer, User, OrderStatus, Gemstone, Supplier, StageTimeLog,
+    Order, Customer, User, OrderStatus, Gemstone, Supplier, StageTimeLog, Deal, DealStatus
 } from '@/types';
 
 // ─── Seed Data ───────────────────────────────────────────────────────────────
@@ -133,6 +133,8 @@ const seedOrders: Order[] = [
         price: 5500, due_date: subDays(2),
         notes: 'Trilogy diamond ring',
         gemstones: seedGemstones['o6'],
+        is_ready_for_pickup: true,
+        pickup_reminder_date: subDays(1),
         stage_times: [
             { stage: '3d_modeling', started_at: subHours(960), finished_at: subHours(936), duration_minutes: 1440 },
             { stage: '3d_printing', started_at: subHours(936), finished_at: subHours(888), duration_minutes: 2880 },
@@ -180,12 +182,19 @@ const seedUsers: User[] = [
     { id: 'u2', name: 'Maria Craftsman', email: 'maria@atelier.com', role: 'artisan' },
 ];
 
+const seedDeals: Deal[] = [
+    { id: 'd1', customer_id: 'c1', title: 'Custom Diamond Collier', status: 'ongoing', estimated_value: 12000, notes: 'Client requested 3 design variants.', created_at: subDays(10), updated_at: subDays(2) },
+    { id: 'd2', customer_id: 'c2', title: 'Ruby Engagement Ring', status: 'partially_paid', estimated_value: 4500, notes: 'Waiting for final 3D approval before casting.', created_at: subDays(15), updated_at: subDays(1) },
+    { id: 'd3', customer_id: 'c4', title: 'Gold Cufflinks', status: 'won', estimated_value: 1800, notes: 'Approved. Moving to production.', created_at: subDays(5), updated_at: subDays(5) },
+];
+
 // ─── Store ────────────────────────────────────────────────────────────────────
 
 interface AppState {
     orders: Order[];
     customers: Customer[];
     suppliers: Supplier[];
+    deals: Deal[];
     currentUser: User | null;
     users: User[];
 
@@ -213,6 +222,11 @@ interface AppState {
     addSupplier: (supplier: Omit<Supplier, 'id'>) => Supplier;
     updateSupplier: (id: string, updates: Partial<Supplier>) => void;
     deleteSupplier: (id: string) => void;
+
+    // Deals
+    addDeal: (deal: Omit<Deal, 'id' | 'created_at' | 'updated_at'>) => Deal;
+    updateDeal: (id: string, updates: Partial<Deal>) => void;
+    deleteDeal: (id: string) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -221,6 +235,7 @@ export const useStore = create<AppState>()(
             orders: seedOrders,
             customers: seedCustomers,
             suppliers: seedSuppliers,
+            deals: seedDeals,
             currentUser: null,
             users: seedUsers,
 
@@ -349,6 +364,23 @@ export const useStore = create<AppState>()(
             deleteSupplier: (id) => {
                 set(state => ({ suppliers: state.suppliers.filter(s => s.id !== id) }));
             },
+
+            // ─── Deals ──────────────────────────────────────────────────────────
+            addDeal: (data) => {
+                const now = new Date().toISOString();
+                const deal: Deal = { ...data, id: uuidv4(), created_at: now, updated_at: now };
+                set(state => ({ deals: [deal, ...state.deals] }));
+                return deal;
+            },
+            updateDeal: (id, updates) => {
+                const now = new Date().toISOString();
+                set(state => ({
+                    deals: state.deals.map(d => d.id === id ? { ...d, ...updates, updated_at: now } : d),
+                }));
+            },
+            deleteDeal: (id) => {
+                set(state => ({ deals: state.deals.filter(d => d.id !== id) }));
+            },
         }),
         {
             name: 'atrack-store-v2',
@@ -356,6 +388,7 @@ export const useStore = create<AppState>()(
                 orders: state.orders,
                 customers: state.customers,
                 suppliers: state.suppliers,
+                deals: state.deals,
                 currentUser: state.currentUser,
                 users: state.users,
             }),

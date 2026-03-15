@@ -3,7 +3,7 @@
 import { AppShell } from '@/components/app-shell';
 import { useStore } from '@/lib/store';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Plus, Gem, ArrowLeft, User, Package, Calendar, Coins } from 'lucide-react';
 import {
@@ -166,7 +166,9 @@ export default function NewOrderPage() {
     const router = useRouter();
     const { addOrder, customers, addCustomer } = useStore();
 
-    const [customerId, setCustomerId] = useState('');
+    const searchParams = useSearchParams();
+    const prefilledCustomer = searchParams.get('customer');
+    const [customerId, setCustomerId] = useState(prefilledCustomer ?? '');
     const [newCustomerName, setNewCustomerName] = useState('');
     const [newCustomerPhone, setNewCustomerPhone] = useState('');
     const [isNewCustomer, setIsNewCustomer] = useState(false);

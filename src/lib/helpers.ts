@@ -28,6 +28,18 @@ export function formatCurrency(amount?: number): string {
     return new Intl.NumberFormat('en-EU', { style: 'currency', currency: 'EUR' }).format(amount);
 }
 
+export function getRelativeTime(dateStr: string): string {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    const days = Math.floor(hrs / 24);
+    if (days < 30) return `${days}d ago`;
+    return `${Math.floor(days / 30)}mo ago`;
+}
+
 export function getOrdersStats(orders: Order[]) {
     const total = orders.length;
     const completed = orders.filter(o => o.status === 'completed').length;
@@ -37,3 +49,24 @@ export function getOrdersStats(orders: Order[]) {
     const pendingRevenue = orders.filter(o => o.status !== 'completed').reduce((sum, o) => sum + (o.price ?? 0), 0);
     return { total, completed, overdue, urgent, totalRevenue, pendingRevenue };
 }
+
+/** Returns orders stuck in the same stage for more than `thresholdDays` days. */
+export function getStaleOrders(orders: Order[], thresholdDays: number = 7): (Order & { staleDays: number; staleStage: string })[] {
+    const now = Date.now();
+    return orders
+        .filter(o => o.status !== 'completed')
+        .map(o => {
+            // Find when the current stage started
+            const currentLog = o.stage_times?.find(
+                log => log.stage === o.status && !log.finished_at
+            );
+            const stageStart = currentLog?.started_at
+                ? new Date(currentLog.started_at).getTime()
+                : new Date(o.created_at).getTime();
+            const staleDays = Math.floor((now - stageStart) / 86400000);
+            return { ...o, staleDays, staleStage: getStatusLabel(o.status) };
+        })
+        .filter(o => o.staleDays >= thresholdDays)
+        .sort((a, b) => b.staleDays - a.staleDays);
+}
+

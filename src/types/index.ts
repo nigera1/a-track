@@ -95,6 +95,23 @@ export interface Order {
     supplier_id?: string;
     // Stage time tracking
     stage_times?: StageTimeLog[];
+    // Pickup reminder
+    is_ready_for_pickup?: boolean;
+    pickup_reminder_date?: string;
+    created_at: string;
+    updated_at: string;
+}
+
+// ── Deals (Pre-3D Tracking) ──────────────────────────────────────────────────
+export type DealStatus = 'ongoing' | 'partially_paid' | 'won' | 'lost';
+
+export interface Deal {
+    id: string;
+    customer_id: string;
+    title: string;
+    status: DealStatus;
+    estimated_value?: number;
+    notes?: string;
     created_at: string;
     updated_at: string;
 }

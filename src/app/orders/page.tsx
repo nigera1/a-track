@@ -5,7 +5,7 @@ import { useStore } from '@/lib/store';
 import { formatCurrency, formatDate, getDueDateStatus, getStatusColor, getStatusLabel } from '@/lib/helpers';
 import { ITEM_TYPE_LABELS, MATERIAL_LABELS, ORDER_STAGES } from '@/types';
 import { useState, useMemo } from 'react';
-import { Plus, Search, AlertTriangle, X, ChevronUp, ChevronDown } from 'lucide-react';
+import { Plus, Search, AlertTriangle, X, ChevronUp, ChevronDown, Package } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -93,7 +93,7 @@ export default function OrdersPage() {
 
     const selectStyle = {
         background: '#fff',
-        border: '2px solid #111',
+        border: '1px solid var(--border)',
         borderRadius: 8,
         padding: '8px 12px',
         fontSize: 12,
@@ -135,7 +135,7 @@ export default function OrdersPage() {
                                 paddingRight: search ? 36 : 12,
                                 paddingTop: 10,
                                 paddingBottom: 10,
-                                border: '2px solid #111',
+                                border: '1px solid var(--border)',
                                 borderRadius: 8,
                                 fontSize: 13,
                                 fontWeight: 600,
@@ -176,7 +176,7 @@ export default function OrdersPage() {
                         </select>
 
                         {activeFilterCount > 0 && (
-                            <button onClick={clearAll} className="neo-btn" style={{ fontSize: 11, color: '#ef4444', borderColor: '#ef4444', boxShadow: '2px 2px 0 0 #ef4444' }}>
+                            <button onClick={clearAll} className="neo-btn" style={{ fontSize: 11, color: '#ef4444' }}>
                                 <X style={{ width: 11, height: 11 }} /> Clear all
                             </button>
                         )}
@@ -219,7 +219,7 @@ export default function OrdersPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm" style={{ borderCollapse: 'collapse' }}>
                             <thead>
-                                <tr style={{ borderBottom: '2px solid #111', background: '#f8f8f8' }}>
+                                <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
                                     {[
                                         { label: 'Order #', col: 'order_number' as SortKey },
                                         { label: 'Customer', col: 'customer' as SortKey },
@@ -262,7 +262,14 @@ export default function OrdersPage() {
                                             onMouseEnter={e => (e.currentTarget.style.background = '#fafafa')}
                                             onMouseLeave={e => (e.currentTarget.style.background = '')}
                                             onClick={() => router.push(`/orders/${order.id}`)}>
-                                            <td className="px-4 py-3 font-black text-xs">{order.order_number}</td>
+                                            <td className="px-4 py-3 font-black text-xs">
+                                                {order.order_number}
+                                                {order.is_ready_for_pickup && order.status === 'completed' && (
+                                                    <span title="Ready for pickup">
+                                                        <Package className="inline ml-1.5" style={{ width: 13, height: 13, color: '#3b82f6' }} />
+                                                    </span>
+                                                )}
+                                            </td>
                                             <td className="px-4 py-3 font-semibold">{customer?.name ?? '—'}</td>
                                             <td className="px-4 py-3">{ITEM_TYPE_LABELS[order.item_type]}</td>
                                             <td className="px-4 py-3 text-xs" style={{ color: '#888' }}>

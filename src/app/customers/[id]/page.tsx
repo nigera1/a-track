@@ -24,7 +24,7 @@ export default function CustomerDetailPage() {
             <div className="flex flex-col items-center justify-center h-64 gap-4" style={{ color: 'var(--muted-foreground)' }}>
                 <div className="text-4xl">404</div>
                 <div>Customer not found</div>
-                <Link href="/customers" className="text-sm" style={{ color: 'var(--gold)' }}>← Back</Link>
+                <Link href="/customers" className="text-sm font-bold" style={{ color: '#111' }}>← Back</Link>
             </div>
         </AppShell>
     );
@@ -43,7 +43,7 @@ export default function CustomerDetailPage() {
     const activeOrders = customerOrders.filter(o => o.status !== 'completed').length;
 
     const inputCls = "w-full px-3 py-2 rounded-lg border text-sm";
-    const inputStyle = { border: '1px solid var(--border)', background: 'var(--input)' };
+    const inputStyle = { border: '1px solid var(--border)', background: '#fff' };
 
     return (
         <AppShell>
@@ -60,7 +60,7 @@ export default function CustomerDetailPage() {
                             </button>
                         ) : (
                             <>
-                                <button onClick={saveEdit} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'var(--gold)', color: '#0a0a0f' }}>
+                                <button onClick={saveEdit} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold" style={{ background: '#111', color: '#fff' }}>
                                     <Save className="w-4 h-4" /> Save
                                 </button>
                                 <button onClick={() => setEditing(false)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm" style={{ background: 'var(--muted)', color: 'var(--muted-foreground)' }}>
@@ -72,10 +72,10 @@ export default function CustomerDetailPage() {
                 </div>
 
                 {/* Profile card */}
-                <div className="glass-card p-6">
+                <div className="neo-card p-6">
                     <div className="flex items-start gap-5">
-                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-bold flex-shrink-0"
-                            style={{ background: 'linear-gradient(135deg, rgba(212,168,50,0.3), rgba(160,120,32,0.3))', color: 'var(--gold)' }}>
+                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0"
+                            style={{ background: 'var(--muted)', color: 'var(--muted-foreground)' }}>
                             {customer.name.split(' ').map(n => n[0]).join('')}
                         </div>
                         {!editing ? (
@@ -114,24 +114,24 @@ export default function CustomerDetailPage() {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-3">
                     {[
-                        { label: 'Total Orders', value: customerOrders.length, color: 'var(--gold)' },
+                        { label: 'Total Orders', value: customerOrders.length, color: '#111' },
                         { label: 'Active', value: activeOrders, color: '#10b981' },
                         { label: 'Lifetime Spend', value: formatCurrency(totalSpend), color: '#8b5cf6' },
                     ].map(stat => (
-                        <div key={stat.label} className="glass-card p-4 text-center">
-                            <div className="text-2xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
+                        <div key={stat.label} className="neo-card p-4 text-center">
+                            <div className="text-2xl font-black" style={{ color: stat.color }}>{stat.value}</div>
                             <div className="text-xs mt-1" style={{ color: 'var(--muted-foreground)' }}>{stat.label}</div>
                         </div>
                     ))}
                 </div>
 
                 {/* Order history */}
-                <div className="glass-card overflow-hidden">
-                    <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+                <div className="neo-card overflow-hidden">
+                    <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
                         <div className="font-semibold flex items-center gap-2">
-                            <Package className="w-4 h-4" style={{ color: 'var(--gold)' }} /> Order History
+                            <Package className="w-4 h-4" /> Order History
                         </div>
-                        <Link href={`/orders/new`} className="flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg" style={{ background: 'rgba(212,168,50,0.15)', color: 'var(--gold)' }}>
+                        <Link href={`/orders/new`} className="neo-btn text-xs">
                             <Plus className="w-3.5 h-3.5" /> New Order
                         </Link>
                     </div>
@@ -148,9 +148,9 @@ export default function CustomerDetailPage() {
                             </thead>
                             <tbody>
                                 {customerOrders.map(order => (
-                                    <tr key={order.id} className="cursor-pointer" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+                                    <tr key={order.id} className="cursor-pointer hover:bg-slate-50 transition-colors" style={{ borderBottom: '1px solid var(--border)' }}
                                         onClick={() => router.push(`/orders/${order.id}`)}>
-                                        <td className="px-5 py-3 font-mono font-semibold" style={{ color: 'var(--gold)' }}>{order.order_number}</td>
+                                        <td className="px-5 py-3 font-mono font-bold">{order.order_number}</td>
                                         <td className="px-5 py-3 capitalize">{order.item_type}</td>
                                         <td className="px-5 py-3">
                                             <span className="status-pill" style={{ background: `${getStatusColor(order.status)}20`, color: getStatusColor(order.status) }}>

@@ -10,6 +10,7 @@ import { LayoutDashboard, Package, Users, BarChart3, LogOut, Menu, X, Plus, Scan
 const NAV = [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/orders', label: 'Orders' },
+    { href: '/deals', label: 'Deals' },
     { href: '/customers', label: 'Customers' },
     { href: '/suppliers', label: 'Suppliers' },
     { href: '/analytics', label: 'Analytics' },
@@ -36,7 +37,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col min-h-screen min-h-[100dvh]" style={{ background: 'var(--background)' }}>
 
             {/* ── Top Navbar ── */}
-            <header style={{ background: 'var(--nav-bg)', borderBottom: '3px solid #000' }}>
+            <header style={{ background: 'var(--nav-bg)', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                 <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px', display: 'flex', alignItems: 'center', height: 48, gap: 24 }}>
 
                     {/* Logo */}
@@ -105,6 +106,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     {children}
                 </div>
             </main>
+
+            {/* ── Footer ── */}
+            <footer className="no-print" style={{ borderTop: '1px solid var(--border)', background: 'var(--card)' }}>
+                <div style={{ maxWidth: 1100, margin: '0 auto', padding: '16px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted-foreground)' }}>
+                        © {new Date().getFullYear()} A-Track · Jewelry Workshop Management
+                    </span>
+                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', color: 'var(--muted-foreground)', opacity: 0.6 }}>
+                        v1.0 POC
+                    </span>
+                </div>
+            </footer>
         </div>
     );
 }

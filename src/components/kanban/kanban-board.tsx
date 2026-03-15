@@ -102,11 +102,11 @@ export function KanbanBoard() {
                         <div key={stage.key} className="flex flex-col min-w-[210px] flex-shrink-0">
                             {/* Column header */}
                             <div className="rounded-lg p-3 mb-2 flex items-center justify-between"
-                                style={{ border: `2.5px solid ${stage.color}`, background: `${stage.color}15`, boxShadow: `3px 3px 0 0 ${stage.color}` }}>
-                                <span className="text-xs font-black uppercase tracking-wider" style={{ color: stage.color }}>
+                                style={{ border: `1px solid ${stage.color}40`, background: `${stage.color}10`, boxShadow: `0 1px 3px 0 ${stage.color}20` }}>
+                                <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: stage.color }}>
                                     {stage.label}
                                 </span>
-                                <span className="text-[11px] font-black px-1.5 py-0.5 rounded" style={{ background: stage.color, color: '#fff' }}>
+                                <span className="text-[11px] font-bold px-1.5 py-0.5 rounded" style={{ background: stage.color, color: '#fff' }}>
                                     {stageOrders.length}
                                 </span>
                             </div>

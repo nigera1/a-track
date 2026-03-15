@@ -8,8 +8,9 @@ import {
     PieChart, Pie, Cell, Legend
 } from 'recharts';
 import { ORDER_STAGES, MATERIAL_LABELS } from '@/types';
-import { formatCurrency, getStatusColor } from '@/lib/helpers';
-import { TrendingUp, Clock, Package, Euro } from 'lucide-react';
+import { formatCurrency, getStatusColor, getStatusLabel } from '@/lib/helpers';
+import { TrendingUp, Clock, Package, Euro, Download } from 'lucide-react';
+import { ITEM_TYPE_LABELS, MATERIAL_LABELS as MAT_LABELS_MAP } from '@/types';
 
 const NEO_PALETTE = ['#3b82f6', '#ef4444', '#f97316', '#22c55e', '#8b5cf6', '#ec4899', '#14b8a6', '#6b7280'];
 
@@ -117,14 +118,40 @@ export default function AnalyticsPage() {
                         <h1 className="text-2xl font-black uppercase tracking-tight">Analytics</h1>
                         <p className="text-sm font-semibold" style={{ color: '#888' }}>Workshop performance overview</p>
                     </div>
-                    <div className="flex rounded-lg overflow-hidden" style={{ border: '2px solid #111', boxShadow: '2px 2px 0 0 #111' }}>
-                        {([30, 90, 365] as const).map((r, i) => (
-                            <button key={r} onClick={() => setRange(r)}
-                                className="px-3 py-1.5 text-xs font-black uppercase tracking-wide transition-all"
-                                style={{ background: range === r ? '#111' : '#fff', color: range === r ? '#fff' : '#111', borderLeft: i > 0 ? '2px solid #111' : 'none' }}>
-                                {r === 365 ? '1y' : `${r}d`}
-                            </button>
-                        ))}
+                    <div className="flex items-center gap-2">
+                        <button onClick={() => {
+                            const header = 'Order #,Customer,Item Type,Material,Stage,Due Date,Price,Created';
+                            const rows = orders.map(o => {
+                                const cust = customers.find(c => c.id === o.customer_id);
+                                return [
+                                    o.order_number,
+                                    `"${cust?.name ?? ''}"`,
+                                    ITEM_TYPE_LABELS[o.item_type] ?? o.item_type,
+                                    o.materials?.map(m => MAT_LABELS_MAP[m] ?? m).join('; ') ?? '',
+                                    getStatusLabel(o.status),
+                                    o.due_date ?? '',
+                                    o.price ?? '',
+                                    o.created_at?.split('T')[0] ?? '',
+                                ].join(',');
+                            });
+                            const csv = [header, ...rows].join('\n');
+                            const blob = new Blob([csv], { type: 'text/csv' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url; a.download = `atrack-orders-${new Date().toISOString().split('T')[0]}.csv`;
+                            a.click(); URL.revokeObjectURL(url);
+                        }} className="neo-btn flex items-center gap-1.5 text-xs">
+                            <Download style={{ width: 13, height: 13 }} /> Export CSV
+                        </button>
+                        <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+                            {([30, 90, 365] as const).map((r, i) => (
+                                <button key={r} onClick={() => setRange(r)}
+                                    className="px-3 py-1.5 text-xs font-black uppercase tracking-wide transition-all"
+                                    style={{ background: range === r ? '#111' : '#fff', color: range === r ? '#fff' : '#111', borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}>
+                                    {r === 365 ? '1y' : `${r}d`}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -136,7 +163,7 @@ export default function AnalyticsPage() {
                         { label: 'Avg. Order', value: formatCurrency(avgPrice), color: '#f97316' },
                         { label: 'Turnaround', value: `${avgTurnaround}d`, color: '#8b5cf6' },
                     ].map((kpi, i) => (
-                        <div key={kpi.label} className="neo-card p-4" style={{ borderColor: kpi.color, boxShadow: `4px 4px 0 0 ${kpi.color}` }}>
+                        <div key={kpi.label} className="neo-card p-4" style={{ borderLeft: `3px solid ${kpi.color}` }}>
                             <div className="section-label mb-1" style={{ color: kpi.color }}>{kpi.label}</div>
                             <div className="text-2xl font-black">{kpi.value}</div>
                             {kpi.sub && <div className="text-xs font-semibold mt-0.5" style={{ color: '#888' }}>{kpi.sub}</div>}
@@ -230,7 +257,7 @@ export default function AnalyticsPage() {
 
                 {/* Top customers */}
                 <div className="neo-card overflow-hidden">
-                    <div className="px-4 py-3 section-label" style={{ borderBottom: '2px solid #111' }}>Top Customers</div>
+                    <div className="px-4 py-3 section-label" style={{ borderBottom: '1px solid var(--border)' }}>Top Customers</div>
                     <table className="w-full text-sm">
                         <thead>
                             <tr style={{ borderBottom: '1px solid #eee', background: '#f8f8f8' }}>

@@ -97,7 +97,7 @@ export default function CustomersPage() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
                                         <div className="w-9 h-9 rounded flex items-center justify-center text-xs font-black flex-shrink-0"
-                                            style={{ background: '#111', color: '#fff' }}>
+                                            style={{ background: 'var(--muted)', color: 'var(--muted-foreground)' }}>
                                             {customer.name.split(' ').map(n => n[0]).join('')}
                                         </div>
                                         <div>
@@ -116,18 +116,18 @@ export default function CustomersPage() {
                                     {customer.email && <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--muted-foreground)' }}><Mail style={{ width: 11, height: 11 }} />{customer.email}</div>}
                                 </div>
                                 {/* Stats */}
-                                <div className="flex gap-3 pt-3" style={{ borderTop: '2px solid #111' }}>
+                                <div className="flex gap-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
                                     <div className="flex-1 text-center">
                                         <div className="text-sm font-black">{customerOrders.length}</div>
-                                        <div className="section-label" style={{ color: '#aaa' }}>Orders</div>
+                                        <div className="section-label" style={{ color: 'var(--muted-foreground)' }}>Orders</div>
                                     </div>
                                     <div className="flex-1 text-center">
                                         <div className="text-sm font-black">{activeOrders}</div>
-                                        <div className="section-label" style={{ color: '#aaa' }}>Active</div>
+                                        <div className="section-label" style={{ color: 'var(--muted-foreground)' }}>Active</div>
                                     </div>
                                     <div className="flex-1 text-center">
                                         <div className="text-sm font-black" style={{ color: '#22c55e' }}>€{(totalSpend / 1000).toFixed(1)}k</div>
-                                        <div className="section-label" style={{ color: '#aaa' }}>Spent</div>
+                                        <div className="section-label" style={{ color: 'var(--muted-foreground)' }}>Spent</div>
                                     </div>
                                 </div>
                             </div>
