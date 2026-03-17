@@ -15,10 +15,10 @@ const STAT_COLORS = ['#3b82f6', '#22c55e', '#ef4444', '#f97316'];
 function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
     return (
         <div className="neo-card p-6 relative group" style={{ borderTopWidth: '8px', borderTopColor: color }}>
-            <div className="text-[12px] font-black uppercase tracking-wide mb-1 text-slate-900 dark:text-white">{label}</div>
-            <div className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white flex items-baseline gap-2" style={{ marginTop: 4 }}>
+            <div className="text-[12px] font-bold uppercase tracking-wide mb-1 text-slate-700 dark:text-slate-300">{label}</div>
+            <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white flex items-baseline gap-2" style={{ marginTop: 4 }}>
                 {value}
-                {sub && <span className="text-[11px] font-bold tracking-tight lowercase text-slate-500 dark:text-slate-400">{sub}</span>}
+                {sub && <span className="text-[11px] font-semibold tracking-tight lowercase text-slate-500 dark:text-slate-400">{sub}</span>}
             </div>
         </div>
     );
@@ -156,13 +156,13 @@ export default function DashboardPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-tight">Dashboard</h1>
-                        <p className="text-sm font-semibold" style={{ color: '#888' }}>{orders.length} orders in the workshop</p>
+                        <h1 className="text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white">Dashboard</h1>
+                        <p className="text-sm font-medium" style={{ color: '#888' }}>{orders.length} orders in the workshop</p>
                     </div>
                     <div className="flex items-center gap-2">
                         {/* View toggle */}
                         <div className="flex rounded-lg overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm p-1">
-                            <button onClick={() => setView('kanban')} className="px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold rounded-md transition-all"
+                            <button onClick={() => setView('kanban')} className="px-3 py-1.5 flex items-center gap-1.5 text-xs font-semibold rounded-md transition-all"
                                 style={{ background: view === 'kanban' ? 'var(--muted)' : 'transparent', color: view === 'kanban' ? 'var(--foreground)' : 'var(--muted-foreground)' }}>
                                 <LayoutGrid style={{ width: 14, height: 14 }} /> Board
                             </button>
@@ -192,8 +192,7 @@ export default function DashboardPage() {
                         borderTopColor: 'var(--red)'
                     }}>
                         {/* Header */}
-                        <div style={{
-                            background: '#000',
+                        <div className="bg-slate-900 dark:bg-red-950/40" style={{
                             padding: '16px 24px',
                             display: 'flex',
                             alignItems: 'center',
@@ -201,10 +200,10 @@ export default function DashboardPage() {
                         }}>
                             <AlertTriangle style={{ width: 28, height: 28, color: 'var(--red)', flexShrink: 0 }} />
                             <div>
-                                <div style={{ fontWeight: 900, fontSize: 18, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                <div className="text-white dark:text-red-100" style={{ fontWeight: 800, fontSize: 18, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                                     {urgentOrders.length + readyForPickupOrders.length + staleOrders.length} orders need your attention
                                 </div>
-                                <div style={{ fontSize: 12, fontWeight: 700, color: '#aaa', marginTop: 2 }}>
+                                <div className="text-slate-300 dark:text-red-200/70" style={{ fontSize: 12, fontWeight: 600, marginTop: 2 }}>
                                     OVERDUE, STUCK, OR AWAITING PICKUP
                                 </div>
                             </div>

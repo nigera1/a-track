@@ -8,7 +8,7 @@ import { Plus, Building2, Pencil, Trash2, Save, X, Phone } from 'lucide-react';
 import { Supplier } from '@/types';
 
 const SPECIALTY_LABELS = { casting: 'Casting', setting: 'Setting', both: 'Casting & Setting' };
-const SPECIALTY_COLORS = { casting: 'var(--blue)', setting: 'var(--red)', both: '#000' };
+const SPECIALTY_COLORS = { casting: 'var(--blue)', setting: 'var(--red)', both: '#64748b' };
 
 const emptyForm = () => ({ name: '', specialty: 'casting' as Supplier['specialty'], contact: '', notes: '' });
 
@@ -18,7 +18,7 @@ export default function SuppliersPage() {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [form, setForm] = useState(emptyForm());
 
-    const inputStyle = { width: '100%', border: '3px solid var(--border)', borderRadius: 0, padding: '10px 14px', fontSize: 13, fontWeight: 700, background: 'var(--input)', color: 'var(--foreground)' };
+    const inputStyle = { width: '100%', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', fontSize: 13, fontWeight: 600, background: 'var(--input)', color: 'var(--foreground)' };
 
     function handleAdd() {
         if (!form.name.trim()) { toast.error('Name is required'); return; }
@@ -86,8 +86,8 @@ export default function SuppliersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-tight">Suppliers</h1>
-                        <p className="text-sm font-semibold" style={{ color: '#888' }}>{suppliers.length} suppliers · Used for casting & setting stages</p>
+                        <h1 className="text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white">Suppliers</h1>
+                        <p className="text-sm font-medium" style={{ color: '#888' }}>{suppliers.length} suppliers · Used for casting & setting stages</p>
                     </div>
                     {!showAdd && (
                         <button onClick={() => { setShowAdd(true); setForm(emptyForm()); }} className="neo-btn neo-btn-primary">
@@ -111,7 +111,7 @@ export default function SuppliersPage() {
                     {suppliers.length === 0 ? (
                         <div className="neo-card p-10 flex flex-col items-center gap-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                             <Building2 style={{ width: 32, height: 32 }} className="text-slate-400 dark:text-slate-500" />
-                            <div className="font-black text-sm text-slate-500 dark:text-slate-400">No suppliers yet</div>
+                            <div className="font-bold text-sm text-slate-500 dark:text-slate-400">No suppliers yet</div>
                             <button onClick={() => setShowAdd(true)} className="neo-btn text-xs">Add your first supplier</button>
                         </div>
                     ) : (
@@ -123,11 +123,11 @@ export default function SuppliersPage() {
                                 <div key={s.id} className="neo-card p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" style={{ borderLeft: `6px solid ${color}` }}>
                                     <div className="flex items-start justify-between gap-4 flex-wrap">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 flex items-center justify-center font-black text-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700">
+                                            <div className="w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-md">
                                                 {s.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
-                                                <div className="font-black text-base hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer text-slate-900 dark:text-white transition-colors" onClick={() => window.location.href = `/suppliers/${s.id}`}>{s.name}</div>
+                                                <div className="font-bold text-base hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer text-slate-900 dark:text-white transition-colors" onClick={() => window.location.href = `/suppliers/${s.id}`}>{s.name}</div>
                                                 <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                                                     <span className="status-pill" style={{ color: s.specialty === 'both' ? 'inherit' : color, borderColor: s.specialty === 'both' ? 'var(--border)' : color, backgroundColor: s.specialty === 'both' ? 'var(--muted)' : 'transparent' }}>
                                                         {SPECIALTY_LABELS[s.specialty]}
