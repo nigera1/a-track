@@ -16,7 +16,7 @@ const MATERIAL_TYPES = Object.keys(MATERIAL_LABELS) as MaterialType[];
 
 function Label({ children }: { children: React.ReactNode }) {
     return (
-        <label className="block text-[13px] font-bold text-[#333] mb-1.5">{children}</label>
+        <label className="block text-[13px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">{children}</label>
     );
 }
 
@@ -29,7 +29,7 @@ function Field({ label, required, children }: { label: string; required?: boolea
     );
 }
 
-const inpClass = "w-full rounded-[6px] border border-[#e2e8f0] px-3 py-[9px] text-[14px] text-slate-800 focus:outline-none focus:border-blue-400 bg-white transition-colors appearance-none";
+const inpClass = "w-full rounded-[6px] border border-slate-200 dark:border-slate-700 px-3 py-[9px] text-[14px] text-slate-800 dark:text-slate-100 focus:outline-none focus:border-blue-400 bg-transparent transition-colors appearance-none";
 
 function SelectField({ label, required, options, value, onChange }: { label: string; required?: boolean; options: {value: string, label: string}[], value: string, onChange: (val: string) => void }) {
     return (
@@ -59,9 +59,9 @@ function PillSelect({ options, value, onChange, placeholder }: { options: {value
                 onClick={() => setOpen(!open)}
             >
                 {value ? (
-                    <div className="bg-slate-100 text-slate-700 text-[13px] px-2 py-0.5 rounded-[6px] flex items-center gap-1 font-medium transition-colors hover:bg-slate-200">
+                    <div className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[13px] px-2 py-0.5 rounded-[6px] flex items-center gap-1 font-medium transition-colors hover:bg-slate-200 dark:hover:bg-slate-700">
                         {options.find(o => o.value === value)?.label || value}
-                        <button type="button" onClick={(e) => { e.stopPropagation(); onChange(''); }} className="hover:text-slate-900 ml-0.5 text-slate-500">
+                        <button type="button" onClick={(e) => { e.stopPropagation(); onChange(''); }} className="hover:text-slate-900 dark:hover:text-white ml-0.5 text-slate-500">
                            <X style={{ width: 12, height: 12 }} strokeWidth={2.5} />
                         </button>
                     </div>
@@ -73,15 +73,15 @@ function PillSelect({ options, value, onChange, placeholder }: { options: {value
             </div>
             
             {open && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-[8px] shadow-lg py-1.5">
+                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[8px] shadow-lg py-1.5">
                     {options.map(o => (
                         <div 
                             key={o.value} 
-                            className="px-3 py-[6px] hover:bg-slate-50 cursor-pointer text-[14px] flex items-center gap-2 text-slate-700 font-medium"
+                            className="px-3 py-[6px] hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer text-[14px] flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium transition-colors"
                             onClick={() => { onChange(o.value); setOpen(false); }}
                         >
                             <div className="w-4 flex justify-center">
-                                {value === o.value && <Check style={{ width: 16, height: 16 }} className="text-slate-400" strokeWidth={3} />}
+                                {value === o.value && <Check style={{ width: 16, height: 16 }} className="text-slate-400 dark:text-slate-500" strokeWidth={3} />}
                             </div>
                             <span>{o.label}</span>
                         </div>
@@ -129,7 +129,7 @@ function OrderForm() {
                 
                 {/* Header & Breadcrumbs Row */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-                    <h1 className="text-[24px] font-bold text-slate-900 tracking-tight">New Order</h1>
+                    <h1 className="text-[24px] font-bold text-slate-900 dark:text-white tracking-tight">New Order</h1>
                     
                     {/* Horizontal process breadcrumbs matching mockup */}
                     <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-slate-600 overflow-x-auto scroolbar-hide">
@@ -169,8 +169,8 @@ function OrderForm() {
                     </div>
 
                     {/* Default order fields */}
-                    <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-6 mb-4">
-                        <h3 className="text-[17px] font-bold text-slate-900 mb-4 tracking-tight">Default order fields</h3>
+                    <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-6 mb-4">
+                        <h3 className="text-[17px] font-bold text-slate-900 dark:text-white mb-4 tracking-tight">Default order fields</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Field label="CRM Order ID">
                                 <input value={crmOrderId} onChange={e => setCrmOrderId(e.target.value)} placeholder="" className={inpClass} />
@@ -185,13 +185,13 @@ function OrderForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
                         {/* 3D (Empty Placeholder) */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 flex flex-col h-full justify-center">
-                            <h3 className="text-[17px] font-bold text-slate-900 tracking-tight m-0">3D</h3>
+                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col h-full justify-center">
+                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight m-0">3D</h3>
                         </section>
 
                         {/* Casting */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
-                            <h3 className="text-[17px] font-bold text-slate-900 tracking-tight mb-4">Casting</h3>
+                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
+                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight mb-4">Casting</h3>
                             <div className="mt-auto">
                                 <SelectField 
                                     label="Alloy" 
@@ -204,13 +204,13 @@ function OrderForm() {
                         </section>
 
                         {/* Sanding (Empty Placeholder) */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 flex flex-col h-full justify-center">
-                            <h3 className="text-[17px] font-bold text-slate-900 tracking-tight m-0">Sanding</h3>
+                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col h-full justify-center">
+                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight m-0">Sanding</h3>
                         </section>
 
                         {/* Stone Setting */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
-                            <h3 className="text-[17px] font-bold text-slate-900 tracking-tight mb-4">Stone Setting</h3>
+                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
+                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight mb-4">Stone Setting</h3>
                             <div className="grid grid-cols-1 gap-4 mt-auto">
                                 <Field label="Setting central">
                                     <PillSelect 
@@ -244,8 +244,8 @@ function OrderForm() {
                         </section>
 
                         {/* Polishing */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
-                            <h3 className="text-[17px] font-bold text-slate-900 tracking-tight mb-4">Polishing</h3>
+                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
+                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight mb-4">Polishing</h3>
                             <div className="mt-auto">
                                 <Field label="Finish">
                                     <PillSelect 
@@ -262,8 +262,8 @@ function OrderForm() {
                         </section>
 
                         {/* Quality Control (Empty Placeholder) */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 flex flex-col h-full justify-center">
-                            <h3 className="text-[17px] font-bold text-slate-900 tracking-tight m-0">Quality Control</h3>
+                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col h-full justify-center">
+                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight m-0">Quality Control</h3>
                         </section>
 
                     </div>
