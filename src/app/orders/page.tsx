@@ -92,7 +92,6 @@ export default function OrdersPage() {
     }
 
     const selectStyle = {
-        background: '#fff',
         border: '1px solid var(--border)',
         borderRadius: 8,
         padding: '8px 12px',
@@ -183,6 +182,7 @@ export default function OrdersPage() {
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Search by order #, customer, item type, material…"
+                            className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-colors"
                             style={{
                                 width: '100%',
                                 paddingLeft: 36,
@@ -193,7 +193,6 @@ export default function OrdersPage() {
                                 borderRadius: 8,
                                 fontSize: 13,
                                 fontWeight: 600,
-                                background: '#fff',
                                 outline: 'none',
                                 boxSizing: 'border-box',
                             }}
@@ -207,22 +206,22 @@ export default function OrdersPage() {
 
                     {/* Filter row */}
                     <div className="flex flex-wrap gap-2 items-center" style={{ display: 'flex' }}>
-                        <select value={stageFilter} onChange={e => setStageFilter(e.target.value)} style={selectStyle}>
+                        <select className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors" value={stageFilter} onChange={e => setStageFilter(e.target.value)} style={selectStyle}>
                             <option value="all">All Stages</option>
                             {ORDER_STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
                         </select>
 
-                        <select value={itemFilter} onChange={e => setItemFilter(e.target.value)} style={selectStyle}>
+                        <select className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors" value={itemFilter} onChange={e => setItemFilter(e.target.value)} style={selectStyle}>
                             <option value="all">All Item Types</option>
                             {Object.entries(ITEM_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                         </select>
 
-                        <select value={materialFilter} onChange={e => setMaterialFilter(e.target.value)} style={selectStyle}>
+                        <select className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors" value={materialFilter} onChange={e => setMaterialFilter(e.target.value)} style={selectStyle}>
                             <option value="all">All Materials</option>
                             {Object.entries(MATERIAL_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                         </select>
 
-                        <select value={dueDateFilter} onChange={e => setDueDateFilter(e.target.value)} style={selectStyle}>
+                        <select className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white transition-colors" value={dueDateFilter} onChange={e => setDueDateFilter(e.target.value)} style={selectStyle}>
                             <option value="all">Any Due Date</option>
                             <option value="overdue">🔴 Overdue</option>
                             <option value="urgent">🟠 Due Soon (3 days)</option>

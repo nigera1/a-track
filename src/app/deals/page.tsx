@@ -89,11 +89,11 @@ export default function DealsPage() {
                 )}
 
                 {/* Pipeline Board */}
-                <div className="flex gap-4 overflow-x-auto pb-4 items-start">
+                <div className="flex gap-4 overflow-x-auto pb-4 items-start flex-nowrap w-full">
                     {DEAL_STAGES.map(stage => {
                         const stageDeals = deals.filter(d => d.status === stage.key);
                         return (
-                            <div key={stage.key} className="flex flex-col min-w-[280px] w-[300px] flex-shrink-0">
+                            <div key={stage.key} className="flex flex-col min-w-[280px] w-[300px] shrink-0">
                                 {/* Column header */}
                                 <div className="rounded-lg p-3 mb-3 flex items-center justify-between"
                                     style={{ border: `1px solid ${stage.color}30`, background: `${stage.color}08`, borderLeft: `3px solid ${stage.color}` }}>
@@ -112,28 +112,28 @@ export default function DealsPage() {
                                         return (
                                             <div key={deal.id} className="neo-card p-3 flex flex-col gap-2 relative group">
                                                 <div className="flex justify-between items-start">
-                                                    <div className="font-bold text-sm tracking-tight">{deal.title}</div>
+                                                    <div className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">{deal.title}</div>
                                                     <button onClick={() => { if(confirm('Delete deal?')) deleteDeal(deal.id); }} 
                                                         className="opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-500/10 rounded transition-all">
                                                         <Trash2 style={{ width: 14, height: 14 }} />
                                                     </button>
                                                 </div>
-                                                <div className="text-xs font-semibold text-gray-500">{customer?.name || 'Unknown'}</div>
+                                                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{customer?.name || 'Unknown'}</div>
                                                 
                                                 {deal.estimated_value != null && (
-                                                    <div className="flex items-center gap-1 text-sm font-black mt-1" style={{ color: '#111' }}>
+                                                    <div className="flex items-center gap-1 text-sm font-black mt-1 text-slate-900 dark:text-white">
                                                         <DollarSign style={{ width: 12, height: 12, color: stage.color }} />
                                                         €{deal.estimated_value.toLocaleString()}
                                                     </div>
                                                 )}
                                                 
                                                 {deal.notes && (
-                                                    <div className="text-xs mt-1 italic text-gray-500 line-clamp-2">"{deal.notes}"</div>
+                                                    <div className="text-xs mt-1 italic text-slate-500 dark:text-slate-400 line-clamp-2">"{deal.notes}"</div>
                                                 )}
 
                                                 {/* Actions */}
-                                                <div className="flex justify-between items-center mt-2 pt-2" style={{ borderTop: '1px dashed var(--border)' }}>
-                                                    <span className="text-[10px] uppercase font-bold text-gray-400">{formatDate(deal.updated_at)}</span>
+                                                <div className="flex justify-between items-center mt-2 pt-2 border-t border-dashed border-slate-200 dark:border-slate-700">
+                                                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500">{formatDate(deal.updated_at)}</span>
                                                     <div className="flex items-center gap-2">
                                                         {deal.status === 'won' && (
                                                             <a href={`/orders/new?customer=${deal.customer_id}`}
@@ -143,10 +143,9 @@ export default function DealsPage() {
                                                             </a>
                                                         )}
                                                         <select 
-                                                            className="text-[10px] uppercase font-black px-1.5 py-1 rounded bg-gray-100 cursor-pointer"
+                                                            className="text-[10px] uppercase font-black px-1.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 cursor-pointer border border-slate-200 dark:border-slate-700"
                                                             value={deal.status}
                                                             onChange={(e) => updateDeal(deal.id, { status: e.target.value as DealStatus })}
-                                                            style={{ border: '1px solid #ddd' }}
                                                         >
                                                             {DEAL_STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
                                                         </select>
@@ -156,7 +155,7 @@ export default function DealsPage() {
                                         );
                                     })}
                                     {stageDeals.length === 0 && (
-                                        <div className="text-center p-4 border-2 border-dashed rounded-xl text-xs font-semibold text-gray-400">
+                                        <div className="text-center p-4 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-xs font-semibold text-slate-400 dark:text-slate-500">
                                             No deals
                                         </div>
                                     )}

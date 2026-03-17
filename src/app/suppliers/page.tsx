@@ -108,35 +108,38 @@ export default function SuppliersPage() {
 
                 {/* Supplier list */}
                 <div className="flex flex-col gap-3">
-                    {suppliers.length === 0 && (
-                        <div className="neo-card p-10 flex flex-col items-center gap-3">
-                            <Building2 style={{ width: 32, height: 32, color: 'var(--muted-foreground)' }} />
-                            <div className="font-black text-sm" style={{ color: 'var(--muted-foreground)' }}>No suppliers yet</div>
+                    {suppliers.length === 0 ? (
+                        <div className="neo-card p-10 flex flex-col items-center gap-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                            <Building2 style={{ width: 32, height: 32 }} className="text-slate-400 dark:text-slate-500" />
+                            <div className="font-black text-sm text-slate-500 dark:text-slate-400">No suppliers yet</div>
                             <button onClick={() => setShowAdd(true)} className="neo-btn text-xs">Add your first supplier</button>
                         </div>
-                    )}
-                    {suppliers.map(s => {
-                        const color = SPECIALTY_COLORS[s.specialty];
-                        const isEditing = editingId === s.id;
-                        return (
-                            <div key={s.id} className="neo-card p-5" style={isEditing ? { borderLeft: `6px solid ${color}` } : { borderLeft: `6px solid ${color}` }}>
-                                <div className="flex items-start justify-between gap-4 flex-wrap">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 flex items-center justify-center font-black text-lg flex-shrink-0"
-                                            style={{ background: 'var(--muted)', border: `3px solid var(--border)`, color: 'var(--foreground)' }}>
-                                            {s.name.charAt(0).toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <div className="font-black text-base hover:underline cursor-pointer" onClick={() => window.location.href = `/suppliers/${s.id}`}>{s.name}</div>
-                                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                                                <span className="status-pill" style={{ color, borderColor: color }}>{SPECIALTY_LABELS[s.specialty]}</span>
-                                                {s.contact && (
-                                                    <span className="flex items-center gap-1 text-xs font-semibold" style={{ color: '#888' }}>
-                                                        <Phone style={{ width: 10, height: 10 }} /> {s.contact}
-                                                    </span>
-                                                )}
+                    ) : (
+                        suppliers.map(s => {
+                            const color = s.specialty === 'both' ? '#64748b' : SPECIALTY_COLORS[s.specialty];
+                            const isEditing = editingId === s.id;
+                            
+                            return (
+                                <div key={s.id} className="neo-card p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" style={{ borderLeft: `6px solid ${color}` }}>
+                                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 flex items-center justify-center font-black text-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700">
+                                                {s.name.charAt(0).toUpperCase()}
                                             </div>
-                                            {s.notes && <div className="text-xs mt-1" style={{ color: '#aaa' }}>{s.notes}</div>}
+                                            <div>
+                                                <div className="font-black text-base hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer text-slate-900 dark:text-white transition-colors" onClick={() => window.location.href = `/suppliers/${s.id}`}>{s.name}</div>
+                                                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                                                    <span className="status-pill" style={{ color: s.specialty === 'both' ? 'inherit' : color, borderColor: s.specialty === 'both' ? 'var(--border)' : color, backgroundColor: s.specialty === 'both' ? 'var(--muted)' : 'transparent' }}>
+                                                        {SPECIALTY_LABELS[s.specialty]}
+                                                    </span>
+                                                    {s.contact && (
+                                                        <span className="flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                                            <Phone style={{ width: 10, height: 10 }} /> {s.contact}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                {s.notes && <div className="text-xs mt-1 text-slate-400 dark:text-slate-500">{s.notes}</div>}
+                                            </div>
                                         </div>
                                     </div>
                                     {!isEditing && (
@@ -151,12 +154,9 @@ export default function SuppliersPage() {
                                         </div>
                                     )}
                                 </div>
-                                {isEditing && (
-                                    <InlineForm onSave={() => handleSave(s.id)} onCancel={() => setEditingId(null)} />
-                                )}
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    )}
                 </div>
             </div>
         </AppShell>
