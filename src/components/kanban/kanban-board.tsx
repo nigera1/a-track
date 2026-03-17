@@ -23,8 +23,8 @@ function KanbanCard({ order, isDragging = false }: { order: Order; isDragging?: 
             <div className="kanban-card p-3" style={{ opacity: isDragging ? 0.4 : 1 }}>
                 <div className="flex items-start justify-between gap-2 mb-2">
                     <div>
-                        <div className="text-[11px] font-black uppercase tracking-wide" style={{ color: '#999' }}>{order.order_number}</div>
-                        <div className="font-bold text-sm mt-0.5">{customer?.name ?? 'Unknown'}</div>
+                        <div className="text-[11px] font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">{order.order_number}</div>
+                        <div className="font-bold text-sm mt-0.5 text-slate-900 dark:text-white">{customer?.name ?? 'Unknown'}</div>
                     </div>
                     {order.item_type && (
                         <span className="text-[10px] font-black uppercase px-2 py-0.5" style={{ background: 'var(--muted)', border: '2px solid var(--border)', color: 'var(--foreground)', flexShrink: 0 }}>
@@ -33,7 +33,7 @@ function KanbanCard({ order, isDragging = false }: { order: Order; isDragging?: 
                     )}
                 </div>
                 {order.price != null && (
-                    <div className="text-xs font-bold" style={{ color: '#333' }}>€{order.price.toLocaleString()}</div>
+                    <div className="text-xs font-bold text-slate-900 dark:text-slate-200">€{order.price.toLocaleString()}</div>
                 )}
                 {order.due_date && (
                     <div className={`flex items-center gap-1 mt-1.5 text-[11px] font-semibold`}

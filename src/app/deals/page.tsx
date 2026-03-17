@@ -42,6 +42,11 @@ export default function DealsPage() {
 
     const inputCls = "w-full px-3 py-2 rounded-lg border text-sm";
 
+    const totalDeals = deals.length;
+    const activeDeals = deals.filter(d => d.status === 'ongoing' || d.status === 'partially_paid').length;
+    const wonDeals = deals.filter(d => d.status === 'won').length;
+    const pipelineValue = deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + (d.estimated_value || 0), 0);
+
     return (
         <AppShell>
             <div className="flex flex-col gap-5">
@@ -49,11 +54,31 @@ export default function DealsPage() {
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
                         <h1 className="text-2xl font-black uppercase tracking-tight">Deals Tracking</h1>
-                        <p className="text-sm font-semibold" style={{ color: '#888' }}>Pre-production pipeline</p>
+                        <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Pre-production pipeline</p>
                     </div>
                     <button onClick={() => setShowForm(!showForm)} className="neo-btn neo-btn-primary">
                         <Plus style={{ width: 13, height: 13 }} /> New Deal
                     </button>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="neo-card p-4">
+                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Total Deals</div>
+                        <div className="text-xl font-black text-slate-900 dark:text-white">{totalDeals}</div>
+                    </div>
+                    <div className="neo-card p-4 border-l-4 border-blue-500">
+                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Active</div>
+                        <div className="text-xl font-black text-slate-900 dark:text-white">{activeDeals}</div>
+                    </div>
+                    <div className="neo-card p-4 border-l-4 border-emerald-500">
+                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Won</div>
+                        <div className="text-xl font-black text-slate-900 dark:text-white">{wonDeals}</div>
+                    </div>
+                    <div className="neo-card p-4 border-l-4 border-amber-500">
+                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Pipeline Val.</div>
+                        <div className="text-xl font-black text-slate-900 dark:text-white">€{pipelineValue.toLocaleString()}</div>
+                    </div>
                 </div>
 
                 {/* Add form */}
@@ -89,11 +114,11 @@ export default function DealsPage() {
                 )}
 
                 {/* Pipeline Board */}
-                <div className="flex gap-4 overflow-x-auto pb-4 items-start flex-nowrap w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-4">
                     {DEAL_STAGES.map(stage => {
                         const stageDeals = deals.filter(d => d.status === stage.key);
                         return (
-                            <div key={stage.key} className="flex flex-col min-w-[280px] w-[300px] shrink-0">
+                            <div key={stage.key} className="flex flex-col neo-card bg-slate-50/50 dark:bg-slate-900/50 p-3">
                                 {/* Column header */}
                                 <div className="rounded-lg p-3 mb-3 flex items-center justify-between"
                                     style={{ border: `1px solid ${stage.color}30`, background: `${stage.color}08`, borderLeft: `3px solid ${stage.color}` }}>

@@ -15,10 +15,10 @@ const STAT_COLORS = ['#3b82f6', '#22c55e', '#ef4444', '#f97316'];
 function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
     return (
         <div className="neo-card p-6 relative group" style={{ borderTopWidth: '8px', borderTopColor: color }}>
-            <div className="text-[12px] font-black uppercase tracking-wide mb-1" style={{ color: '#000' }}>{label}</div>
-            <div className="text-2xl md:text-3xl font-black text-slate-800 flex items-baseline gap-2" style={{ marginTop: 4 }}>
+            <div className="text-[12px] font-black uppercase tracking-wide mb-1 text-slate-900 dark:text-white">{label}</div>
+            <div className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white flex items-baseline gap-2" style={{ marginTop: 4 }}>
                 {value}
-                {sub && <span className="text-[11px] font-bold tracking-tight lowercase" style={{ color: 'var(--muted-foreground)' }}>{sub}</span>}
+                {sub && <span className="text-[11px] font-bold tracking-tight lowercase text-slate-500 dark:text-slate-400">{sub}</span>}
             </div>
         </div>
     );
@@ -37,8 +37,8 @@ function ProcessBar({ currentStatus }: { currentStatus: OrderStatus }) {
                     <div key={s.key} 
                          style={{
                              width: 14, height: 14,
-                             background: isPast ? '#000' : isCurrent ? 'var(--blue)' : '#fff',
-                             border: '2px solid #000'
+                             background: isPast ? 'var(--foreground)' : isCurrent ? 'var(--blue)' : 'var(--background)',
+                             border: '2px solid var(--foreground)'
                          }} 
                     />
                 );
@@ -61,11 +61,11 @@ function OrdersTable({ orders }: { orders: Order[] }) {
                         <div key={order.id} className="mobile-order-card"
                             onClick={() => router.push(`/orders/${order.id}`)}>
                             <div className="flex items-start justify-between mb-1.5">
-                                <span className="font-bold text-sm" style={{ color: '#2563eb' }}>{order.order_number}</span>
+                                <span className="font-bold text-sm text-blue-600 dark:text-blue-500">{order.order_number}</span>
                                 <ProcessBar currentStatus={order.status} />
                             </div>
-                            <div className="text-sm font-medium text-gray-700">{customer?.name ?? '—'}</div>
-                            <div className="flex items-center justify-between mt-2 pt-2" style={{ borderTop: '1px solid var(--border)' }}>
+                            <div className="text-sm font-medium text-slate-700 dark:text-slate-300">{customer?.name ?? '—'}</div>
+                            <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                                 <span className="text-xs font-semibold"
                                     style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
                                     {formatDate(order.due_date)}
@@ -161,13 +161,13 @@ export default function DashboardPage() {
                     </div>
                     <div className="flex items-center gap-2">
                         {/* View toggle */}
-                        <div className="flex rounded-lg overflow-hidden bg-white border border-slate-200 shadow-sm p-1">
+                        <div className="flex rounded-lg overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm p-1">
                             <button onClick={() => setView('kanban')} className="px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold rounded-md transition-all"
-                                style={{ background: view === 'kanban' ? '#f1f5f9' : 'transparent', color: view === 'kanban' ? '#0f172a' : '#64748b' }}>
+                                style={{ background: view === 'kanban' ? 'var(--muted)' : 'transparent', color: view === 'kanban' ? 'var(--foreground)' : 'var(--muted-foreground)' }}>
                                 <LayoutGrid style={{ width: 14, height: 14 }} /> Board
                             </button>
                             <button onClick={() => setView('table')} className="px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold rounded-md transition-all"
-                                style={{ background: view === 'table' ? '#f1f5f9' : 'transparent', color: view === 'table' ? '#0f172a' : '#64748b' }}>
+                                style={{ background: view === 'table' ? 'var(--muted)' : 'transparent', color: view === 'table' ? 'var(--foreground)' : 'var(--muted-foreground)' }}>
                                 <List style={{ width: 14, height: 14 }} /> List
                             </button>
                         </div>
