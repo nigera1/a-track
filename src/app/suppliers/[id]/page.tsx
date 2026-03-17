@@ -29,7 +29,7 @@ export default function SupplierDetailPage() {
     const completedOrders = assignedOrders.filter(o => o.status === 'completed');
     const totalValue = assignedOrders.reduce((sum, o) => sum + (o.price ?? 0), 0);
 
-    const specialtyColors: Record<string, string> = { casting: '#8b5cf6', setting: '#ef4444', both: '#3b82f6' };
+    const specialtyColors: Record<string, string> = { casting: 'var(--blue)', setting: 'var(--red)', both: '#000' };
 
     return (
         <AppShell>
@@ -41,8 +41,8 @@ export default function SupplierDetailPage() {
                     </Link>
                     <div className="flex-1">
                         <h1 className="text-xl font-black tracking-tight">{supplier.name}</h1>
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                            style={{ background: `${specialtyColors[supplier.specialty]}15`, color: specialtyColors[supplier.specialty] }}>
+                        <span className="status-pill"
+                            style={{ color: specialtyColors[supplier.specialty] }}>
                             {supplier.specialty === 'both' ? 'Casting & Setting' : supplier.specialty.charAt(0).toUpperCase() + supplier.specialty.slice(1)}
                         </span>
                     </div>
@@ -70,16 +70,14 @@ export default function SupplierDetailPage() {
                         )}
                     </div>
                     {/* Stats */}
-                    <div className="neo-card p-4 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-1 h-full" style={{ background: '#3b82f6' }} />
-                        <div className="text-[11px] font-bold tracking-wide mb-1" style={{ color: 'var(--muted-foreground)' }}>ASSIGNED ORDERS</div>
-                        <div className="text-3xl font-black text-slate-800">{assignedOrders.length}</div>
-                        <div className="text-xs mt-1 text-slate-500">{activeOrders.length} active · {completedOrders.length} completed</div>
+                    <div className="neo-card p-4 relative overflow-hidden" style={{ borderLeft: '6px solid var(--blue)' }}>
+                        <div className="section-label mb-1" style={{ color: 'var(--blue)' }}>ASSIGNED ORDERS</div>
+                        <div className="text-3xl font-black">{assignedOrders.length}</div>
+                        <div className="text-xs font-semibold mt-1" style={{ color: 'var(--muted-foreground)' }}>{activeOrders.length} active · {completedOrders.length} completed</div>
                     </div>
-                    <div className="neo-card p-4 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-1 h-full" style={{ background: '#22c55e' }} />
-                        <div className="text-[11px] font-bold tracking-wide mb-1" style={{ color: 'var(--muted-foreground)' }}>TOTAL VALUE</div>
-                        <div className="text-3xl font-black text-slate-800">{formatCurrency(totalValue)}</div>
+                    <div className="neo-card p-4 relative overflow-hidden" style={{ borderLeft: '6px solid var(--gold)' }}>
+                        <div className="section-label mb-1" style={{ color: 'var(--gold)' }}>TOTAL VALUE</div>
+                        <div className="text-3xl font-black">{formatCurrency(totalValue)}</div>
                     </div>
                 </div>
 

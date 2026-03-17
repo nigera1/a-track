@@ -163,7 +163,7 @@ export default function OrderDetailPage() {
                 )}
 
                 {/* Order Header */}
-                <div className="neo-card p-5" style={{ borderLeft: `3px solid ${stageColor}` }}>
+                <div className="neo-card p-5" style={{ borderTopWidth: 8, borderTopColor: stageColor }}>
                     <div className="flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             <div className="section-label mb-1">Order Number</div>
@@ -176,7 +176,11 @@ export default function OrderDetailPage() {
                             <div className="flex flex-col items-end gap-2">
                                 <div>
                                     <div className="section-label mb-1">Current Stage</div>
-                                    <span className="status-pill text-sm font-black" style={{ color: stageColor }}>
+                                    <span style={{ 
+                                        background: stageColor, color: '#fff', 
+                                        padding: '4px 12px', fontSize: 13, fontWeight: 900, 
+                                        textTransform: 'uppercase', border: '3px solid #000' 
+                                    }}>
                                         {getStatusLabel(order.status)}
                                     </span>
                                 </div>
@@ -216,16 +220,15 @@ export default function OrderDetailPage() {
                             const isCurrent = i === currentStageIndex;
                             return (
                                 <button key={stage.key} onClick={() => { updateOrderStatus(id, stage.key); toast.success(`Moved to ${stage.label}`); }}
-                                    className="flex-1 min-w-[70px] flex flex-col items-center gap-1.5 py-2 px-1 rounded-lg text-center transition-all"
+                                    className="flex-1 min-w-[70px] flex flex-col items-center gap-2 py-3 px-1 text-center transition-all"
                                     title={`Move to ${stage.label}`}
                                     style={{
-                                        background: isCurrent ? `${stage.color}15` : 'transparent',
-                                        border: `1.5px solid ${isCurrent ? stage.color : isPast ? stage.color + '60' : 'var(--border)'}`,
+                                        background: isCurrent ? stage.color : isPast ? '#000' : '#fff',
+                                        border: `3px solid #000`,
                                         cursor: 'pointer',
                                     }}>
-                                    <div className="w-2.5 h-2.5 rounded-full" style={{ background: isPast || isCurrent ? stage.color : '#ddd' }} />
-                                    <div className="text-[10px] font-black uppercase leading-tight"
-                                        style={{ color: isCurrent ? stage.color : isPast ? '#555' : '#bbb' }}>
+                                    <div className="text-[11px] font-black uppercase leading-tight"
+                                        style={{ color: isCurrent || isPast ? '#fff' : '#000' }}>
                                         {stage.label}
                                     </div>
                                 </button>

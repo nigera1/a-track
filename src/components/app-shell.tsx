@@ -59,8 +59,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {/* Logo */}
                 <div className="sidebar-logo">
                     <Link href="/dashboard" className="flex items-center gap-2 overflow-hidden">
-                        <div className="w-8 h-8 rounded flex items-center justify-center font-black text-sm flex-shrink-0"
-                            style={{ background: '#2563eb', color: '#fff' }}>A</div>
+                        <div className="w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0"
+                            style={{ background: 'var(--red)', color: '#fff' }}>A</div>
                         <div className="sidebar-label">
                             <div className="font-bold text-sm text-gray-900 leading-tight whitespace-nowrap">A-Track</div>
                             <div className="text-[10px] text-gray-400 font-medium whitespace-nowrap">Backoffice</div>
@@ -80,8 +80,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                 <Icon style={{ width: 18, height: 18 }} className="flex-shrink-0" />
                                 <span className="sidebar-label">{item.label}</span>
                                 {item.href === '/dashboard' && urgent > 0 && (
-                                    <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full font-bold flex-shrink-0"
-                                        style={{ background: '#fee2e2', color: '#ef4444' }}>{urgent}</span>
+                                    <span className="ml-auto flex-shrink-0 badge-pulse"
+                                        style={{
+                                            background: 'var(--red)',
+                                            color: '#fff',
+                                            fontWeight: 900,
+                                            fontSize: 13,
+                                            minWidth: 24,
+                                            height: 24,
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            boxShadow: '2px 2px 0px #ffffff',
+                                        }}>{urgent}</span>
                                 )}
                             </Link>
                         );
@@ -113,8 +124,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {/* User + Logout */}
                 <div className="sidebar-footer">
                     <div className="flex items-center gap-2.5 overflow-hidden">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-                            style={{ background: '#e0e7ff', color: '#4338ca' }}>
+                        <div className="w-8 h-8 flex items-center justify-center text-[11px] font-bold flex-shrink-0"
+                            style={{ background: 'var(--gold)', color: '#000' }}>
                             {initials}
                         </div>
                         <div className="sidebar-label flex-1 min-w-0">
@@ -131,16 +142,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {/* ── Mobile Top Bar + Drawer ── */}
             <div className="md:hidden fixed top-0 left-0 right-0 z-50 mobile-topbar">
                 <div className="flex items-center justify-between px-4 h-12">
-                    <button onClick={() => setDrawerOpen(!drawerOpen)} className="p-1.5 -ml-1.5 rounded-md hover:bg-gray-100 transition-colors">
-                        {drawerOpen ? <X style={{ width: 20, height: 20, color: '#374151' }} /> : <Menu style={{ width: 20, height: 20, color: '#374151' }} />}
+                    <button onClick={() => setDrawerOpen(!drawerOpen)} className="p-1.5 -ml-1.5 transition-colors">
+                        {drawerOpen ? <X style={{ width: 20, height: 20, color: 'var(--foreground)' }} /> : <Menu style={{ width: 20, height: 20, color: 'var(--foreground)' }} />}
                     </button>
                     <Link href="/dashboard" className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded flex items-center justify-center font-black text-[10px]"
-                            style={{ background: '#2563eb', color: '#fff' }}>A</div>
+                        <div className="w-6 h-6 flex items-center justify-center font-black text-[10px]"
+                            style={{ background: 'var(--red)', color: '#fff' }}>A</div>
                         <span className="font-bold text-sm text-gray-900">A-Track</span>
                     </Link>
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold"
-                        style={{ background: '#e0e7ff', color: '#4338ca' }}>
+                    <div className="w-7 h-7 flex items-center justify-center text-[10px] font-bold"
+                        style={{ background: 'var(--gold)', color: '#000' }}>
                         {initials}
                     </div>
                 </div>
@@ -152,14 +163,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     <div className="md:hidden fixed inset-0 bg-black/30 z-40" onClick={() => setDrawerOpen(false)} />
                     <div className="md:hidden fixed left-0 top-0 bottom-0 w-[260px] z-50 bg-white shadow-xl flex flex-col drawer-slide-in">
                         {/* Drawer header */}
-                        <div className="flex items-center justify-between px-4 h-14 border-b border-gray-100">
+                        <div className="flex items-center justify-between px-4 h-14 border-b" style={{ borderColor: 'var(--border)', borderBottomWidth: 'var(--border-width)' }}>
                             <div className="flex items-center gap-2">
-                                <div className="w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs"
-                                    style={{ background: '#2563eb', color: '#fff' }}>A</div>
-                                <span className="font-bold text-sm text-gray-900">A-Track Backoffice</span>
+                                <div className="w-7 h-7 flex items-center justify-center font-black text-xs"
+                                    style={{ background: 'var(--red)', color: '#fff' }}>A</div>
+                                <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>A-Track Backoffice</span>
                             </div>
-                            <button onClick={() => setDrawerOpen(false)} className="p-1 rounded hover:bg-gray-100">
-                                <X style={{ width: 18, height: 18, color: '#6b7280' }} />
+                            <button onClick={() => setDrawerOpen(false)} className="p-1" style={{ color: 'var(--foreground)' }}>
+                                <X style={{ width: 18, height: 18, color: 'currentColor' }} />
                             </button>
                         </div>
 
@@ -174,8 +185,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                         <Icon style={{ width: 16, height: 16 }} />
                                         <span>{item.label}</span>
                                         {item.href === '/dashboard' && urgent > 0 && (
-                                            <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full font-bold"
-                                                style={{ background: '#fee2e2', color: '#ef4444' }}>{urgent}</span>
+                                            <span className="ml-auto text-[10px] px-1.5 py-0.5 font-bold"
+                                                style={{ background: 'var(--red)', color: '#fff', border: '1px solid #000' }}>{urgent}</span>
                                         )}
                                     </Link>
                                 );
@@ -189,8 +200,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         {/* Drawer footer */}
                         <div className="sidebar-footer">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold"
-                                    style={{ background: '#e0e7ff', color: '#4338ca' }}>
+                                <div className="w-8 h-8 flex items-center justify-center text-[11px] font-bold"
+                                    style={{ background: 'var(--gold)', color: '#000' }}>
                                     {initials}
                                 </div>
                                 <div className="flex-1 min-w-0">

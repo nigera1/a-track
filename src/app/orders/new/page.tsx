@@ -2,7 +2,7 @@
 
 import { AppShell } from '@/components/app-shell';
 import { useStore } from '@/lib/store';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Plus, Gem, ArrowLeft, User, Package, Calendar, Coins } from 'lucide-react';
@@ -34,8 +34,8 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     );
 }
 
-const inp = 'w-full px-3 py-2 rounded-md text-sm';
-const bdr = { border: '1px solid var(--border)' };
+const inp = 'w-full px-3 py-2 text-sm font-bold';
+const bdr = { border: '3px solid var(--border)', borderRadius: 0 };
 
 /* ─── gemstone row ─── */
 function GemstoneRow({ gem, index, onChange, onRemove }: {
@@ -44,10 +44,10 @@ function GemstoneRow({ gem, index, onChange, onRemove }: {
     onRemove: () => void;
 }) {
     return (
-        <div className="rounded-md p-3" style={{ background: 'var(--background)', border: '1px solid var(--border)' }}>
+        <div className="p-3 mb-2" style={{ background: 'var(--muted)', border: '3px solid var(--border)' }}>
             <div className="flex items-center justify-between mb-2.5">
                 <span className="section-label" style={{ color: 'var(--gold)' }}>Stone {index + 1}</span>
-                <button type="button" onClick={onRemove} className="text-[11px] px-2 py-0.5 rounded transition-colors hover:bg-red-500/10" style={{ color: '#f87171', border: '1px solid rgba(239,68,68,0.15)' }}>Remove</button>
+                <button type="button" onClick={onRemove} className="text-[11px] px-2 py-0.5 transition-colors hover:bg-black hover:text-white" style={{ color: '#000', border: '2px solid #000', fontWeight: 'bold' }}>REMOVE</button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 <Field label="Stone type">
@@ -87,7 +87,7 @@ function SummaryPanel({
     const side = gemstones.filter(g => g.category === 'side');
 
     return (
-        <div className="sticky top-4 rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+        <div className="sticky top-4" style={{ border: '3px solid var(--border)', background: 'var(--card)' }}>
             <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
                 <div className="section-label">Order Summary</div>
             </div>
@@ -156,13 +156,12 @@ function SummaryPanel({
                 {!customerName && !price && !dueDate && gemstones.length === 0 && (
                     <div className="text-xs text-center py-4" style={{ color: 'var(--muted-foreground)' }}>Fill in the form to preview</div>
                 )}
-            </div>
         </div>
     );
 }
 
-/* ─── main page ─── */
-export default function NewOrderPage() {
+/* ─── inner component ─── */
+function OrderForm() {
     const router = useRouter();
     const { addOrder, customers, addCustomer } = useStore();
 
@@ -251,13 +250,13 @@ export default function NewOrderPage() {
                                     <User style={{ width: 14, height: 14, color: 'var(--gold)' }} />
                                     <span className="section-label">Customer</span>
                                 </div>
-                                <div className="flex rounded-md p-0.5 mb-4" style={{ background: 'var(--muted)' }}>
-                                    <button type="button" onClick={() => setIsNewCustomer(false)} className="flex-1 py-1.5 rounded text-xs font-medium transition-all"
-                                        style={{ background: !isNewCustomer ? 'var(--gold)' : 'transparent', color: !isNewCustomer ? '#111' : 'var(--muted-foreground)' }}>
+                                <div className="flex p-0.5 mb-4" style={{ background: 'var(--muted)', border: '3px solid var(--border)' }}>
+                                    <button type="button" onClick={() => setIsNewCustomer(false)} className="flex-1 py-1.5 text-xs font-black uppercase transition-all"
+                                        style={{ background: !isNewCustomer ? '#000' : 'transparent', color: !isNewCustomer ? '#fff' : 'var(--muted-foreground)' }}>
                                         Existing
                                     </button>
-                                    <button type="button" onClick={() => setIsNewCustomer(true)} className="flex-1 py-1.5 rounded text-xs font-medium transition-all"
-                                        style={{ background: isNewCustomer ? 'var(--gold)' : 'transparent', color: isNewCustomer ? '#111' : 'var(--muted-foreground)' }}>
+                                    <button type="button" onClick={() => setIsNewCustomer(true)} className="flex-1 py-1.5 text-xs font-black uppercase transition-all"
+                                        style={{ background: isNewCustomer ? '#000' : 'transparent', color: isNewCustomer ? '#fff' : 'var(--muted-foreground)' }}>
                                         New Customer
                                     </button>
                                 </div>
@@ -309,11 +308,11 @@ export default function NewOrderPage() {
                                     <div className="flex flex-wrap gap-1.5 mt-1">
                                         {MATERIAL_TYPES.map(m => (
                                             <button key={m} type="button" onClick={() => toggleMaterial(m)}
-                                                className="px-3 py-1 rounded text-xs font-medium transition-all"
+                                                className="px-3 py-1 text-xs font-black uppercase transition-all"
                                                 style={{
-                                                    background: materials.includes(m) ? 'rgba(212,168,50,0.15)' : 'var(--muted)',
-                                                    color: materials.includes(m) ? 'var(--gold)' : 'var(--muted-foreground)',
-                                                    border: `1px solid ${materials.includes(m) ? 'rgba(212,168,50,0.3)' : 'transparent'}`
+                                                    background: materials.includes(m) ? '#000' : 'var(--muted)',
+                                                    color: materials.includes(m) ? '#fff' : 'var(--muted-foreground)',
+                                                    border: `3px solid ${materials.includes(m) ? '#000' : 'transparent'}`
                                                 }}>
                                                 {MATERIAL_LABELS[m]}
                                             </button>
@@ -339,7 +338,7 @@ export default function NewOrderPage() {
                                 <div className="mt-3">
                                     <Label>Notes</Label>
                                     <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Special instructions, client preferences…" rows={3}
-                                        className="w-full px-3 py-2 rounded-md text-sm resize-none" style={bdr} />
+                                        className="w-full px-3 py-2 text-sm font-bold resize-none" style={bdr} />
                                 </div>
                             </section>
 
@@ -351,8 +350,8 @@ export default function NewOrderPage() {
                                         <span className="section-label">Gemstones</span>
                                         {gemstones.length > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: 'rgba(212,168,50,0.15)', color: 'var(--gold)' }}>{gemstones.length}</span>}
                                     </div>
-                                    <button type="button" onClick={addGemstone} className="flex items-center gap-1 text-xs px-2.5 py-1.5 rounded font-medium"
-                                        style={{ background: 'rgba(212,168,50,0.1)', color: 'var(--gold)', border: '1px solid rgba(212,168,50,0.2)' }}>
+                                    <button type="button" onClick={addGemstone} className="flex items-center gap-1 text-xs px-2.5 py-1.5 font-black uppercase"
+                                        style={{ background: '#000', color: '#fff', border: '3px solid #000' }}>
                                         <Plus style={{ width: 12, height: 12 }} /> Add Stone
                                     </button>
                                 </div>
@@ -370,8 +369,8 @@ export default function NewOrderPage() {
                             </section>
 
                             {/* Submit */}
-                            <button type="submit" disabled={loading} className="w-full py-2.5 rounded-md font-semibold text-sm"
-                                style={{ background: 'var(--gold)', color: '#111', opacity: loading ? 0.7 : 1 }}>
+                            <button type="submit" disabled={loading} className="w-full py-3 font-black text-sm uppercase tracking-widest"
+                                style={{ background: 'var(--blue)', color: '#fff', border: '3px solid #000', opacity: loading ? 0.7 : 1 }}>
                                 {loading ? 'Creating…' : 'Create Order'}
                             </button>
                         </div>
@@ -392,5 +391,14 @@ export default function NewOrderPage() {
                 </form>
             </div>
         </AppShell>
+    );
+}
+
+/* ─── main page ─── */
+export default function NewOrderPage() {
+    return (
+        <Suspense fallback={<div className="p-8 text-center text-sm font-bold">Loading...</div>}>
+            <OrderForm />
+        </Suspense>
     );
 }

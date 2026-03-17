@@ -3,8 +3,8 @@
 import { AppShell } from '@/components/app-shell';
 import { useStore } from '@/lib/store';
 import { KanbanBoard } from '@/components/kanban/kanban-board';
-import { useState } from 'react';
-import { Order } from '@/types';
+import { useState, useMemo } from 'react';
+import { Order, ORDER_STAGES, OrderStatus } from '@/types';
 import { formatCurrency, formatDate, getDueDateStatus, getStatusColor, getStatusLabel, getOrdersStats, getStaleOrders, getRelativeTime } from '@/lib/helpers';
 import { LayoutGrid, List, Plus, AlertTriangle, Clock, TrendingUp, Package, Timer } from 'lucide-react';
 import Link from 'next/link';
@@ -14,11 +14,35 @@ const STAT_COLORS = ['#3b82f6', '#22c55e', '#ef4444', '#f97316'];
 
 function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
     return (
-        <div className="neo-card p-6 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full" style={{ background: color }} />
-            <div className="text-[12px] font-bold tracking-wide mb-1" style={{ color: 'var(--muted-foreground)' }}>{label}</div>
-            <div className="text-2xl md:text-3xl font-black text-slate-800" style={{ marginTop: 4 }}>{value}</div>
-            {sub && <div className="text-xs font-medium mt-1 text-slate-500">{sub}</div>}
+        <div className="neo-card p-6 relative group" style={{ borderTopWidth: '8px', borderTopColor: color }}>
+            <div className="text-[12px] font-black uppercase tracking-wide mb-1" style={{ color: '#000' }}>{label}</div>
+            <div className="text-2xl md:text-3xl font-black text-slate-800 flex items-baseline gap-2" style={{ marginTop: 4 }}>
+                {value}
+                {sub && <span className="text-[11px] font-bold tracking-tight lowercase" style={{ color: 'var(--muted-foreground)' }}>{sub}</span>}
+            </div>
+        </div>
+    );
+}
+
+function ProcessBar({ currentStatus }: { currentStatus: OrderStatus }) {
+    const currentIndex = ORDER_STAGES.findIndex(s => s.key === currentStatus);
+    if (currentStatus === 'completed') return <span className="font-black text-[10px] uppercase tracking-wider" style={{ color: 'var(--blue)' }}>Completed</span>;
+    
+    return (
+        <div className="flex items-center gap-1" title={getStatusLabel(currentStatus)}>
+            {ORDER_STAGES.filter(s => s.key !== 'completed').map((s, i) => {
+                const isPast = i < currentIndex;
+                const isCurrent = i === currentIndex;
+                return (
+                    <div key={s.key} 
+                         style={{
+                             width: 14, height: 14,
+                             background: isPast ? '#000' : isCurrent ? 'var(--blue)' : '#fff',
+                             border: '2px solid #000'
+                         }} 
+                    />
+                );
+            })}
         </div>
     );
 }
@@ -38,9 +62,7 @@ function OrdersTable({ orders }: { orders: Order[] }) {
                             onClick={() => router.push(`/orders/${order.id}`)}>
                             <div className="flex items-start justify-between mb-1.5">
                                 <span className="font-bold text-sm" style={{ color: '#2563eb' }}>{order.order_number}</span>
-                                <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
-                                    {getStatusLabel(order.status)}
-                                </span>
+                                <ProcessBar currentStatus={order.status} />
                             </div>
                             <div className="text-sm font-medium text-gray-700">{customer?.name ?? '—'}</div>
                             <div className="flex items-center justify-between mt-2 pt-2" style={{ borderTop: '1px solid var(--border)' }}>
@@ -84,9 +106,7 @@ function OrdersTable({ orders }: { orders: Order[] }) {
                                         <td className="px-4 py-2.5 font-medium">{customer?.name ?? '—'}</td>
                                         <td className="px-4 py-2.5 capitalize">{order.item_type}</td>
                                         <td className="px-4 py-2.5">
-                                            <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
-                                                {getStatusLabel(order.status)}
-                                            </span>
+                                            <ProcessBar currentStatus={order.status} />
                                         </td>
                                         <td className="px-4 py-2.5" style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
                                             {dueStatus === 'overdue' && <AlertTriangle className="inline mr-1" style={{ width: 11, height: 11 }} />}
@@ -108,22 +128,27 @@ export default function DashboardPage() {
     const { orders, customers } = useStore();
     const router = useRouter();
     const [view, setView] = useState<'kanban' | 'table'>('kanban');
-    const stats = getOrdersStats(orders);
+    const stats = useMemo(() => getOrdersStats(orders), [orders]);
 
-    const urgentOrders = orders.filter(o => {
+    const urgentOrders = useMemo(() => orders.filter(o => {
         const s = getDueDateStatus(o.due_date);
         return (s === 'overdue' || s === 'urgent') && o.status !== 'completed';
-    });
+    }), [orders]);
     
-    const readyForPickupOrders = orders.filter(o => o.is_ready_for_pickup && o.status === 'completed');
-    const staleOrders = getStaleOrders(orders, 7);
+    const readyForPickupOrders = useMemo(() => orders.filter(o => o.is_ready_for_pickup && o.status === 'completed'), [orders]);
+    const staleOrders = useMemo(() => getStaleOrders(orders, 7), [orders]);
 
-    const statData = [
+    const statData = useMemo(() => [
         { label: 'Total Orders', value: stats.total },
         { label: 'Completed', value: stats.completed, sub: `${stats.total ? Math.round(stats.completed / stats.total * 100) : 0}% rate` },
         { label: 'Overdue', value: stats.overdue },
         { label: 'Pending Revenue', value: formatCurrency(stats.pendingRevenue), sub: 'in progress' },
-    ];
+    ], [stats]);
+
+    const recentOrders = useMemo(() => orders
+        .slice()
+        .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+        .slice(0, 8), [orders]);
 
     return (
         <AppShell>
@@ -163,24 +188,24 @@ export default function DashboardPage() {
                 {(urgentOrders.length > 0 || readyForPickupOrders.length > 0 || staleOrders.length > 0) && (
                     <div className="neo-card" style={{
                         padding: 0,
-                        overflow: 'hidden',
-                        borderLeft: '6px solid #ef4444',
+                        borderTopWidth: 8,
+                        borderTopColor: 'var(--red)'
                     }}>
                         {/* Header */}
                         <div style={{
-                            background: '#ef4444',
+                            background: '#000',
                             padding: '16px 24px',
                             display: 'flex',
                             alignItems: 'center',
                             gap: 12,
                         }}>
-                            <AlertTriangle style={{ width: 28, height: 28, color: '#fff', flexShrink: 0 }} />
+                            <AlertTriangle style={{ width: 28, height: 28, color: 'var(--red)', flexShrink: 0 }} />
                             <div>
                                 <div style={{ fontWeight: 900, fontSize: 18, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                                     {urgentOrders.length + readyForPickupOrders.length + staleOrders.length} orders need your attention
                                 </div>
-                                <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.8)', marginTop: 2 }}>
-                                    Overdue, stuck, or awaiting pickup
+                                <div style={{ fontSize: 12, fontWeight: 700, color: '#aaa', marginTop: 2 }}>
+                                    OVERDUE, STUCK, OR AWAITING PICKUP
                                 </div>
                             </div>
                         </div>
@@ -203,9 +228,9 @@ export default function DashboardPage() {
                                                 <div className="flex items-center gap-3 flex-wrap">
                                                     <span style={{ fontWeight: 800, fontSize: 14, color: '#ef4444' }}>{o.order_number}</span>
                                                     <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--foreground)' }}>{customer?.name}</span>
-                                                    <span className="status-pill" style={{ color: getStatusColor(o.status) }}>{getStatusLabel(o.status)}</span>
+                                                    <ProcessBar currentStatus={o.status} />
                                                 </div>
-                                                <span style={{ fontWeight: 800, fontSize: 14, color: daysLeft !== null && daysLeft < 0 ? '#ef4444' : '#f97316', whiteSpace: 'nowrap' }}>
+                                                <span style={{ fontWeight: 900, fontSize: 14, color: daysLeft !== null && daysLeft < 0 ? 'var(--red)' : '#f97316', whiteSpace: 'nowrap' }}>
                                                     {daysLeft !== null && daysLeft < 0 ? `${Math.abs(daysLeft)}d overdue` : `${daysLeft}d left`}
                                                 </span>
                                             </div>
@@ -230,9 +255,9 @@ export default function DashboardPage() {
                                                 <div className="flex items-center gap-3 flex-wrap">
                                                     <span style={{ fontWeight: 800, fontSize: 14, color: '#d97706' }}>{o.order_number}</span>
                                                     <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--foreground)' }}>{customer?.name}</span>
-                                                    <span className="status-pill" style={{ color: getStatusColor(o.status) }}>{o.staleStage}</span>
+                                                    <ProcessBar currentStatus={o.status} />
                                                 </div>
-                                                <span style={{ fontWeight: 800, fontSize: 14, color: '#d97706', whiteSpace: 'nowrap' }}>
+                                                <span style={{ fontWeight: 900, fontSize: 14, color: '#d97706', whiteSpace: 'nowrap' }}>
                                                     {o.staleDays}d stuck
                                                 </span>
                                             </div>
@@ -280,10 +305,7 @@ export default function DashboardPage() {
                         <span className="section-label">Recent Activity</span>
                     </div>
                     <div className="divide-y" style={{ borderColor: 'var(--border)' }}>
-                        {orders
-                            .slice()
-                            .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-                            .slice(0, 8)
+                        {recentOrders
                             .map(order => {
                                 const customer = customers.find(c => c.id === order.customer_id);
                                 const ago = getRelativeTime(order.updated_at);
@@ -294,12 +316,12 @@ export default function DashboardPage() {
                                             <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: getStatusColor(order.status) }} />
                                             <div>
                                                 <span className="font-bold text-xs">{order.order_number}</span>
-                                                <span className="text-xs ml-2" style={{ color: 'var(--muted-foreground)' }}>
-                                                    {customer?.name ?? 'Unknown'} · {getStatusLabel(order.status)}
+                                                <span className="text-xs ml-2 font-bold" style={{ color: 'var(--muted-foreground)' }}>
+                                                    {customer?.name ?? 'Unknown'} · {getStatusLabel(order.status).toUpperCase()}
                                                 </span>
                                             </div>
                                         </div>
-                                        <span className="text-xs flex-shrink-0" style={{ color: '#aaa' }}>{ago}</span>
+                                        <span className="text-[11px] font-bold flex-shrink-0" style={{ color: '#aaa', textTransform: 'uppercase' }}>{ago}</span>
                                     </div>
                                 );
                             })

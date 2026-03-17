@@ -12,7 +12,7 @@ import { formatCurrency, getStatusColor, getStatusLabel } from '@/lib/helpers';
 import { TrendingUp, Clock, Package, Euro, Download } from 'lucide-react';
 import { ITEM_TYPE_LABELS, MATERIAL_LABELS as MAT_LABELS_MAP } from '@/types';
 
-const NEO_PALETTE = ['#3b82f6', '#ef4444', '#f97316', '#22c55e', '#8b5cf6', '#ec4899', '#14b8a6', '#6b7280'];
+const NEO_PALETTE = ['#1C7ED6', '#E03131', '#FCC419', '#000000', '#1C7ED6', '#E03131', '#FCC419', '#000000'];
 
 function CustomTooltip({ active, payload, label }: any) {
     if (!active || !payload?.length) return null;
@@ -158,15 +158,15 @@ export default function AnalyticsPage() {
                 {/* KPI cards */}
                 <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
                     {[
-                        { label: 'Revenue', value: formatCurrency(totalRevenue), sub: `${completedOrders.length} completed`, color: '#22c55e' },
-                        { label: 'Pipeline', value: formatCurrency(pendingRevenue), sub: `${rangeOrders.length - completedOrders.length} active`, color: '#3b82f6' },
-                        { label: 'Avg. Order', value: formatCurrency(avgPrice), color: '#f97316' },
-                        { label: 'Turnaround', value: `${avgTurnaround}d`, color: '#8b5cf6' },
+                        { label: 'Revenue', value: formatCurrency(totalRevenue), sub: `${completedOrders.length} completed`, color: 'var(--gold)' },
+                        { label: 'Pipeline', value: formatCurrency(pendingRevenue), sub: `${rangeOrders.length - completedOrders.length} active`, color: 'var(--blue)' },
+                        { label: 'Avg. Order', value: formatCurrency(avgPrice), color: '#000' },
+                        { label: 'Turnaround', value: `${avgTurnaround}d`, color: 'var(--red)' },
                     ].map((kpi, i) => (
-                        <div key={kpi.label} className="neo-card p-4" style={{ borderLeft: `3px solid ${kpi.color}` }}>
-                            <div className="section-label mb-1" style={{ color: kpi.color }}>{kpi.label}</div>
+                        <div key={kpi.label} className="neo-card p-4" style={{ borderLeft: `6px solid ${kpi.color}` }}>
+                            <div className="section-label mb-1" style={{ color: kpi.color === '#000' ? 'var(--foreground)' : kpi.color }}>{kpi.label}</div>
                             <div className="text-2xl font-black">{kpi.value}</div>
-                            {kpi.sub && <div className="text-xs font-semibold mt-0.5" style={{ color: '#888' }}>{kpi.sub}</div>}
+                            {kpi.sub && <div className="text-xs font-semibold mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{kpi.sub}</div>}
                         </div>
                     ))}
                 </div>
@@ -181,7 +181,7 @@ export default function AnalyticsPage() {
                                 <XAxis dataKey="month" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `€${(v / 1000).toFixed(0)}k`} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="revenue" fill="#3b82f6" radius={[3, 3, 0, 0]} name="Revenue" />
+                                <Bar dataKey="revenue" fill="var(--blue)" radius={[0, 0, 0, 0]} name="Revenue" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -194,7 +194,7 @@ export default function AnalyticsPage() {
                                 <XAxis type="number" tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} />
                                 <YAxis type="category" dataKey="name" tick={{ fill: '#b0a898', fontSize: 10 }} axisLine={false} tickLine={false} width={90} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="count" radius={[0, 3, 3, 0]} name="Orders">
+                                <Bar dataKey="count" radius={[0, 0, 0, 0]} name="Orders">
                                     {byStage.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                                 </Bar>
                             </BarChart>
@@ -210,7 +210,7 @@ export default function AnalyticsPage() {
                         {byMaterial.length > 0 ? (
                             <ResponsiveContainer width="100%" height={200}>
                                 <PieChart>
-                                    <Pie data={byMaterial} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={75} label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
+                                    <Pie data={byMaterial} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={75} stroke="var(--card)" strokeWidth={3} label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
                                         {byMaterial.map((_, i) => <Cell key={i} fill={NEO_PALETTE[i % NEO_PALETTE.length]} />)}
                                     </Pie>
                                     <Tooltip content={<CustomTooltip />} />
@@ -228,7 +228,7 @@ export default function AnalyticsPage() {
                                     <XAxis dataKey="name" tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} />
                                     <YAxis tick={{ fill: '#7a7468', fontSize: 10 }} axisLine={false} tickLine={false} />
                                     <Tooltip content={<CustomTooltip />} />
-                                    <Bar dataKey="count" radius={[3, 3, 0, 0]} name="Orders">
+                                    <Bar dataKey="count" radius={[0, 0, 0, 0]} name="Orders">
                                         {byItemType.map((_, i) => <Cell key={i} fill={NEO_PALETTE[i % NEO_PALETTE.length]} />)}
                                     </Bar>
                                 </BarChart>
@@ -247,7 +247,7 @@ export default function AnalyticsPage() {
                                 <XAxis dataKey="name" tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fill: '#888', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}d`} />
                                 <Tooltip content={<CustomTooltip />} formatter={(v: any) => [`${v} days`, 'Avg time']} />
-                                <Bar dataKey="avgDays" radius={[3, 3, 0, 0]} name="Avg Days">
+                                <Bar dataKey="avgDays" radius={[0, 0, 0, 0]} name="Avg Days">
                                     {avgStageTimes.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                                 </Bar>
                             </BarChart>
@@ -273,10 +273,10 @@ export default function AnalyticsPage() {
                                     onMouseEnter={e => (e.currentTarget.style.background = '#fafafa')}
                                     onMouseLeave={e => (e.currentTarget.style.background = '')}>
                                     <td className="px-4 py-2.5 font-semibold flex items-center gap-2">
-                                        <span className="text-xs font-black" style={{ color: ['#f97316', '#6b7280', '#3b82f6'][i] ?? '#888' }}>#{i + 1}</span> {c.name}
+                                        <span className="text-xs font-black" style={{ color: ['var(--gold)', 'var(--blue)', 'var(--red)'][i] ?? 'var(--muted-foreground)' }}>#{i + 1}</span> {c.name}
                                     </td>
-                                    <td className="px-4 py-2.5">{c.orders}</td>
-                                    <td className="px-4 py-2.5 font-black" style={{ color: '#22c55e' }}>{formatCurrency(c.spend)}</td>
+                                    <td className="px-4 py-2.5 font-bold">{c.orders}</td>
+                                    <td className="px-4 py-2.5 font-black">{formatCurrency(c.spend)}</td>
                                 </tr>
                             ))}
                         </tbody>

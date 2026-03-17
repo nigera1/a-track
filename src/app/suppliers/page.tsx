@@ -8,7 +8,7 @@ import { Plus, Building2, Pencil, Trash2, Save, X, Phone } from 'lucide-react';
 import { Supplier } from '@/types';
 
 const SPECIALTY_LABELS = { casting: 'Casting', setting: 'Setting', both: 'Casting & Setting' };
-const SPECIALTY_COLORS = { casting: '#8b5cf6', setting: '#ef4444', both: '#3b82f6' };
+const SPECIALTY_COLORS = { casting: 'var(--blue)', setting: 'var(--red)', both: '#000' };
 
 const emptyForm = () => ({ name: '', specialty: 'casting' as Supplier['specialty'], contact: '', notes: '' });
 
@@ -18,7 +18,7 @@ export default function SuppliersPage() {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [form, setForm] = useState(emptyForm());
 
-    const inputStyle = { width: '100%', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 12px', fontSize: 13, fontWeight: 600, background: '#fff' };
+    const inputStyle = { width: '100%', border: '3px solid var(--border)', borderRadius: 0, padding: '10px 14px', fontSize: 13, fontWeight: 700, background: 'var(--input)', color: 'var(--foreground)' };
 
     function handleAdd() {
         if (!form.name.trim()) { toast.error('Name is required'); return; }
@@ -98,9 +98,9 @@ export default function SuppliersPage() {
 
                 {/* Add form */}
                 {showAdd && (
-                    <div className="neo-card p-5" style={{ borderLeft: '3px solid #3b82f6' }}>
+                    <div className="neo-card p-5" style={{ borderLeft: '6px solid var(--blue)' }}>
                         <div className="section-label flex items-center gap-2">
-                            <Building2 style={{ width: 13, height: 13, color: '#3b82f6' }} /> New Supplier
+                            <Building2 style={{ width: 13, height: 13, color: 'var(--blue)' }} /> New Supplier
                         </div>
                         <InlineForm onSave={handleAdd} onCancel={() => { setShowAdd(false); setForm(emptyForm()); }} />
                     </div>
@@ -110,8 +110,8 @@ export default function SuppliersPage() {
                 <div className="flex flex-col gap-3">
                     {suppliers.length === 0 && (
                         <div className="neo-card p-10 flex flex-col items-center gap-3">
-                            <Building2 style={{ width: 32, height: 32, color: '#ddd' }} />
-                            <div className="font-black text-sm" style={{ color: '#bbb' }}>No suppliers yet</div>
+                            <Building2 style={{ width: 32, height: 32, color: 'var(--muted-foreground)' }} />
+                            <div className="font-black text-sm" style={{ color: 'var(--muted-foreground)' }}>No suppliers yet</div>
                             <button onClick={() => setShowAdd(true)} className="neo-btn text-xs">Add your first supplier</button>
                         </div>
                     )}
@@ -119,17 +119,17 @@ export default function SuppliersPage() {
                         const color = SPECIALTY_COLORS[s.specialty];
                         const isEditing = editingId === s.id;
                         return (
-                            <div key={s.id} className="neo-card p-5" style={isEditing ? { borderLeft: `3px solid ${color}` } : {}}>
+                            <div key={s.id} className="neo-card p-5" style={isEditing ? { borderLeft: `6px solid ${color}` } : { borderLeft: `6px solid ${color}` }}>
                                 <div className="flex items-start justify-between gap-4 flex-wrap">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-sm flex-shrink-0"
-                                            style={{ background: color + '15', border: `1px solid ${color}40`, color }}>
-                                            {s.name.charAt(0)}
+                                        <div className="w-10 h-10 flex items-center justify-center font-black text-lg flex-shrink-0"
+                                            style={{ background: 'var(--muted)', border: `3px solid var(--border)`, color: 'var(--foreground)' }}>
+                                            {s.name.charAt(0).toUpperCase()}
                                         </div>
                                         <div>
                                             <div className="font-black text-base hover:underline cursor-pointer" onClick={() => window.location.href = `/suppliers/${s.id}`}>{s.name}</div>
                                             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                                                <span className="status-pill" style={{ color }}>{SPECIALTY_LABELS[s.specialty]}</span>
+                                                <span className="status-pill" style={{ color, borderColor: color }}>{SPECIALTY_LABELS[s.specialty]}</span>
                                                 {s.contact && (
                                                     <span className="flex items-center gap-1 text-xs font-semibold" style={{ color: '#888' }}>
                                                         <Phone style={{ width: 10, height: 10 }} /> {s.contact}
@@ -145,7 +145,7 @@ export default function SuppliersPage() {
                                                 <Pencil style={{ width: 11, height: 11 }} /> Edit
                                             </button>
                                             <button onClick={() => handleDelete(s.id, s.name)} className="neo-btn text-xs"
-                                                style={{ color: '#ef4444', borderColor: '#fecaca' }}>
+                                                style={{ color: 'var(--card)', background: 'var(--red)', borderColor: 'var(--border)' }}>
                                                 <Trash2 style={{ width: 11, height: 11 }} /> Delete
                                             </button>
                                         </div>

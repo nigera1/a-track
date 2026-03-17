@@ -27,7 +27,7 @@ function KanbanCard({ order, isDragging = false }: { order: Order; isDragging?: 
                         <div className="font-bold text-sm mt-0.5">{customer?.name ?? 'Unknown'}</div>
                     </div>
                     {order.item_type && (
-                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded" style={{ background: '#f0f0f0', border: '1.5px solid #ddd', color: '#555', flexShrink: 0 }}>
+                        <span className="text-[10px] font-black uppercase px-2 py-0.5" style={{ background: 'var(--muted)', border: '2px solid var(--border)', color: 'var(--foreground)', flexShrink: 0 }}>
                             {order.item_type}
                         </span>
                     )}
@@ -50,8 +50,8 @@ function KanbanCard({ order, isDragging = false }: { order: Order; isDragging?: 
 function DroppableColumn({ stage, orders }: { stage: typeof ORDER_STAGES[0]; orders: Order[] }) {
     const { setNodeRef, isOver } = useDroppable({ id: stage.key });
     return (
-        <div ref={setNodeRef} className="flex flex-col gap-2 flex-1 min-w-[200px]"
-            style={{ outline: isOver ? `2px dashed ${stage.color}` : 'none', borderRadius: 10, transition: 'outline 0.1s' }}>
+        <div ref={setNodeRef} className="flex flex-col gap-3 flex-1 min-w-[200px]"
+            style={{ outline: isOver ? `4px solid ${stage.color}` : 'none', outlineOffset: '-4px', transition: 'outline 0.1s' }}>
             <SortableContext items={orders.map(o => o.id)} strategy={verticalListSortingStrategy}>
                 {orders.map(o => <SortableCard key={o.id} order={o} />)}
             </SortableContext>
@@ -101,12 +101,12 @@ export function KanbanBoard() {
                     return (
                         <div key={stage.key} className="flex flex-col min-w-[210px] flex-shrink-0">
                             {/* Column header */}
-                            <div className="rounded-lg p-3 mb-2 flex items-center justify-between"
-                                style={{ border: `1px solid ${stage.color}40`, background: `${stage.color}10`, boxShadow: `0 1px 3px 0 ${stage.color}20` }}>
-                                <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: stage.color }}>
+                            <div className="p-3 mb-3 flex items-center justify-between"
+                                style={{ border: `3px solid var(--border)`, borderBottomWidth: '6px', background: stage.color }}>
+                                <span className="text-[12px] font-black uppercase tracking-wider" style={{ color: '#000' }}>
                                     {stage.label}
                                 </span>
-                                <span className="text-[11px] font-bold px-1.5 py-0.5 rounded" style={{ background: stage.color, color: '#fff' }}>
+                                <span className="text-[12px] font-black px-2 py-0.5" style={{ background: '#000', color: '#fff' }}>
                                     {stageOrders.length}
                                 </span>
                             </div>

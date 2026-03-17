@@ -4,45 +4,47 @@
    THEME — Light (default)
    ═══════════════════════════════════════════ */
 :root {
-  --background: #f0f0f0;
-  --foreground: #111111;
+  --background: #f4f4f4;
+  --foreground: #000000;
   --card: #ffffff;
-  --card-foreground: #111111;
-  --muted: #e8e8e8;
-  --muted-foreground: #666666;
-  --border: #222222;
-  --border-width: 2px;
-  --shadow: 4px 4px 0px #222222;
-  --shadow-sm: 2px 2px 0px #222222;
+  --card-foreground: #000000;
+  --muted: #e6e6e6;
+  --muted-foreground: #444444;
+  --border: #000000;
+  --border-width: 3px;
+  --shadow: 6px 6px 0px #000000;
+  --shadow-sm: 4px 4px 0px #000000;
   --input: #ffffff;
-  --radius: 4px;
-  --nav-bg: #111111;
+  --radius: 0px;
+  --nav-bg: #000000;
   --nav-fg: #ffffff;
-  --gold: #d4a832;
-  --primary: #111111;
+  --gold: #FCC419; /* Bauhaus Yellow */
+  --red: #E03131;   /* Bauhaus Red */
+  --blue: #1C7ED6;  /* Bauhaus Blue */
+  --primary: #000000;
   --primary-foreground: #ffffff;
-  --table-hover: #f5f5f5;
-  --table-stripe: #fafafa;
+  --table-hover: #e0e0e0;
+  --table-stripe: #ebebeb;
 }
 
 /* ═══════════════════════════════════════════
    THEME — Dark
    ═══════════════════════════════════════════ */
 [data-theme="dark"] {
-  --background: #0a0a0a;
-  --foreground: #e5e5e5;
-  --card: #1a1a1a;
-  --card-foreground: #e5e5e5;
-  --muted: #2a2a2a;
-  --muted-foreground: #999999;
-  --border: #444444;
-  --shadow: 4px 4px 0px #000000;
-  --shadow-sm: 2px 2px 0px #000000;
-  --input: #1a1a1a;
-  --nav-bg: #0a0a0a;
-  --nav-fg: #e5e5e5;
-  --table-hover: #222222;
-  --table-stripe: #1c1c1c;
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #111111;
+  --card-foreground: #ffffff;
+  --muted: #222222;
+  --muted-foreground: #aaaaaa;
+  --border: #ffffff;
+  --shadow: 6px 6px 0px #ffffff;
+  --shadow-sm: 4px 4px 0px #ffffff;
+  --input: #000000;
+  --nav-bg: #111111;
+  --nav-fg: #ffffff;
+  --table-hover: #333333;
+  --table-stripe: #222222;
 }
 
 [data-theme="dark"] .neo-card,
@@ -142,9 +144,9 @@ body {
    SIDEBAR — Collapsible
    ═══════════════════════════════════════════ */
 .sidebar {
-  background: #111;
-  color: #fff;
-  border-right: 3px solid #000;
+  background: #000000;
+  color: #ffffff;
+  border-right: var(--border-width) solid var(--border);
   position: sticky;
   top: 0;
   height: 100vh;
@@ -188,13 +190,13 @@ body {
 
 .sidebar-logo {
   padding: 16px 16px 14px;
-  border-bottom: 2px solid #333;
+  border-bottom: var(--border-width) solid var(--border);
 }
 
-.sidebar-logo a { color: #fff; }
-.sidebar-logo .font-bold { color: #fff !important; }
+.sidebar-logo a { color: #ffffff; }
+.sidebar-logo .font-bold { color: #ffffff !important; }
 .sidebar-logo .text-gray-400,
-.sidebar-logo div[class*="text-"] { color: #888 !important; }
+.sidebar-logo div[class*="text-"] { color: #aaaaaa !important; }
 
 .sidebar-link {
   display: flex;
@@ -202,10 +204,10 @@ body {
   gap: 10px;
   padding: 10px 14px;
   border-radius: 0;
-  border-left: 3px solid transparent;
+  border-left: 6px solid transparent;
   font-size: 13px;
-  font-weight: 700;
-  color: #999;
+  font-weight: 800;
+  color: #aaaaaa;
   transition: all 0.1s ease;
   text-decoration: none;
   text-transform: uppercase;
@@ -214,14 +216,14 @@ body {
 }
 
 .sidebar-link:hover {
-  color: #fff;
-  background: #222;
+  color: #ffffff;
+  background: #222222;
 }
 
 .sidebar-link.active {
-  color: #fff;
-  background: #333;
-  border-left-color: #fff;
+  color: #ffffff;
+  background: #222222;
+  border-left-color: var(--blue);
 }
 
 /* Pin toggle button */
@@ -271,9 +273,19 @@ body {
   background: #222;
 }
 
+/* Urgent badge pulse */
+.badge-pulse {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
 .sidebar-footer {
   padding: 14px 16px;
-  border-top: 2px solid #333;
+  border-top: var(--border-width) solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -282,14 +294,14 @@ body {
 }
 
 .sidebar-footer .text-gray-800,
-.sidebar-footer .font-semibold { color: #fff !important; }
+.sidebar-footer .font-semibold { color: #ffffff !important; }
 .sidebar-footer .text-gray-400,
-.sidebar-footer div[class*="text-"][class*="gray"] { color: #888 !important; }
+.sidebar-footer div[class*="text-"][class*="gray"] { color: #aaaaaa !important; }
 
 .sidebar-logout {
   padding: 6px;
   border-radius: 0;
-  color: #888;
+  color: var(--muted-foreground);
   cursor: pointer;
   background: none;
   border: none;
@@ -306,25 +318,25 @@ body {
    MOBILE TOP BAR
    ═══════════════════════════════════════════ */
 .mobile-topbar {
-  background: #111;
-  border-bottom: 3px solid #000;
+  background: #ffffff;
+  border-bottom: 2px solid var(--border);
 }
 
-.mobile-topbar button { color: #fff !important; }
+.mobile-topbar button { color: var(--foreground) !important; }
 .mobile-topbar span,
-.mobile-topbar .font-bold { color: #fff !important; }
-.mobile-topbar .rounded-full { background: #333 !important; color: #fff !important; }
+.mobile-topbar .font-bold { color: var(--foreground) !important; }
+.mobile-topbar .rounded-full { background: var(--muted) !important; color: var(--foreground) !important; }
 
 /* ── Drawer ── */
 .drawer-slide-in {
   animation: slideIn 0.15s ease-out;
-  background: #111 !important;
-  border-right: 3px solid #000;
+  background: #000000 !important;
+  border-right: var(--border-width) solid var(--border);
 }
 
-.drawer-slide-in .border-gray-100 { border-color: #333 !important; }
+.drawer-slide-in .border-gray-100 { border-color: var(--border) !important; }
 .drawer-slide-in .font-bold,
-.drawer-slide-in span { color: #fff !important; }
+.drawer-slide-in span { color: var(--foreground) !important; }
 
 @keyframes slideIn {
   from { transform: translateX(-100%); }
@@ -387,12 +399,12 @@ main .main-content { padding-top: 28px; padding-bottom: 28px; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
-  font-size: 12px;
-  font-weight: 800;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  border: 2px solid var(--border);
+  border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
@@ -431,7 +443,7 @@ main .main-content { padding-top: 28px; padding-bottom: 28px; }
 .kanban-card {
   background: var(--card);
   color: var(--card-foreground);
-  border: 2px solid var(--border);
+  border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   cursor: grab;
@@ -470,12 +482,12 @@ input:focus, select:focus, textarea:focus {
   display: inline-flex;
   align-items: center;
   padding: 3px 10px;
-  border-radius: 0;
+  border-radius: var(--radius);
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-weight: 900;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  border: 1.5px solid currentColor;
+  border: var(--border-width) solid currentColor;
 }
 
 .section-label {
@@ -505,7 +517,7 @@ input:focus, select:focus, textarea:focus {
 
 .neo-divider {
   border: none;
-  border-top: 2px solid var(--border);
+  border-top: var(--border-width) solid var(--border);
   margin: 0;
 }
 
@@ -515,7 +527,7 @@ input:focus, select:focus, textarea:focus {
 .mobile-order-card {
   background: var(--card);
   color: var(--card-foreground);
-  border: 2px solid var(--border);
+  border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--shadow-sm);
