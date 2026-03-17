@@ -80,16 +80,28 @@
   color: var(--foreground);
 }
 
+[data-theme="dark"] .text-slate-900,
 [data-theme="dark"] .text-slate-800,
-[data-theme="dark"] .text-gray-800,
-[data-theme="dark"] .text-gray-900 {
-  color: #e5e5e5 !important;
+[data-theme="dark"] .text-gray-900,
+[data-theme="dark"] .text-gray-800 {
+  color: #f8fafc !important; /* var(--foreground) equivalent for high emphasis */
+}
+
+[data-theme="dark"] .text-slate-700,
+[data-theme="dark"] .text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .text-slate-600,
+[data-theme="dark"] .text-gray-600 {
+  color: #cbd5e1 !important;
 }
 
 [data-theme="dark"] .text-slate-500,
 [data-theme="dark"] .text-gray-500,
+[data-theme="dark"] .text-slate-400,
 [data-theme="dark"] .text-gray-400 {
-  color: #888 !important;
+  color: #94a3b8 !important; /* var(--muted-foreground) equivalent */
 }
 
 
