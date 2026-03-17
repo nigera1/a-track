@@ -4,47 +4,47 @@
    THEME — Light (default)
    ═══════════════════════════════════════════ */
 :root {
-  --background: #f4f4f4;
-  --foreground: #000000;
+  --background: #f8fafc;
+  --foreground: #0f172a;
   --card: #ffffff;
-  --card-foreground: #000000;
-  --muted: #e6e6e6;
-  --muted-foreground: #444444;
-  --border: #000000;
-  --border-width: 3px;
-  --shadow: 6px 6px 0px #000000;
-  --shadow-sm: 4px 4px 0px #000000;
+  --card-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --border-width: 1px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --input: #ffffff;
-  --radius: 0px;
-  --nav-bg: #000000;
-  --nav-fg: #ffffff;
-  --gold: #FCC419; /* Bauhaus Yellow */
-  --red: #E03131;   /* Bauhaus Red */
-  --blue: #1C7ED6;  /* Bauhaus Blue */
-  --primary: #000000;
+  --radius: 0.5rem;
+  --nav-bg: #ffffff;
+  --nav-fg: #0f172a;
+  --gold: #f59e0b;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --primary: #3b82f6;
   --primary-foreground: #ffffff;
-  --table-hover: #e0e0e0;
-  --table-stripe: #ebebeb;
+  --table-hover: #f8fafc;
+  --table-stripe: #ffffff;
 }
 
 /* ═══════════════════════════════════════════
    THEME — Dark
    ═══════════════════════════════════════════ */
 [data-theme="dark"] {
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #111111;
-  --card-foreground: #ffffff;
-  --muted: #222222;
-  --muted-foreground: #aaaaaa;
-  --border: #ffffff;
-  --shadow: 6px 6px 0px #ffffff;
-  --shadow-sm: 4px 4px 0px #ffffff;
-  --input: #000000;
-  --nav-bg: #111111;
-  --nav-fg: #ffffff;
-  --table-hover: #333333;
-  --table-stripe: #222222;
+  --background: #020817;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --border: #1e293b;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+  --input: #0f172a;
+  --nav-bg: #0f172a;
+  --nav-fg: #f8fafc;
+  --table-hover: #1e293b;
+  --table-stripe: #0f172a;
 }
 
 [data-theme="dark"] .neo-card,
@@ -57,9 +57,9 @@
 [data-theme="dark"] input,
 [data-theme="dark"] select,
 [data-theme="dark"] textarea {
-  background: var(--input) !important;
-  color: var(--foreground) !important;
-  border-color: var(--border) !important;
+  background: var(--input);
+  color: var(--foreground);
+  border-color: var(--border);
 }
 
 [data-theme="dark"] footer {
@@ -114,7 +114,7 @@ body {
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 0; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius); }
 
 /* ═══════════════════════════════════════════
    SIDEBAR — Collapsible
@@ -179,15 +179,12 @@ body {
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  border-radius: 0;
-  border-left: 6px solid transparent;
-  font-size: 13px;
-  font-weight: 800;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
   color: var(--muted-foreground);
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
   text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   white-space: nowrap;
 }
 
@@ -197,9 +194,9 @@ body {
 }
 
 .sidebar-link.active {
-  color: var(--foreground);
+  color: var(--primary);
   background: var(--muted);
-  border-left-color: var(--blue);
+  font-weight: 600;
 }
 
 /* Pin toggle button */
@@ -351,7 +348,7 @@ main .main-content { padding-top: 28px; padding-bottom: 28px; }
   color: var(--card-foreground);
   border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   padding: 20px;
 }
 
@@ -374,29 +371,26 @@ main .main-content { padding-top: 28px; padding-bottom: 28px; }
 .neo-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 10px 18px;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
   border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
   background: var(--card);
   color: var(--foreground);
 }
 
 .neo-btn:hover {
-  box-shadow: 1px 1px 0px #222;
-  transform: translate(1px, 1px);
+  background: var(--muted);
 }
 
 .neo-btn:active {
-  box-shadow: none;
-  transform: translate(2px, 2px);
+  transform: translateY(1px);
 }
 
 .neo-btn-primary {
@@ -431,27 +425,28 @@ main .main-content { padding-top: 28px; padding-bottom: 28px; }
 .kanban-card:active { cursor: grabbing; }
 
 input, select, textarea {
-  background: var(--input) !important;
-  color: var(--foreground) !important;
-  border: 2px solid var(--border) !important;
+  background: var(--input);
+  color: var(--foreground);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 14px;
-  font-weight: 600;
-  transition: all 0.1s ease;
+  font-weight: 400;
+  transition: all 0.15s ease;
+  width: 100%;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: #000 !important;
-  box-shadow: 3px 3px 0px #222;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 [data-theme="dark"] input:focus,
 [data-theme="dark"] select:focus,
 [data-theme="dark"] textarea:focus {
-  border-color: #888 !important;
-  box-shadow: 3px 3px 0px #000;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
 }
 
 .status-pill {
@@ -467,10 +462,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 .section-label {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--muted-foreground);
 }
 
