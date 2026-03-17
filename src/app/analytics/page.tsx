@@ -30,43 +30,45 @@ export default function AnalyticsPage() {
     const { orders, customers } = useStore();
     const [range, setRange] = useState<30 | 90 | 365>(90);
 
-    const cutoff = new Date(Date.now() - range * 86400000);
-    const rangeOrders = orders.filter(o => new Date(o.created_at) >= cutoff);
+    const cutoff = useMemo(() => new Date(Date.now() - range * 86400000), [range]);
+    const rangeOrders = useMemo(() => orders.filter(o => new Date(o.created_at) >= cutoff), [orders, cutoff]);
 
-    // Stats
-    const completedOrders = rangeOrders.filter(o => o.status === 'completed');
-    const totalRevenue = completedOrders.reduce((s, o) => s + (o.price ?? 0), 0);
-    const pendingRevenue = rangeOrders.filter(o => o.status !== 'completed').reduce((s, o) => s + (o.price ?? 0), 0);
-    const avgPrice = completedOrders.length ? totalRevenue / completedOrders.length : 0;
-    const avgTurnaround = useMemo(() => {
-        const days = completedOrders.map(o => {
+    const { completedOrders, totalRevenue, pendingRevenue, avgPrice, avgTurnaround, byStage, byMaterial, byItemType } = useMemo(() => {
+        const completed = rangeOrders.filter(o => o.status === 'completed');
+        const tr = completed.reduce((s, o) => s + (o.price ?? 0), 0);
+        const pr = rangeOrders.filter(o => o.status !== 'completed').reduce((s, o) => s + (o.price ?? 0), 0);
+        const ap = completed.length ? tr / completed.length : 0;
+
+        const days = completed.map(o => {
             const start = new Date(o.created_at).getTime();
             const end = new Date(o.updated_at).getTime();
             return (end - start) / 86400000;
         });
-        return days.length ? Math.round(days.reduce((a, b) => a + b, 0) / days.length) : 0;
-    }, [completedOrders]);
+        const turn = days.length ? Math.round(days.reduce((a, b) => a + b, 0) / days.length) : 0;
 
-    // By stage (all orders)
-    const byStage = ORDER_STAGES.map(s => ({
-        name: s.label,
-        count: orders.filter(o => o.status === s.key).length,
-        color: s.color,
-    })).filter(s => s.count > 0);
+        const stage = ORDER_STAGES.map(s => ({
+            name: s.label,
+            count: orders.filter(o => o.status === s.key).length,
+            color: s.color,
+        })).filter(s => s.count > 0);
 
-    // By material
-    const materialCounts: Record<string, number> = {};
-    rangeOrders.forEach(o => o.materials?.forEach(m => { materialCounts[m] = (materialCounts[m] ?? 0) + 1; }));
-    const byMaterial = Object.entries(materialCounts)
-        .map(([key, count]) => ({ name: MATERIAL_LABELS[key as keyof typeof MATERIAL_LABELS] ?? key, count }))
-        .sort((a, b) => b.count - a.count);
+        const mCounts: Record<string, number> = {};
+        rangeOrders.forEach(o => o.materials?.forEach(m => { mCounts[m] = (mCounts[m] ?? 0) + 1; }));
+        const bm = Object.entries(mCounts)
+            .map(([key, count]) => ({ name: MATERIAL_LABELS[key as keyof typeof MATERIAL_LABELS] ?? key, count }))
+            .sort((a, b) => b.count - a.count);
 
-    // By item type
-    const itemCounts: Record<string, number> = {};
-    rangeOrders.forEach(o => { itemCounts[o.item_type] = (itemCounts[o.item_type] ?? 0) + 1; });
-    const byItemType = Object.entries(itemCounts)
-        .map(([name, count]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1), count }))
-        .sort((a, b) => b.count - a.count);
+        const iCounts: Record<string, number> = {};
+        rangeOrders.forEach(o => { iCounts[o.item_type] = (iCounts[o.item_type] ?? 0) + 1; });
+        const bi = Object.entries(iCounts)
+            .map(([name, count]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1), count }))
+            .sort((a, b) => b.count - a.count);
+
+        return {
+            completedOrders: completed, totalRevenue: tr, pendingRevenue: pr, avgPrice: ap, avgTurnaround: turn,
+            byStage: stage, byMaterial: bm, byItemType: bi
+        };
+    }, [orders, rangeOrders]);
 
     // Monthly revenue (last 6 months)
     const monthlyRevenue = useMemo(() => {

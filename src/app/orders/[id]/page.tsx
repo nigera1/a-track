@@ -7,7 +7,8 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { ArrowLeft, Edit3, Save, X, Trash2, Gem, ChevronRight, Printer, QrCode, Clock, Building2, Package, FileText } from 'lucide-react';
 import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
+import dynamic from 'next/dynamic';
+const QRCodeSVG = dynamic(() => import('qrcode.react').then(mod => mod.QRCodeSVG), { ssr: false });
 import {
     Order, OrderStatus, ItemType, MaterialType,
     ORDER_STAGES, ITEM_TYPE_LABELS, MATERIAL_LABELS, STONE_TYPE_LABELS,

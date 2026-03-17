@@ -4,7 +4,7 @@ import { AppShell } from '@/components/app-shell';
 import { useStore } from '@/lib/store';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Html5Qrcode } from 'html5-qrcode';
+import type { Html5Qrcode } from 'html5-qrcode';
 import { ScanLine, CheckCircle, AlertCircle, Camera, Clock, Play, Square } from 'lucide-react';
 import { toast } from 'sonner';
 import { getStatusLabel, getStatusColor } from '@/lib/helpers';
@@ -20,19 +20,25 @@ export default function ScanPage() {
     const scannerDivId = 'qr-reader';
 
     useEffect(() => {
-        Html5Qrcode.getCameras().then(devices => {
-            if (devices?.length) { setCameras(devices); setSelectedCam(devices[0].id); }
-        }).catch(() => toast.error('Camera access denied'));
-        return () => { scannerRef.current?.stop().catch(() => { }); };
+        let mounted = true;
+        import('html5-qrcode').then(({ Html5Qrcode }) => {
+            if (!mounted) return;
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices?.length) { setCameras(devices); setSelectedCam(devices[0].id); }
+            }).catch(() => toast.error('Camera access denied'));
+        });
+        return () => { mounted = false; scannerRef.current?.stop().catch(() => { }); };
     }, []);
 
     function startScan() {
         if (!selectedCam) { toast.error('No camera found'); return; }
-        const scanner = new Html5Qrcode(scannerDivId);
-        scannerRef.current = scanner;
         setStatus('scanning');
 
-        scanner.start(selectedCam, { fps: 10, qrbox: { width: 220, height: 220 } },
+        import('html5-qrcode').then(({ Html5Qrcode }) => {
+            const scanner = new Html5Qrcode(scannerDivId);
+            scannerRef.current = scanner;
+
+            scanner.start(selectedCam, { fps: 10, qrbox: { width: 220, height: 220 } },
             (decodedText) => {
                 scanner.stop().then(() => {
                     // Extract order ID from URL
@@ -70,6 +76,7 @@ export default function ScanPage() {
             },
             () => { }
         ).catch(() => { setStatus('error'); toast.error('Failed to start camera'); });
+        });
     }
 
     function stopScan() {

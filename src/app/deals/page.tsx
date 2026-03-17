@@ -2,7 +2,7 @@
 
 import { AppShell } from '@/components/app-shell';
 import { useStore } from '@/lib/store';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Plus, Trash2, DollarSign, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDate } from '@/lib/helpers';
@@ -43,9 +43,11 @@ export default function DealsPage() {
     const inputCls = "w-full px-3 py-2 rounded-lg border text-sm";
 
     const totalDeals = deals.length;
-    const activeDeals = deals.filter(d => d.status === 'ongoing' || d.status === 'partially_paid').length;
-    const wonDeals = deals.filter(d => d.status === 'won').length;
-    const pipelineValue = deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + (d.estimated_value || 0), 0);
+    const { activeDeals, wonDeals, pipelineValue } = useMemo(() => ({
+        activeDeals: deals.filter(d => d.status === 'ongoing' || d.status === 'partially_paid').length,
+        wonDeals: deals.filter(d => d.status === 'won').length,
+        pipelineValue: deals.filter(d => d.status !== 'lost').reduce((sum, d) => sum + (d.estimated_value || 0), 0)
+    }), [deals]);
 
     return (
         <AppShell>
