@@ -5,7 +5,7 @@ import { useStore } from '@/lib/store';
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
-import { Plus, Gem, ArrowLeft, User, Package, Calendar, Coins } from 'lucide-react';
+import { Plus, Gem, ArrowLeft, User, Package, Calendar, Coins, ArrowRight } from 'lucide-react';
 import {
     ItemType, MaterialType, OrderStatus, StoneCategory, StoneType,
     ITEM_TYPE_LABELS, MATERIAL_LABELS, STONE_TYPE_LABELS, ORDER_STAGES, Gemstone
@@ -76,89 +76,7 @@ function GemstoneRow({ gem, index, onChange, onRemove }: {
 }
 
 /* ─── summary panel ─── */
-function SummaryPanel({
-    itemType, status, materials, price, dueDate, gemstones, customerName
-}: {
-    itemType: ItemType; status: OrderStatus; materials: MaterialType[];
-    price: string; dueDate: string; gemstones: Gemstone[]; customerName: string;
-}) {
-    const stage = ORDER_STAGES.find(s => s.key === status);
-    const central = gemstones.filter(g => g.category === 'central');
-    const side = gemstones.filter(g => g.category === 'side');
-
-    return (
-        <div className="sticky top-4" style={{ border: '3px solid var(--border)', background: 'var(--card)' }}>
-            <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
-                <div className="section-label">Order Summary</div>
-            </div>
-            <div className="p-4 flex flex-col gap-4" style={{ background: 'var(--card)' }}>
-                {/* Item */}
-                <div className="flex items-start gap-2.5">
-                    <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'var(--muted)' }}>
-                        <Package style={{ width: 13, height: 13, color: 'var(--gold)' }} />
-                    </div>
-                    <div>
-                        <div className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Item</div>
-                        <div className="text-sm font-medium">{ITEM_TYPE_LABELS[itemType]}</div>
-                        {materials.length > 0 && <div className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{materials.map(m => MATERIAL_LABELS[m]).join(', ')}</div>}
-                    </div>
-                </div>
-
-                {/* Customer */}
-                {customerName && (
-                    <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'var(--muted)' }}>
-                            <User style={{ width: 13, height: 13, color: 'var(--gold)' }} />
-                        </div>
-                        <div>
-                            <div className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Customer</div>
-                            <div className="text-sm font-medium">{customerName}</div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Stage */}
-                <div className="flex items-start gap-2.5">
-                    <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'var(--muted)' }}>
-                        <div className="w-2 h-2 rounded-full" style={{ background: stage?.color ?? '#888' }} />
-                    </div>
-                    <div>
-                        <div className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Starting Stage</div>
-                        <div className="text-sm font-medium">{stage?.label ?? '—'}</div>
-                    </div>
-                </div>
-
-                {/* Price / Due */}
-                {(price || dueDate) && (
-                    <div className="flex items-start gap-2.5">
-                        <div className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'var(--muted)' }}>
-                            <Coins style={{ width: 13, height: 13, color: 'var(--gold)' }} />
-                        </div>
-                        <div>
-                            {price && <div className="text-sm font-semibold" style={{ color: 'var(--gold)' }}>{formatCurrency(parseFloat(price))}</div>}
-                            {dueDate && <div className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)' }}>Due {new Date(dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>}
-                        </div>
-                    </div>
-                )}
-
-                {/* Gemstones */}
-                {gemstones.length > 0 && (
-                    <div className="pt-3" style={{ borderTop: '1px solid var(--border)' }}>
-                        <div className="flex items-center gap-1.5 mb-2">
-                            <Gem style={{ width: 11, height: 11, color: 'var(--gold)' }} />
-                            <span className="section-label">Gemstones</span>
-                        </div>
-                        {central.length > 0 && <div className="text-xs mb-0.5"><span style={{ color: 'var(--gold)' }}>Central:</span> {central.map(g => `${STONE_TYPE_LABELS[g.stone_type]}${g.carat ? ` ${g.carat}ct` : ''}${g.diameter_mm ? ` ⌀${g.diameter_mm}mm` : ''}`).join(', ')}</div>}
-                        {side.length > 0 && <div className="text-xs"><span style={{ color: 'var(--muted-foreground)' }}>Side:</span> {side.reduce((n, g) => n + g.quantity, 0)} stones</div>}
-                    </div>
-                )}
-
-                {!customerName && !price && !dueDate && gemstones.length === 0 && (
-                    <div className="text-xs text-center py-4" style={{ color: 'var(--muted-foreground)' }}>Fill in the form to preview</div>
-                )}
-        </div>
-    );
-}
+// Removed SummaryPanel code, not needed with new grid layout.
 
 /* ─── inner component ─── */
 function OrderForm() {
@@ -226,168 +144,195 @@ function OrderForm() {
 
     return (
         <AppShell>
-            <div className="max-w-5xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-6">
-                    <Link href="/orders" className="p-1.5 rounded-md hover:opacity-70 transition-opacity" style={{ color: 'var(--muted-foreground)' }}>
-                        <ArrowLeft style={{ width: 16, height: 16 }} />
-                    </Link>
-                    <div>
-                        <h1 className="text-lg font-semibold">New Order</h1>
-                        <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Fill in the details below</p>
+            <div className="max-w-6xl mx-auto">
+                {/* Header & Breadcrumbs */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div className="flex items-center gap-3">
+                        <Link href="/orders" className="p-1.5 rounded-md hover:opacity-70 transition-opacity" style={{ color: 'var(--muted-foreground)' }}>
+                            <ArrowLeft style={{ width: 16, height: 16 }} />
+                        </Link>
+                        <div>
+                            <h1 className="text-2xl font-black uppercase tracking-tight">New Order</h1>
+                        </div>
+                    </div>
+                    {/* Horizontal process breadcrumbs */}
+                    <div className="flex flex-wrap items-center gap-1.5 text-[10px] font-black uppercase overflow-x-auto pb-2 md:pb-0">
+                        {ORDER_STAGES.map((s, i) => (
+                            <div key={s.key} className="flex items-center gap-1.5 whitespace-nowrap">
+                                <span style={{
+                                    color: status === s.key ? 'var(--blue)' : 'var(--muted-foreground)',
+                                    borderBottom: status === s.key ? '2px solid var(--blue)' : 'none',
+                                    paddingBottom: '2px'
+                                }}>
+                                    {s.label}
+                                </span>
+                                {i < ORDER_STAGES.length - 1 && <ArrowRight style={{ width: 10, height: 10, color: 'var(--muted-foreground)' }} />}
+                            </div>
+                        ))}
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 items-start">
+                    
+                    {/* Setup Row */}
+                    <div className="flex flex-col md:flex-row gap-4 mb-6">
+                        <div className="w-full md:w-1/2 lg:w-1/3">
+                            <Field label="Order status">
+                                <select value={status} onChange={e => setStatus(e.target.value as OrderStatus)} className={inp} style={{ ...bdr, fontSize: '16px' }}>
+                                    {ORDER_STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+                                </select>
+                            </Field>
+                        </div>
+                    </div>
 
-                        {/* ── LEFT: Form ── */}
-                        <div className="flex flex-col gap-4">
-
-                            {/* Customer */}
-                            <section className="glass-card p-4">
-                                <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>
-                                    <User style={{ width: 14, height: 14, color: 'var(--gold)' }} />
-                                    <span className="section-label">Customer</span>
-                                </div>
-                                <div className="flex p-0.5 mb-4" style={{ background: 'var(--muted)', border: '3px solid var(--border)' }}>
-                                    <button type="button" onClick={() => setIsNewCustomer(false)} className="flex-1 py-1.5 text-xs font-black uppercase transition-all"
-                                        style={{ background: !isNewCustomer ? '#000' : 'transparent', color: !isNewCustomer ? '#fff' : 'var(--muted-foreground)' }}>
-                                        Existing
-                                    </button>
-                                    <button type="button" onClick={() => setIsNewCustomer(true)} className="flex-1 py-1.5 text-xs font-black uppercase transition-all"
-                                        style={{ background: isNewCustomer ? '#000' : 'transparent', color: isNewCustomer ? '#fff' : 'var(--muted-foreground)' }}>
-                                        New Customer
-                                    </button>
-                                </div>
-                                {!isNewCustomer ? (
-                                    <Field label="Select customer">
-                                        <select value={customerId} onChange={e => setCustomerId(e.target.value)} className={inp} style={bdr}>
-                                            <option value="">— Select —</option>
-                                            {customers.map(c => <option key={c.id} value={c.id}>{c.name}{c.phone ? ` (${c.phone})` : ''}</option>)}
-                                        </select>
-                                    </Field>
-                                ) : (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <Field label="Name *">
-                                            <input value={newCustomerName} onChange={e => setNewCustomerName(e.target.value)} placeholder="Full name" className={inp} style={bdr} />
-                                        </Field>
-                                        <Field label="Phone">
-                                            <input value={newCustomerPhone} onChange={e => setNewCustomerPhone(e.target.value)} placeholder="+39 02 …" className={inp} style={bdr} />
-                                        </Field>
-                                    </div>
-                                )}
-                            </section>
-
-                            {/* Item */}
-                            <section className="glass-card p-4">
-                                <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>
-                                    <Package style={{ width: 14, height: 14, color: 'var(--gold)' }} />
-                                    <span className="section-label">Item Details</span>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <Field label="Item type">
-                                        <select value={itemType} onChange={e => setItemType(e.target.value as ItemType)} className={inp} style={bdr}>
-                                            {ITEM_TYPES.map(t => <option key={t} value={t}>{ITEM_TYPE_LABELS[t]}</option>)}
-                                        </select>
-                                    </Field>
-                                    <Field label="Item ID (optional)">
-                                        <input value={itemId} onChange={e => setItemId(e.target.value)} placeholder="e.g. RING-042" className={inp} style={bdr} />
-                                    </Field>
-                                    <Field label="Starting Stage">
-                                        <select value={status} onChange={e => setStatus(e.target.value as OrderStatus)} className={inp} style={bdr}>
-                                            {ORDER_STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
-                                        </select>
-                                    </Field>
-                                    <Field label="Starting Weight (g)">
-                                        <input type="number" step="0.01" value={startWeight} onChange={e => setStartWeight(e.target.value)} placeholder="0.00" className={inp} style={bdr} />
-                                    </Field>
-                                </div>
-                                <div className="mt-3">
-                                    <Label>Materials</Label>
-                                    <div className="flex flex-wrap gap-1.5 mt-1">
-                                        {MATERIAL_TYPES.map(m => (
-                                            <button key={m} type="button" onClick={() => toggleMaterial(m)}
-                                                className="px-3 py-1 text-xs font-black uppercase transition-all"
-                                                style={{
-                                                    background: materials.includes(m) ? '#000' : 'var(--muted)',
-                                                    color: materials.includes(m) ? '#fff' : 'var(--muted-foreground)',
-                                                    border: `3px solid ${materials.includes(m) ? '#000' : 'transparent'}`
-                                                }}>
-                                                {MATERIAL_LABELS[m]}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </section>
-
-                            {/* Pricing & Date */}
-                            <section className="glass-card p-4">
-                                <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>
-                                    <Calendar style={{ width: 14, height: 14, color: 'var(--gold)' }} />
-                                    <span className="section-label">Pricing & Timeline</span>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <Field label="Price (€)">
-                                        <input type="number" step="0.01" value={price} onChange={e => setPrice(e.target.value)} placeholder="0.00" className={inp} style={bdr} />
-                                    </Field>
-                                    <Field label="Due Date">
-                                        <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className={inp} style={bdr} />
-                                    </Field>
-                                </div>
-                                <div className="mt-3">
-                                    <Label>Notes</Label>
-                                    <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Special instructions, client preferences…" rows={3}
-                                        className="w-full px-3 py-2 text-sm font-bold resize-none" style={bdr} />
-                                </div>
-                            </section>
-
-                            {/* Gemstones */}
-                            <section className="glass-card p-4">
-                                <div className="flex items-center justify-between mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>
-                                    <div className="flex items-center gap-2">
-                                        <Gem style={{ width: 14, height: 14, color: 'var(--gold)' }} />
-                                        <span className="section-label">Gemstones</span>
-                                        {gemstones.length > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: 'rgba(212,168,50,0.15)', color: 'var(--gold)' }}>{gemstones.length}</span>}
-                                    </div>
-                                    <button type="button" onClick={addGemstone} className="flex items-center gap-1 text-xs px-2.5 py-1.5 font-black uppercase"
-                                        style={{ background: '#000', color: '#fff', border: '3px solid #000' }}>
-                                        <Plus style={{ width: 12, height: 12 }} /> Add Stone
-                                    </button>
-                                </div>
-                                {gemstones.length === 0 ? (
-                                    <div className="text-xs text-center py-6" style={{ color: 'var(--muted-foreground)' }}>No gemstones added — click Add Stone</div>
-                                ) : (
-                                    <div className="flex flex-col gap-2">
-                                        {gemstones.map((gem, i) => (
-                                            <GemstoneRow key={gem.id} gem={gem} index={i}
-                                                onChange={updated => setGemstones(prev => prev.map((g, j) => j === i ? updated : g))}
-                                                onRemove={() => setGemstones(prev => prev.filter((_, j) => j !== i))} />
-                                        ))}
-                                    </div>
-                                )}
-                            </section>
-
-                            {/* Submit */}
-                            <button type="submit" disabled={loading} className="w-full py-3 font-black text-sm uppercase tracking-widest"
-                                style={{ background: 'var(--blue)', color: '#fff', border: '3px solid #000', opacity: loading ? 0.7 : 1 }}>
-                                {loading ? 'Creating…' : 'Create Order'}
+                    {/* Default order fields (Customer) */}
+                    <section className="glass-card p-5 mb-6" style={{ borderTop: '6px solid var(--foreground)' }}>
+                        <div className="flex items-center gap-2 mb-4">
+                            <User style={{ width: 14, height: 14, color: 'var(--foreground)' }} />
+                            <span className="section-label" style={{ color: 'var(--foreground)' }}>Default order fields (Customer)</span>
+                        </div>
+                        
+                        <div className="flex p-0.5 mb-4 max-w-sm" style={{ background: 'var(--muted)', border: '3px solid var(--border)' }}>
+                            <button type="button" onClick={() => setIsNewCustomer(false)} className="flex-1 py-1.5 text-xs font-black uppercase transition-all"
+                                style={{ background: !isNewCustomer ? '#000' : 'transparent', color: !isNewCustomer ? '#fff' : 'var(--muted-foreground)' }}>
+                                Existing
+                            </button>
+                            <button type="button" onClick={() => setIsNewCustomer(true)} className="flex-1 py-1.5 text-xs font-black uppercase transition-all"
+                                style={{ background: isNewCustomer ? '#000' : 'transparent', color: isNewCustomer ? '#fff' : 'var(--muted-foreground)' }}>
+                                New Customer
                             </button>
                         </div>
 
-                        {/* ── RIGHT: Summary ── */}
-                        <div className="hidden lg:block">
-                            <SummaryPanel
-                                itemType={itemType}
-                                status={status}
-                                materials={materials}
-                                price={price}
-                                dueDate={dueDate}
-                                gemstones={gemstones}
-                                customerName={customerName}
-                            />
-                        </div>
+                        {!isNewCustomer ? (
+                            <div className="max-w-sm">
+                                <Field label="Select customer *">
+                                    <select value={customerId} onChange={e => setCustomerId(e.target.value)} className={inp} style={bdr}>
+                                        <option value="">— Select —</option>
+                                        {customers.map(c => <option key={c.id} value={c.id}>{c.name}{c.phone ? ` (${c.phone})` : ''}</option>)}
+                                    </select>
+                                </Field>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
+                                <Field label="Name *">
+                                    <input value={newCustomerName} onChange={e => setNewCustomerName(e.target.value)} placeholder="Full name" className={inp} style={bdr} />
+                                </Field>
+                                <Field label="Phone">
+                                    <input value={newCustomerPhone} onChange={e => setNewCustomerPhone(e.target.value)} placeholder="+39 02 …" className={inp} style={bdr} />
+                                </Field>
+                            </div>
+                        )}
+                    </section>
+
+                    {/* Masonry-like Grid for Stage/Detail Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start mb-8">
+
+                        {/* Order Details (Item) */}
+                        <section className="glass-card p-4">
+                            <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
+                                <Package style={{ width: 14, height: 14, color: 'var(--foreground)' }} />
+                                <span className="text-sm font-black uppercase">Item Details</span>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <Field label="Item type">
+                                    <select value={itemType} onChange={e => setItemType(e.target.value as ItemType)} className={inp} style={bdr}>
+                                        {ITEM_TYPES.map(t => <option key={t} value={t}>{ITEM_TYPE_LABELS[t]}</option>)}
+                                    </select>
+                                </Field>
+                                <Field label="Item ID (optional)">
+                                    <input value={itemId} onChange={e => setItemId(e.target.value)} placeholder="e.g. RING-042" className={inp} style={bdr} />
+                                </Field>
+                                <Field label="Starting Weight (g)">
+                                    <input type="number" step="0.01" value={startWeight} onChange={e => setStartWeight(e.target.value)} placeholder="0.00" className={inp} style={bdr} />
+                                </Field>
+                            </div>
+                        </section>
+
+                        {/* Casting (Materials) */}
+                        <section className="glass-card p-4">
+                            <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
+                                <span className="text-sm font-black uppercase">Metals & Alloy</span>
+                            </div>
+                            <Label>Select Materials</Label>
+                            <div className="flex flex-wrap gap-1.5 mt-2">
+                                {MATERIAL_TYPES.map(m => (
+                                    <button key={m} type="button" onClick={() => toggleMaterial(m)}
+                                        className="px-3 py-1.5 text-xs font-black uppercase transition-all w-full text-left"
+                                        style={{
+                                            background: materials.includes(m) ? '#000' : 'var(--muted)',
+                                            color: materials.includes(m) ? '#fff' : 'var(--muted-foreground)',
+                                            border: `3px solid ${materials.includes(m) ? '#000' : 'transparent'}`
+                                        }}>
+                                        {MATERIAL_LABELS[m]}
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* Stone Setting (Gemstones) */}
+                        <section className="glass-card p-4 md:col-span-2 lg:col-span-1">
+                            <div className="flex items-center justify-between mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
+                                <div className="flex items-center gap-2">
+                                    <Gem style={{ width: 14, height: 14, color: 'var(--foreground)' }} />
+                                    <span className="text-sm font-black uppercase">Stone Setting</span>
+                                </div>
+                                <button type="button" onClick={addGemstone} className="flex items-center gap-1 text-[10px] px-2 py-1 font-black uppercase"
+                                    style={{ background: '#000', color: '#fff', border: '2px solid #000' }}>
+                                    <Plus style={{ width: 10, height: 10 }} /> Add Stone
+                                </button>
+                            </div>
+                            {gemstones.length === 0 ? (
+                                <div className="text-xs text-center py-6 font-bold" style={{ color: 'var(--muted-foreground)' }}>No stones required.</div>
+                            ) : (
+                                <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto pr-1">
+                                    {gemstones.map((gem, i) => (
+                                        <GemstoneRow key={gem.id} gem={gem} index={i}
+                                            onChange={updated => setGemstones(prev => prev.map((g, j) => j === i ? updated : g))}
+                                            onRemove={() => setGemstones(prev => prev.filter((_, j) => j !== i))} />
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                        
+                        {/* Timeline & Price */}
+                        <section className="glass-card p-4">
+                            <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
+                                <Calendar style={{ width: 14, height: 14, color: 'var(--foreground)' }} />
+                                <span className="text-sm font-black uppercase">Timeline & Pricing</span>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <Field label="Price (€)">
+                                    <input type="number" step="0.01" value={price} onChange={e => setPrice(e.target.value)} placeholder="0.00" className={inp} style={bdr} />
+                                </Field>
+                                <Field label="Due Date">
+                                    <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className={inp} style={bdr} />
+                                </Field>
+                            </div>
+                        </section>
+
+                        {/* Additional Information */}
+                        <section className="glass-card p-4 md:col-span-2 lg:col-span-1">
+                            <div className="flex items-center gap-2 mb-4" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '8px' }}>
+                                <span className="text-sm font-black uppercase">Additional Information</span>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <Field label="Notes & Specifications">
+                                    <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Special instructions, client preferences, setting details…" rows={4}
+                                        className="w-full px-3 py-2 text-sm font-bold resize-y" style={bdr} />
+                                </Field>
+                            </div>
+                        </section>
+
                     </div>
+
+                    {/* Submit Bar */}
+                    <div className="flex justify-end pt-4 mb-4" style={{ borderTop: '2px solid var(--border)' }}>
+                        <button type="submit" disabled={loading} className="py-3 px-8 font-black text-sm uppercase tracking-widest"
+                            style={{ background: 'var(--blue)', color: '#fff', border: '3px solid #000', opacity: loading ? 0.7 : 1 }}>
+                            {loading ? 'Creating Order…' : 'Create Order'}
+                        </button>
+                    </div>
+
                 </form>
             </div>
         </AppShell>
