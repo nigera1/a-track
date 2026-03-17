@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '@/lib/store';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Sun, Moon } from 'lucide-react';
 
 const inpClass = "w-full rounded-[6px] border border-slate-200 dark:border-slate-700 px-3 py-[9px] text-[14px] text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#1C7ED6] bg-white dark:bg-slate-800 transition-colors appearance-none";
 
@@ -18,6 +18,19 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const { login, register } = useStore();
     const router = useRouter();
+    const [dark, setDark] = useState(false);
+
+    useEffect(() => {
+        const saved = localStorage.getItem('a-track-theme');
+        if (saved === 'dark') { setDark(true); document.documentElement.setAttribute('data-theme', 'dark'); }
+    }, []);
+
+    function toggleTheme() {
+        const next = !dark;
+        setDark(next);
+        document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+        localStorage.setItem('a-track-theme', next ? 'dark' : 'light');
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -41,7 +54,11 @@ export default function LoginPage() {
             <div className="px-6 py-4 flex items-center border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div className="w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0 bg-red-500 text-white mr-2">A</div>
                 <span className="font-black text-slate-900 dark:text-white italic text-xl tracking-tight">A-TRACK</span>
-                <span className="ml-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Order Tracking</span>
+                <span className="ml-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 flex-1">Order Tracking</span>
+                
+                <button onClick={toggleTheme} className="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Toggle Theme">
+                    {dark ? <Sun style={{ width: 18, height: 18 }} /> : <Moon style={{ width: 18, height: 18 }} />}
+                </button>
             </div>
 
             {/* Center card */}

@@ -29,7 +29,7 @@ export default function SupplierDetailPage() {
     const completedOrders = assignedOrders.filter(o => o.status === 'completed');
     const totalValue = assignedOrders.reduce((sum, o) => sum + (o.price ?? 0), 0);
 
-    const specialtyColors: Record<string, string> = { casting: 'var(--blue)', setting: 'var(--red)', both: '#000' };
+    const specialtyColors: Record<string, string> = { casting: 'var(--blue)', setting: 'var(--red)', both: 'var(--foreground)' };
 
     return (
         <AppShell>
@@ -103,7 +103,7 @@ export default function SupplierDetailPage() {
                                     const customer = customers.find(c => c.id === order.customer_id);
                                     return (
                                         <tr key={order.id} className="cursor-pointer hover:bg-slate-50 transition-colors"
-                                            style={{ borderBottom: '1px solid #eee' }}
+                                            style={{ borderBottom: '1px solid var(--border)' }}
                                             onClick={() => router.push(`/orders/${order.id}`)}>
                                             <td className="px-4 py-2.5 font-bold text-xs">{order.order_number}</td>
                                             <td className="px-4 py-2.5 font-medium">{customer?.name ?? '—'}</td>

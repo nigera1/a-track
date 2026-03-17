@@ -87,7 +87,7 @@ export default function SuppliersPage() {
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
                         <h1 className="text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white">Suppliers</h1>
-                        <p className="text-sm font-medium" style={{ color: '#888' }}>{suppliers.length} suppliers · Used for casting & setting stages</p>
+                        <p className="text-sm font-medium" style={{ color: 'var(--muted-foreground)' }}>{suppliers.length} suppliers · Used for casting & setting stages</p>
                     </div>
                     {!showAdd && (
                         <button onClick={() => { setShowAdd(true); setForm(emptyForm()); }} className="neo-btn neo-btn-primary">
