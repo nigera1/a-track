@@ -16,7 +16,7 @@ const MATERIAL_TYPES = Object.keys(MATERIAL_LABELS) as MaterialType[];
 
 function Label({ children }: { children: React.ReactNode }) {
     return (
-        <label className="block text-[13px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">{children}</label>
+        <label className="block text-[13px] font-bold mb-1.5" style={{ color: 'var(--foreground)' }}>{children}</label>
     );
 }
 
@@ -29,19 +29,20 @@ function Field({ label, required, children }: { label: string; required?: boolea
     );
 }
 
-const inpClass = "w-full rounded-[6px] border border-slate-200 dark:border-slate-700 px-3 py-[9px] text-[14px] text-slate-800 dark:text-slate-100 focus:outline-none focus:border-blue-400 bg-transparent transition-colors appearance-none";
+const inpClass = "w-full rounded-[6px] border px-3 py-[9px] text-[14px] focus:outline-none focus:border-blue-400 transition-colors appearance-none";
+const inpStyle = { background: 'var(--input)', color: 'var(--foreground)', borderColor: 'var(--border)' };
 
 function SelectField({ label, required, options, value, onChange }: { label: string; required?: boolean; options: {value: string, label: string}[], value: string, onChange: (val: string) => void }) {
     return (
         <div>
             <Label>{label}{required && <span className="text-red-500 ml-1">*</span>}</Label>
             <div className="relative">
-                <select value={value} onChange={e => onChange(e.target.value)} className={`${inpClass} pr-10`}>
+                <select value={value} onChange={e => onChange(e.target.value)} className={`${inpClass} pr-10`} style={inpStyle}>
                     <option value="">— Select —</option>
                     {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                     <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
+                     <svg className="w-4 h-4" style={{ color: 'var(--muted-foreground)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
                 </div>
             </div>
         </div>
@@ -56,32 +57,36 @@ function PillSelect({ options, value, onChange, placeholder }: { options: {value
         <div className="relative" onMouseLeave={() => setOpen(false)}>
             <div 
                 className={`${inpClass} min-h-[38px] flex items-center cursor-pointer`}
+                style={inpStyle}
                 onClick={() => setOpen(!open)}
             >
                 {value ? (
-                    <div className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[13px] px-2 py-0.5 rounded-[6px] flex items-center gap-1 font-medium transition-colors hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <div className="text-[13px] px-2 py-0.5 rounded-[6px] flex items-center gap-1 font-medium transition-colors" style={{ background: 'var(--muted)', color: 'var(--foreground)' }}>
                         {options.find(o => o.value === value)?.label || value}
-                        <button type="button" onClick={(e) => { e.stopPropagation(); onChange(''); }} className="hover:text-slate-900 dark:hover:text-white ml-0.5 text-slate-500">
+                        <button type="button" onClick={(e) => { e.stopPropagation(); onChange(''); }} className="ml-0.5" style={{ color: 'var(--muted-foreground)' }}>
                            <X style={{ width: 12, height: 12 }} strokeWidth={2.5} />
                         </button>
                     </div>
                 ) : (
-                    <span className="text-slate-400">{placeholder || '— Select —'}</span>
+                    <span style={{ color: 'var(--muted-foreground)' }}>{placeholder || '— Select —'}</span>
                 )}
                 
                 {/* Optional dropdown arrow if desired, omitted to match pure input look */}
             </div>
             
             {open && (
-                <div className="absolute z-10 w-full mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[8px] shadow-lg py-1.5">
+                <div className="absolute z-10 w-full mt-1 rounded-[8px] shadow-lg py-1.5" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
                     {options.map(o => (
                         <div 
                             key={o.value} 
-                            className="px-3 py-[6px] hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer text-[14px] flex items-center gap-2 text-slate-700 dark:text-slate-300 font-medium transition-colors"
+                            className="px-3 py-[6px] cursor-pointer text-[14px] flex items-center gap-2 font-medium transition-colors"
+                            style={{ color: 'var(--foreground)' }}
+                            onMouseEnter={e => (e.currentTarget.style.background = 'var(--muted)')}
+                            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                             onClick={() => { onChange(o.value); setOpen(false); }}
                         >
                             <div className="w-4 flex justify-center">
-                                {value === o.value && <Check style={{ width: 16, height: 16 }} className="text-slate-400 dark:text-slate-500" strokeWidth={3} />}
+                                {value === o.value && <Check style={{ width: 16, height: 16, color: 'var(--muted-foreground)' }} strokeWidth={3} />}
                             </div>
                             <span>{o.label}</span>
                         </div>
@@ -129,10 +134,10 @@ function OrderForm() {
                 
                 {/* Header & Breadcrumbs Row */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-                    <h1 className="text-[24px] font-bold text-slate-900 dark:text-white tracking-tight">New Order</h1>
+                    <h1 className="text-[24px] font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>New Order</h1>
                     
                     {/* Horizontal process breadcrumbs matching mockup */}
-                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-slate-600 overflow-x-auto scroolbar-hide">
+                    <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium overflow-x-auto scroolbar-hide" style={{ color: 'var(--muted-foreground)' }}>
                         {ORDER_STAGES.map((s, i) => {
                             const isActive = status === s.key;
                             return (
@@ -141,7 +146,7 @@ function OrderForm() {
                                           onClick={() => setStatus(s.key)}>
                                         {s.label}
                                     </span>
-                                    {i < ORDER_STAGES.length - 1 && <ArrowRight style={{ width: 10, height: 10 }} className="text-slate-400" />}
+                                    {i < ORDER_STAGES.length - 1 && <ArrowRight style={{ width: 10, height: 10, color: 'var(--muted-foreground)' }} />}
                                 </div>
                             );
                         })}
@@ -169,14 +174,14 @@ function OrderForm() {
                     </div>
 
                     {/* Default order fields */}
-                    <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-6 mb-4">
-                        <h3 className="text-[17px] font-bold text-slate-900 dark:text-white mb-4 tracking-tight">Default order fields</h3>
+                    <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-6 mb-4" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                        <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Default order fields</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Field label="CRM Order ID">
-                                <input value={crmOrderId} onChange={e => setCrmOrderId(e.target.value)} placeholder="" className={inpClass} />
+                                <input value={crmOrderId} onChange={e => setCrmOrderId(e.target.value)} placeholder="" className={inpClass} style={inpStyle} />
                             </Field>
                             <Field label="Job ID" required>
-                                <input value={jobId} onChange={e => setJobId(e.target.value)} placeholder="" className={inpClass} />
+                                <input value={jobId} onChange={e => setJobId(e.target.value)} placeholder="" className={inpClass} style={inpStyle} />
                             </Field>
                         </div>
                     </section>
@@ -185,13 +190,13 @@ function OrderForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
                         {/* 3D (Empty Placeholder) */}
-                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col h-full justify-center">
-                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight m-0">3D</h3>
+                        <section className="rounded-[8px] shadow-sm p-4 flex flex-col h-full justify-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                            <h3 className="text-[17px] font-bold tracking-tight m-0" style={{ color: 'var(--foreground)' }}>3D</h3>
                         </section>
 
                         {/* Casting */}
-                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
-                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight mb-4">Casting</h3>
+                        <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                            <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Casting</h3>
                             <div className="mt-auto">
                                 <SelectField 
                                     label="Alloy" 
@@ -204,13 +209,13 @@ function OrderForm() {
                         </section>
 
                         {/* Sanding (Empty Placeholder) */}
-                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col h-full justify-center">
-                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight m-0">Sanding</h3>
+                        <section className="rounded-[8px] shadow-sm p-4 flex flex-col h-full justify-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                            <h3 className="text-[17px] font-bold tracking-tight m-0" style={{ color: 'var(--foreground)' }}>Sanding</h3>
                         </section>
 
                         {/* Stone Setting */}
-                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
-                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight mb-4">Stone Setting</h3>
+                        <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                            <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Stone Setting</h3>
                             <div className="grid grid-cols-1 gap-4 mt-auto">
                                 <Field label="Setting central">
                                     <PillSelect 
@@ -244,8 +249,8 @@ function OrderForm() {
                         </section>
 
                         {/* Polishing */}
-                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
-                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight mb-4">Polishing</h3>
+                        <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                            <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Polishing</h3>
                             <div className="mt-auto">
                                 <Field label="Finish">
                                     <PillSelect 
@@ -262,8 +267,8 @@ function OrderForm() {
                         </section>
 
                         {/* Quality Control (Empty Placeholder) */}
-                        <section className="bg-white dark:bg-slate-900 rounded-[8px] border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col h-full justify-center">
-                            <h3 className="text-[17px] font-bold text-slate-900 dark:text-white tracking-tight m-0">Quality Control</h3>
+                        <section className="rounded-[8px] shadow-sm p-4 flex flex-col h-full justify-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
+                            <h3 className="text-[17px] font-bold tracking-tight m-0" style={{ color: 'var(--foreground)' }}>Quality Control</h3>
                         </section>
 
                     </div>
