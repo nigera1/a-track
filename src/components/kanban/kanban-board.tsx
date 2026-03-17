@@ -37,7 +37,7 @@ function KanbanCard({ order, isDragging = false }: { order: Order; isDragging?: 
                 )}
                 {order.due_date && (
                     <div className={`flex items-center gap-1 mt-1.5 text-[11px] font-semibold`}
-                        style={{ color: dueSt === 'overdue' ? '#ef4444' : dueSt === 'urgent' ? '#f97316' : '#888' }}>
+                        style={{ color: dueSt === 'overdue' ? '#ef4444' : dueSt === 'urgent' ? '#f97316' : 'var(--muted-foreground)' }}>
                         {dueSt === 'overdue' ? <AlertTriangle style={{ width: 10, height: 10 }} /> : <Clock style={{ width: 10, height: 10 }} />}
                         {formatDate(order.due_date)}
                     </div>
@@ -103,10 +103,10 @@ export function KanbanBoard() {
                             {/* Column header */}
                             <div className="p-3 mb-3 flex items-center justify-between"
                                 style={{ border: `3px solid var(--border)`, borderBottomWidth: '6px', background: stage.color }}>
-                                <span className="text-[12px] font-black uppercase tracking-wider" style={{ color: '#000' }}>
+                                <span className="text-[12px] font-black uppercase tracking-wider" style={{ color: 'var(--foreground)' }}>
                                     {stage.label}
                                 </span>
-                                <span className="text-[12px] font-black px-2 py-0.5" style={{ background: '#000', color: '#fff' }}>
+                                <span className="text-[12px] font-black px-2 py-0.5" style={{ background: 'var(--foreground)', color: 'var(--background)' }}>
                                     {stageOrders.length}
                                 </span>
                             </div>

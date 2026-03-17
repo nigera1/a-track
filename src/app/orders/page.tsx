@@ -113,8 +113,8 @@ export default function OrdersPage() {
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
                         <h1 className="text-2xl font-black uppercase tracking-tight">Orders</h1>
-                        <p className="text-sm font-semibold" style={{ color: '#888' }}>
-                            {filtered.length} of {orders.length} orders
+                        <p className="text-sm font-semibold" style={{ color: 'var(--muted-foreground)' }}>
+                            {orders.length} active orders
                             {activeFilterCount > 0 && <span style={{ color: '#3b82f6' }}> · {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} active</span>}
                         </p>
                     </div>
@@ -179,7 +179,7 @@ export default function OrdersPage() {
                 <div className="neo-card p-4 flex flex-col gap-3">
                     {/* Search */}
                     <div className="relative">
-                        <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14, color: '#888' }} />
+                        <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14, color: 'var(--muted-foreground)' }} />
                         <input
                             value={search}
                             onChange={e => setSearch(e.target.value)}
@@ -203,7 +203,7 @@ export default function OrdersPage() {
                         />
                         {search && (
                             <button onClick={() => setSearch('')} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)' }}>
-                                <X style={{ width: 14, height: 14, color: '#888' }} />
+                                <X style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
                             </button>
                         )}
                     </div>
@@ -275,7 +275,7 @@ export default function OrdersPage() {
                 <div className="md:hidden flex flex-col gap-3">
                     {filtered.length === 0 && (
                         <div className="text-center py-16">
-                            <Search style={{ width: 32, height: 32, color: '#ddd', margin: '0 auto 12px' }} />
+                            <Search style={{ width: 32, height: 32, color: 'var(--muted-foreground)', margin: '0 auto 12px' }} />
                             <div className="font-semibold text-sm" style={{ color: '#bbb' }}>No orders match your filters</div>
                             <button onClick={clearAll} className="neo-btn text-xs mt-3">Clear filters</button>
                         </div>

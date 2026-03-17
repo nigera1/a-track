@@ -55,13 +55,13 @@ export default function SupplierDetailPage() {
                         <div className="section-label mb-3">Contact Info</div>
                         {supplier.contact && (
                             <div className="flex items-center gap-2 text-sm mb-2">
-                                <Phone style={{ width: 13, height: 13, color: '#6b7280' }} />
+                                <Phone style={{ width: 13, height: 13, color: 'var(--muted-foreground)' }} />
                                 <span>{supplier.contact}</span>
                             </div>
                         )}
                         {supplier.notes && (
                             <div className="flex items-start gap-2 text-sm">
-                                <FileText style={{ width: 13, height: 13, color: '#6b7280', marginTop: 2 }} />
+                                <FileText style={{ width: 13, height: 13, color: 'var(--muted-foreground)', marginTop: 2 }} />
                                 <span className="text-gray-600">{supplier.notes}</span>
                             </div>
                         )}
@@ -84,7 +84,7 @@ export default function SupplierDetailPage() {
                 {/* Orders Table */}
                 <div className="neo-card overflow-hidden">
                     <div className="px-4 py-3 flex items-center gap-2" style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
-                        <Package style={{ width: 14, height: 14, color: '#6b7280' }} />
+                        <Package style={{ width: 14, height: 14, color: 'var(--muted-foreground)' }} />
                         <span className="section-label">Assigned Orders</span>
                     </div>
                     {assignedOrders.length === 0 ? (
