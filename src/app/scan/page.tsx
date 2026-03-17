@@ -88,7 +88,7 @@ export default function ScanPage() {
             <div style={{ maxWidth: 480, margin: '0 auto' }} className="flex flex-col gap-5">
                 <div>
                     <h1 className="text-2xl font-black uppercase tracking-tight">QR Scanner</h1>
-                    <p className="text-sm font-semibold" style={{ color: '#888' }}>
+                    <p className="text-sm font-semibold" style={{ color: 'var(--muted-foreground)' }}>
                         Scan 1 = start stage timer · Scan 2 = finish and record time
                     </p>
                 </div>
@@ -97,7 +97,7 @@ export default function ScanPage() {
                 <div className="neo-card p-4 flex flex-col items-center gap-4"
                     style={{ borderColor: '#3b82f6', boxShadow: '4px 4px 0 0 #3b82f6' }}>
 
-                    <div style={{ position: 'relative', width: '100%', borderRadius: 8, overflow: 'hidden', background: '#111', minHeight: 260 }}>
+                    <div style={{ position: 'relative', width: '100%', borderRadius: 8, overflow: 'hidden', background: 'var(--card)', minHeight: 260 }}>
                         <div id={scannerDivId} style={{ width: '100%' }} />
                         {status === 'idle' && (
                             <div className="flex flex-col items-center justify-center gap-3 absolute inset-0">
@@ -133,7 +133,7 @@ export default function ScanPage() {
                     {/* Camera selector */}
                     {cameras.length > 1 && status === 'idle' && (
                         <select value={selectedCam} onChange={e => setSelectedCam(e.target.value)} className="w-full text-sm"
-                            style={{ background: '#fff', border: '2px solid #111', borderRadius: 8, padding: '8px 12px' }}>
+                            style={{ background: 'var(--input)', border: '2px solid var(--border)', borderRadius: 8, padding: '8px 12px' }}>
                             {cameras.map(c => <option key={c.id} value={c.id}>{c.label || `Camera ${c.id}`}</option>)}
                         </select>
                     )}
@@ -193,7 +193,7 @@ export default function ScanPage() {
                         ].map((step, i) => (
                             <li key={i} className="flex items-start gap-3 text-sm">
                                 <span className="font-black text-xs w-6 h-5 flex-shrink-0 flex items-center">{step.icon}</span>
-                                <span style={{ color: '#555' }}>{step.text}</span>
+                                <span style={{ color: 'var(--muted-foreground)' }}>{step.text}</span>
                             </li>
                         ))}
                     </ol>

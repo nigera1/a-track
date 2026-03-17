@@ -76,7 +76,7 @@ export default function OrderDetailPage() {
     // Old handlePrint removed
 
     const inputCls = "w-full px-3 py-2 rounded-lg border text-sm";
-    const inputStyle = { border: '1px solid var(--border)', background: '#fff' };
+    const inputStyle = { border: '1px solid var(--border)', background: 'var(--input)' };
     const field = (label: string, value: React.ReactNode) => (
         <div>
             <div className="section-label mb-1">{label}</div>
@@ -111,7 +111,7 @@ export default function OrderDetailPage() {
 
                 {/* Back + Actions */}
                 <div className="flex items-center justify-between no-print">
-                    <Link href="/orders" className="flex items-center gap-2 text-sm font-bold hover:opacity-80 transition-opacity" style={{ color: '#888' }}>
+                    <Link href="/orders" className="flex items-center gap-2 text-sm font-bold hover:opacity-80 transition-opacity" style={{ color: 'var(--muted-foreground)' }}>
                         <ArrowLeft style={{ width: 16, height: 16 }} /> Orders
                     </Link>
                     <div className="flex items-center gap-2 flex-wrap">
@@ -122,7 +122,7 @@ export default function OrderDetailPage() {
                         <button onClick={() => handlePrint('sheet')} className="neo-btn" title="Print Internal Order Sheet">
                             <Printer style={{ width: 13, height: 13 }} /> Print
                         </button>
-                        <button onClick={() => handlePrint('invoice')} className="neo-btn" title="Generate Customer Invoice" style={{ background: '#111', color: '#fff' }}>
+                        <button onClick={() => handlePrint('invoice')} className="neo-btn" title="Generate Customer Invoice" style={{ background: 'var(--foreground)', color: 'var(--background)' }}>
                             <FileText style={{ width: 13, height: 13 }} /> Invoice
                         </button>
                         {!editing ? (
@@ -155,7 +155,7 @@ export default function OrderDetailPage() {
                         <div className="p-4 bg-white rounded-lg" style={{ border: '1px solid var(--border)' }}>
                             <QRCodeSVG value={orderUrl || `order-${order.order_number}`} size={160} />
                         </div>
-                        <div className="text-xs font-mono font-bold text-center px-4 py-2 rounded" style={{ background: '#f0f0f0', border: '1px solid #ddd', wordBreak: 'break-all' }}>
+                        <div className="text-xs font-mono font-bold text-center px-4 py-2 rounded" style={{ background: 'var(--muted)', border: '1px solid var(--border)', wordBreak: 'break-all' }}>
                             {order.order_number}
                         </div>
                         <button onClick={() => setShowQR(false)} className="neo-btn text-xs">Close</button>
@@ -168,7 +168,7 @@ export default function OrderDetailPage() {
                         <div>
                             <div className="section-label mb-1">Order Number</div>
                             <div className="text-2xl font-black">{order.order_number}</div>
-                            <div className="text-xs font-semibold mt-1" style={{ color: '#888' }}>
+                            <div className="text-xs font-semibold mt-1" style={{ color: 'var(--muted-foreground)' }}>
                                 Created {formatDate(order.created_at)} · Updated {formatDate(order.updated_at)}
                             </div>
                         </div>
@@ -179,7 +179,7 @@ export default function OrderDetailPage() {
                                     <span style={{ 
                                         background: stageColor, color: '#fff', 
                                         padding: '4px 12px', fontSize: 13, fontWeight: 900, 
-                                        textTransform: 'uppercase', border: '3px solid #000' 
+                                        textTransform: 'uppercase', border: '3px solid var(--foreground)' 
                                     }}>
                                         {getStatusLabel(order.status)}
                                     </span>
@@ -194,9 +194,9 @@ export default function OrderDetailPage() {
                                         })}
                                         className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-black uppercase tracking-wide transition-all mt-1"
                                         style={{ 
-                                            background: order.is_ready_for_pickup ? '#3b82f6' : '#f0f0f0', 
-                                            color: order.is_ready_for_pickup ? '#fff' : '#666',
-                                            border: `1.5px solid ${order.is_ready_for_pickup ? '#3b82f6' : '#ddd'}`
+                                            background: order.is_ready_for_pickup ? '#3b82f6' : 'var(--muted)', 
+                                            color: order.is_ready_for_pickup ? '#fff' : 'var(--muted-foreground)',
+                                            border: `1.5px solid ${order.is_ready_for_pickup ? '#3b82f6' : 'var(--border)'}`
                                         }}>
                                         <Package style={{ width: 12, height: 12 }} />
                                         {order.is_ready_for_pickup ? 'Ready for Pickup' : 'Mark for Pickup'}
@@ -223,12 +223,12 @@ export default function OrderDetailPage() {
                                     className="flex-1 min-w-[70px] flex flex-col items-center gap-2 py-3 px-1 text-center transition-all"
                                     title={`Move to ${stage.label}`}
                                     style={{
-                                        background: isCurrent ? stage.color : isPast ? '#000' : '#fff',
-                                        border: `3px solid #000`,
+                                        background: isCurrent ? stage.color : isPast ? 'var(--foreground)' : 'var(--card)',
+                                        border: `3px solid var(--foreground)`,
                                         cursor: 'pointer',
                                     }}>
                                     <div className="text-[11px] font-black uppercase leading-tight"
-                                        style={{ color: isCurrent || isPast ? '#fff' : '#000' }}>
+                                        style={{ color: isCurrent || isPast ? 'var(--background)' : 'var(--foreground)' }}>
                                         {stage.label}
                                     </div>
                                 </button>
@@ -244,12 +244,12 @@ export default function OrderDetailPage() {
                         <Link href={`/customers/${customer.id}`} className="flex items-center justify-between group no-print">
                             <div>
                                 <div className="font-black text-base">{customer.name}</div>
-                                <div className="text-sm font-semibold mt-0.5" style={{ color: '#888' }}>{customer.phone}</div>
-                                {customer.email && <div className="text-sm" style={{ color: '#888' }}>{customer.email}</div>}
+                                <div className="text-sm font-semibold mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{customer.phone}</div>
+                                {customer.email && <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{customer.email}</div>}
                             </div>
                             <ChevronRight style={{ width: 16, height: 16, color: '#3b82f6' }} className="group-hover:translate-x-1 transition-transform" />
                         </Link>
-                    ) : <div style={{ color: '#888' }}>No customer assigned</div>}
+                    ) : <div style={{ color: 'var(--muted-foreground)' }}>No customer assigned</div>}
                 </div>
 
                 {/* Item Details */}
@@ -299,7 +299,7 @@ export default function OrderDetailPage() {
                                 <div className="flex flex-wrap gap-2">
                                     {(Object.keys(MATERIAL_LABELS) as MaterialType[]).map(m => (
                                         <button key={m} type="button" onClick={() => toggleMaterial(m)} className="px-3 py-1 rounded-lg text-sm font-bold transition-all"
-                                            style={{ background: editData.materials?.includes(m) ? '#111' : '#f0f0f0', color: editData.materials?.includes(m) ? '#fff' : '#555', border: '1px solid var(--border)' }}>
+                                            style={{ background: editData.materials?.includes(m) ? 'var(--foreground)' : 'var(--muted)', color: editData.materials?.includes(m) ? 'var(--background)' : 'var(--muted-foreground)', border: '1px solid var(--border)' }}>
                                             {MATERIAL_LABELS[m]}
                                         </button>
                                     ))}
@@ -331,7 +331,7 @@ export default function OrderDetailPage() {
                             </thead>
                             <tbody>
                                 {order.gemstones?.map(gem => (
-                                    <tr key={gem.id} style={{ borderBottom: '1px solid #eee' }}>
+                                    <tr key={gem.id} style={{ borderBottom: '1px solid var(--border)' }}>
                                         <td className="py-2 pr-4">
                                             <span className="status-pill" style={{ color: gem.category === 'central' ? '#f97316' : '#8b5cf6' }}>
                                                 {gem.category}
@@ -339,9 +339,9 @@ export default function OrderDetailPage() {
                                         </td>
                                         <td className="py-2 pr-4 font-semibold">{STONE_TYPE_LABELS[gem.stone_type]}</td>
                                         <td className="py-2 pr-4">{gem.carat} ct</td>
-                                        <td className="py-2 pr-4" style={{ color: '#888' }}>{gem.diameter_mm ? `${gem.diameter_mm} mm` : '—'}</td>
+                                        <td className="py-2 pr-4" style={{ color: 'var(--muted-foreground)' }}>{gem.diameter_mm ? `${gem.diameter_mm} mm` : '—'}</td>
                                         <td className="py-2 pr-4 font-black">{gem.quantity}</td>
-                                        <td className="py-2 pr-4 text-xs" style={{ color: '#888' }}>{gem.notes ?? '—'}</td>
+                                        <td className="py-2 pr-4 text-xs" style={{ color: 'var(--muted-foreground)' }}>{gem.notes ?? '—'}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -358,14 +358,14 @@ export default function OrderDetailPage() {
                     <select
                         value={order.supplier_id ?? ''}
                         onChange={e => updateOrder(id, { supplier_id: e.target.value || undefined })}
-                        style={{ width: '100%', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 12px', fontSize: 13, fontWeight: 600, background: '#fff' }}>
+                        style={{ width: '100%', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 12px', fontSize: 13, fontWeight: 600, background: 'var(--input)' }}>
                         <option value="">— No supplier assigned</option>
                         {suppliers.map(s => (
                             <option key={s.id} value={s.id}>{s.name}{s.contact ? ` · ${s.contact}` : ''}</option>
                         ))}
                     </select>
                     {supplier && (
-                        <div className="mt-2 text-xs font-semibold" style={{ color: '#888' }}>{supplier.notes}</div>
+                        <div className="mt-2 text-xs font-semibold" style={{ color: 'var(--muted-foreground)' }}>{supplier.notes}</div>
                     )}
                 </div>
 
@@ -385,12 +385,12 @@ export default function OrderDetailPage() {
                                         : `${dur}min`;
                                 return (
                                     <div key={i} className="flex items-center justify-between py-1.5"
-                                        style={{ borderBottom: '1px solid #eee' }}>
+                                        style={{ borderBottom: '1px solid var(--border)' }}>
                                         <div className="flex items-center gap-2">
-                                            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: stageInfo?.color ?? '#888' }} />
+                                            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: stageInfo?.color ?? 'var(--muted-foreground)' }} />
                                             <span className="text-xs font-bold" style={{ color: stageInfo?.color }}>{stageInfo?.label}</span>
                                         </div>
-                                        <span className="text-xs font-black" style={{ color: isOpen ? '#3b82f6' : '#111' }}>
+                                        <span className="text-xs font-black" style={{ color: isOpen ? '#3b82f6' : 'var(--foreground)' }}>
                                             {isOpen ? '⏱ In progress' : durText}
                                         </span>
                                     </div>
