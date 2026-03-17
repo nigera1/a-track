@@ -97,9 +97,11 @@ export default function OrdersPage() {
         borderRadius: 8,
         padding: '8px 12px',
         fontSize: 12,
-        fontWeight: 700,
+        fontWeight: 600,
         cursor: 'pointer',
         appearance: 'none' as const,
+        flex: '1 1 auto',
+        minWidth: 0,
     };
 
     return (
@@ -152,7 +154,7 @@ export default function OrdersPage() {
                     </div>
 
                     {/* Filter row */}
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div className="flex flex-wrap gap-2 items-center" style={{ display: 'flex' }}>
                         <select value={stageFilter} onChange={e => setStageFilter(e.target.value)} style={selectStyle}>
                             <option value="all">All Stages</option>
                             {ORDER_STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
@@ -214,10 +216,51 @@ export default function OrdersPage() {
                     )}
                 </div>
 
-                {/* Table */}
-                <div className="neo-card overflow-hidden">
+                {/* Mobile Card View */}
+                <div className="md:hidden flex flex-col gap-3">
+                    {filtered.length === 0 && (
+                        <div className="text-center py-16">
+                            <Search style={{ width: 32, height: 32, color: '#ddd', margin: '0 auto 12px' }} />
+                            <div className="font-semibold text-sm" style={{ color: '#bbb' }}>No orders match your filters</div>
+                            <button onClick={clearAll} className="neo-btn text-xs mt-3">Clear filters</button>
+                        </div>
+                    )}
+                    {filtered.map(order => {
+                        const customer = customers.find(c => c.id === order.customer_id);
+                        const dueStatus = getDueDateStatus(order.due_date);
+                        return (
+                            <div key={order.id} className="mobile-order-card"
+                                onClick={() => router.push(`/orders/${order.id}`)}>
+                                <div className="flex items-start justify-between mb-2">
+                                    <div>
+                                        <span className="font-bold text-sm" style={{ color: '#2563eb' }}>{order.order_number}</span>
+                                        {order.is_ready_for_pickup && order.status === 'completed' && (
+                                            <Package className="inline ml-1.5" style={{ width: 13, height: 13, color: '#3b82f6' }} />
+                                        )}
+                                    </div>
+                                    <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
+                                        {getStatusLabel(order.status)}
+                                    </span>
+                                </div>
+                                <div className="text-sm font-medium text-gray-700 mb-1">{customer?.name ?? '—'}</div>
+                                <div className="text-xs text-gray-400 mb-2">{ITEM_TYPE_LABELS[order.item_type]} · {order.materials.map(m => MATERIAL_LABELS[m]).join(', ') || 'No material'}</div>
+                                <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid var(--border)' }}>
+                                    <span className="text-xs font-semibold"
+                                        style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
+                                        {dueStatus === 'overdue' && <AlertTriangle className="inline mr-1" style={{ width: 11, height: 11 }} />}
+                                        {formatDate(order.due_date)}
+                                    </span>
+                                    <span className="text-sm font-bold">{formatCurrency(order.price)}</span>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="neo-card overflow-hidden hidden md:block">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-sm" style={{ borderCollapse: 'collapse' }}>
+                        <table className="w-full text-sm" style={{ borderCollapse: 'collapse', minWidth: 700 }}>
                             <thead>
                                 <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
                                     {[
@@ -230,7 +273,7 @@ export default function OrdersPage() {
                                         { label: 'Price', col: 'price' as SortKey },
                                     ].map(h => (
                                         <th key={h.label}
-                                            className="text-left px-4 py-3 section-label whitespace-nowrap"
+                                            className="text-left px-5 py-3 section-label whitespace-nowrap"
                                             style={{ cursor: h.col ? 'pointer' : 'default', userSelect: 'none' }}
                                             onClick={() => h.col && toggleSort(h.col)}>
                                             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
@@ -247,7 +290,7 @@ export default function OrdersPage() {
                                         <td colSpan={7} className="text-center py-16">
                                             <div className="flex flex-col items-center gap-3">
                                                 <Search style={{ width: 32, height: 32, color: '#ddd' }} />
-                                                <div className="font-black text-sm" style={{ color: '#bbb' }}>No orders match your filters</div>
+                                                <div className="font-semibold text-sm" style={{ color: '#bbb' }}>No orders match your filters</div>
                                                 <button onClick={clearAll} className="neo-btn text-xs">Clear filters</button>
                                             </div>
                                         </td>
@@ -262,7 +305,7 @@ export default function OrdersPage() {
                                             onMouseEnter={e => (e.currentTarget.style.background = '#fafafa')}
                                             onMouseLeave={e => (e.currentTarget.style.background = '')}
                                             onClick={() => router.push(`/orders/${order.id}`)}>
-                                            <td className="px-4 py-3 font-black text-xs">
+                                            <td className="px-5 py-3 font-bold text-xs">
                                                 {order.order_number}
                                                 {order.is_ready_for_pickup && order.status === 'completed' && (
                                                     <span title="Ready for pickup">
@@ -270,22 +313,22 @@ export default function OrdersPage() {
                                                     </span>
                                                 )}
                                             </td>
-                                            <td className="px-4 py-3 font-semibold">{customer?.name ?? '—'}</td>
-                                            <td className="px-4 py-3">{ITEM_TYPE_LABELS[order.item_type]}</td>
-                                            <td className="px-4 py-3 text-xs" style={{ color: '#888' }}>
+                                            <td className="px-5 py-3 font-semibold">{customer?.name ?? '—'}</td>
+                                            <td className="px-5 py-3">{ITEM_TYPE_LABELS[order.item_type]}</td>
+                                            <td className="px-5 py-3 text-xs" style={{ color: '#888' }}>
                                                 {order.materials.map(m => MATERIAL_LABELS[m]).join(', ') || '—'}
                                             </td>
-                                            <td className="px-4 py-3">
+                                            <td className="px-5 py-3">
                                                 <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
                                                     {getStatusLabel(order.status)}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3 whitespace-nowrap font-semibold text-xs"
+                                            <td className="px-5 py-3 whitespace-nowrap font-semibold text-xs"
                                                 style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
                                                 {dueStatus === 'overdue' && <AlertTriangle style={{ display: 'inline', marginRight: 4, width: 11, height: 11 }} />}
                                                 {formatDate(order.due_date)}
                                             </td>
-                                            <td className="px-4 py-3 font-black">{formatCurrency(order.price)}</td>
+                                            <td className="px-4 py-3 font-bold">{formatCurrency(order.price)}</td>
                                         </tr>
                                     );
                                 })}

@@ -269,7 +269,7 @@ export default function NewOrderPage() {
                                         </select>
                                     </Field>
                                 ) : (
-                                    <div className="grid grid-cols-2 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <Field label="Name *">
                                             <input value={newCustomerName} onChange={e => setNewCustomerName(e.target.value)} placeholder="Full name" className={inp} style={bdr} />
                                         </Field>
@@ -286,7 +286,7 @@ export default function NewOrderPage() {
                                     <Package style={{ width: 14, height: 14, color: 'var(--gold)' }} />
                                     <span className="section-label">Item Details</span>
                                 </div>
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <Field label="Item type">
                                         <select value={itemType} onChange={e => setItemType(e.target.value as ItemType)} className={inp} style={bdr}>
                                             {ITEM_TYPES.map(t => <option key={t} value={t}>{ITEM_TYPE_LABELS[t]}</option>)}
@@ -328,7 +328,7 @@ export default function NewOrderPage() {
                                     <Calendar style={{ width: 14, height: 14, color: 'var(--gold)' }} />
                                     <span className="section-label">Pricing & Timeline</span>
                                 </div>
-                                <div className="grid grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <Field label="Price (€)">
                                         <input type="number" step="0.01" value={price} onChange={e => setPrice(e.target.value)} placeholder="0.00" className={inp} style={bdr} />
                                     </Field>

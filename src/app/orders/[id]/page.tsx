@@ -114,7 +114,7 @@ export default function OrderDetailPage() {
                     <Link href="/orders" className="flex items-center gap-2 text-sm font-bold hover:opacity-80 transition-opacity" style={{ color: '#888' }}>
                         <ArrowLeft style={{ width: 16, height: 16 }} /> Orders
                     </Link>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                         {/* Print & QR always visible */}
                         <button onClick={() => setShowQR(!showQR)} className="neo-btn" title="Show QR Code">
                             <QrCode style={{ width: 13, height: 13 }} /> QR
@@ -253,7 +253,7 @@ export default function OrderDetailPage() {
                 <div className="neo-card p-5">
                     <div className="section-label mb-4">Item Details</div>
                     {!editing ? (
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                             {field('Item Type', ITEM_TYPE_LABELS[order.item_type])}
                             {field('Item ID', order.item_id)}
                             {field('Materials', order.materials?.map(m => MATERIAL_LABELS[m]).join(', ') || '—')}
@@ -261,10 +261,10 @@ export default function OrderDetailPage() {
                             {field('End Weight', order.end_weight ? `${order.end_weight} g` : '—')}
                             {field('Price', formatCurrency(order.price))}
                             {field('Due Date', formatDate(order.due_date))}
-                            {order.notes && <div className="col-span-2 md:col-span-3">{field('Notes', order.notes)}</div>}
+                            {order.notes && <div className="sm:col-span-2 md:col-span-3">{field('Notes', order.notes)}</div>}
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="section-label mb-1.5 block">Item Type</label>
                                 <select value={editData.item_type} onChange={e => setEditData(d => ({ ...d, item_type: e.target.value as ItemType }))} className={inputCls} style={inputStyle}>
@@ -291,7 +291,7 @@ export default function OrderDetailPage() {
                                 <label className="section-label mb-1.5 block">Due Date</label>
                                 <input type="date" value={editData.due_date ?? ''} onChange={e => setEditData(d => ({ ...d, due_date: e.target.value }))} className={inputCls} style={inputStyle} />
                             </div>
-                            <div className="col-span-2">
+                            <div className="sm:col-span-2">
                                 <label className="section-label mb-1.5 block">Materials</label>
                                 <div className="flex flex-wrap gap-2">
                                     {(Object.keys(MATERIAL_LABELS) as MaterialType[]).map(m => (
@@ -302,7 +302,7 @@ export default function OrderDetailPage() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="col-span-2">
+                            <div className="sm:col-span-2">
                                 <label className="section-label mb-1.5 block">Notes</label>
                                 <textarea value={editData.notes ?? ''} onChange={e => setEditData(d => ({ ...d, notes: e.target.value }))} rows={3}
                                     className="w-full px-3 py-2 rounded-lg text-sm resize-none" style={inputStyle} />
@@ -317,7 +317,8 @@ export default function OrderDetailPage() {
                         <div className="section-label mb-4 flex items-center gap-2">
                             <Gem style={{ width: 13, height: 13, color: '#8b5cf6' }} /> Gemstones
                         </div>
-                        <table className="w-full text-sm">
+                        <div className="overflow-x-auto">
+                        <table className="w-full text-sm" style={{ minWidth: 450 }}>
                             <thead>
                                 <tr style={{ borderBottom: '1px solid var(--border)' }}>
                                     {['Category', 'Stone', 'Carat', 'Ø mm', 'Qty', 'Notes'].map(h => (
@@ -342,6 +343,7 @@ export default function OrderDetailPage() {
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 )}
 

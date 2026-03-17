@@ -258,7 +258,8 @@ export default function AnalyticsPage() {
                 {/* Top customers */}
                 <div className="neo-card overflow-hidden">
                     <div className="px-4 py-3 section-label" style={{ borderBottom: '1px solid var(--border)' }}>Top Customers</div>
-                    <table className="w-full text-sm">
+                    <div className="overflow-x-auto">
+                    <table className="w-full text-sm" style={{ minWidth: 400 }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid #eee', background: '#f8f8f8' }}>
                                 {['Customer', 'Orders', 'Lifetime Spend'].map(h => (
@@ -280,6 +281,7 @@ export default function AnalyticsPage() {
                             ))}
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </AppShell>

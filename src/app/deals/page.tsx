@@ -60,7 +60,7 @@ export default function DealsPage() {
                 {showForm && (
                     <form onSubmit={handleAdd} className="neo-card p-5 flex flex-col gap-4">
                         <div className="section-label">New Deal</div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label className="section-label mb-1.5 block">Title *</label>
                                 <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Diamond Ring" className={inputCls} style={{ border: '1px solid var(--border)' }} />

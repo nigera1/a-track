@@ -55,7 +55,7 @@ export default function SuppliersPage() {
 
     const InlineForm = ({ onSave, onCancel }: { onSave: () => void; onCancel: () => void }) => (
         <div className="flex flex-col gap-3 mt-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <FormRow label="Name">
                     <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Supplier name" style={inputStyle} />
                 </FormRow>

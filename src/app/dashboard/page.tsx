@@ -14,10 +14,10 @@ const STAT_COLORS = ['#3b82f6', '#22c55e', '#ef4444', '#f97316'];
 
 function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
     return (
-        <div className="neo-card p-5 relative overflow-hidden group">
+        <div className="neo-card p-6 relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1 h-full" style={{ background: color }} />
             <div className="text-[12px] font-bold tracking-wide mb-1" style={{ color: 'var(--muted-foreground)' }}>{label}</div>
-            <div className="text-3xl font-black text-slate-800">{value}</div>
+            <div className="text-2xl md:text-3xl font-black text-slate-800" style={{ marginTop: 4 }}>{value}</div>
             {sub && <div className="text-xs font-medium mt-1 text-slate-500">{sub}</div>}
         </div>
     );
@@ -27,48 +27,80 @@ function OrdersTable({ orders }: { orders: Order[] }) {
     const router = useRouter();
     const { customers } = useStore();
     return (
-        <div className="neo-card overflow-hidden">
-            <table className="w-full text-sm data-table">
-                <thead>
-                    <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
-                        {['Order #', 'Customer', 'Item', 'Stage', 'Due Date', 'Price'].map(h => (
-                            <th key={h} className="text-left px-4 py-2.5 section-label">{h}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map(order => {
-                        const customer = customers.find(c => c.id === order.customer_id);
-                        const dueStatus = getDueDateStatus(order.due_date);
-                        return (
-                            <tr key={order.id} className="cursor-pointer transition-colors" style={{ borderBottom: '1px solid #eee' }}
-                                onClick={() => router.push(`/orders/${order.id}`)}>
-                                <td className="px-4 py-2.5 font-black text-xs">
-                                    {order.order_number}
-                                    {order.is_ready_for_pickup && order.status === 'completed' && (
-                                        <span title="Ready for pickup">
-                                            <Package className="inline ml-1.5" style={{ width: 13, height: 13, color: '#3b82f6' }} />
-                                        </span>
-                                    )}
-                                </td>
-                                <td className="px-4 py-2.5 font-medium">{customer?.name ?? '—'}</td>
-                                <td className="px-4 py-2.5 capitalize">{order.item_type}</td>
-                                <td className="px-4 py-2.5">
-                                    <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
-                                        {getStatusLabel(order.status)}
-                                    </span>
-                                </td>
-                                <td className="px-4 py-2.5" style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
-                                    {dueStatus === 'overdue' && <AlertTriangle className="inline mr-1" style={{ width: 11, height: 11 }} />}
+        <>
+            {/* Mobile Card View */}
+            <div className="md:hidden flex flex-col gap-3">
+                {orders.map(order => {
+                    const customer = customers.find(c => c.id === order.customer_id);
+                    const dueStatus = getDueDateStatus(order.due_date);
+                    return (
+                        <div key={order.id} className="mobile-order-card"
+                            onClick={() => router.push(`/orders/${order.id}`)}>
+                            <div className="flex items-start justify-between mb-1.5">
+                                <span className="font-bold text-sm" style={{ color: '#2563eb' }}>{order.order_number}</span>
+                                <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
+                                    {getStatusLabel(order.status)}
+                                </span>
+                            </div>
+                            <div className="text-sm font-medium text-gray-700">{customer?.name ?? '—'}</div>
+                            <div className="flex items-center justify-between mt-2 pt-2" style={{ borderTop: '1px solid var(--border)' }}>
+                                <span className="text-xs font-semibold"
+                                    style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
                                     {formatDate(order.due_date)}
-                                </td>
-                                <td className="px-4 py-2.5 font-semibold">{formatCurrency(order.price)}</td>
+                                </span>
+                                <span className="text-sm font-bold">{formatCurrency(order.price)}</span>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Desktop Table */}
+            <div className="neo-card overflow-hidden hidden md:block">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm data-table" style={{ minWidth: 600 }}>
+                        <thead>
+                            <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--muted)' }}>
+                                {['Order #', 'Customer', 'Item', 'Stage', 'Due Date', 'Price'].map(h => (
+                                    <th key={h} className="text-left px-5 py-3 section-label">{h}</th>
+                                ))}
                             </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-        </div>
+                        </thead>
+                        <tbody>
+                            {orders.map(order => {
+                                const customer = customers.find(c => c.id === order.customer_id);
+                                const dueStatus = getDueDateStatus(order.due_date);
+                                return (
+                                    <tr key={order.id} className="cursor-pointer transition-colors" style={{ borderBottom: '2px solid #eee' }}
+                                        onClick={() => router.push(`/orders/${order.id}`)}>
+                                        <td className="px-5 py-3 font-bold text-xs">
+                                            {order.order_number}
+                                            {order.is_ready_for_pickup && order.status === 'completed' && (
+                                                <span title="Ready for pickup">
+                                                    <Package className="inline ml-1.5" style={{ width: 13, height: 13, color: '#3b82f6' }} />
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-2.5 font-medium">{customer?.name ?? '—'}</td>
+                                        <td className="px-4 py-2.5 capitalize">{order.item_type}</td>
+                                        <td className="px-4 py-2.5">
+                                            <span className="status-pill" style={{ color: getStatusColor(order.status) }}>
+                                                {getStatusLabel(order.status)}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-2.5" style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
+                                            {dueStatus === 'overdue' && <AlertTriangle className="inline mr-1" style={{ width: 11, height: 11 }} />}
+                                            {formatDate(order.due_date)}
+                                        </td>
+                                        <td className="px-4 py-2.5 font-semibold">{formatCurrency(order.price)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </>
     );
 }
 
