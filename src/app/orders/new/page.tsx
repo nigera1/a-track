@@ -185,31 +185,33 @@ function OrderForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
 
                         {/* 3D (Empty Placeholder) */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 h-[72px] flex items-center">
+                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 flex flex-col h-full justify-center">
                             <h3 className="text-[17px] font-bold text-slate-900 tracking-tight m-0">3D</h3>
                         </section>
 
                         {/* Casting */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5">
+                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
                             <h3 className="text-[17px] font-bold text-slate-900 tracking-tight mb-4">Casting</h3>
-                            <SelectField 
-                                label="Alloy" 
-                                required
-                                options={MATERIAL_TYPES.map(m => ({value: m, label: MATERIAL_LABELS[m]}))} 
-                                value={alloy} 
-                                onChange={setAlloy} 
-                            />
+                            <div className="mt-auto">
+                                <SelectField 
+                                    label="Alloy" 
+                                    required
+                                    options={MATERIAL_TYPES.map(m => ({value: m, label: MATERIAL_LABELS[m]}))} 
+                                    value={alloy} 
+                                    onChange={setAlloy} 
+                                />
+                            </div>
                         </section>
 
                         {/* Sanding (Empty Placeholder) */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 h-[72px] flex items-center">
+                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 flex flex-col h-full justify-center">
                             <h3 className="text-[17px] font-bold text-slate-900 tracking-tight m-0">Sanding</h3>
                         </section>
 
                         {/* Stone Setting */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5">
+                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
                             <h3 className="text-[17px] font-bold text-slate-900 tracking-tight mb-4">Stone Setting</h3>
-                            <div className="grid grid-cols-1 gap-4">
+                            <div className="grid grid-cols-1 gap-4 mt-auto">
                                 <Field label="Setting central">
                                     <PillSelect 
                                         options={[
@@ -242,23 +244,25 @@ function OrderForm() {
                         </section>
 
                         {/* Polishing */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5">
+                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full">
                             <h3 className="text-[17px] font-bold text-slate-900 tracking-tight mb-4">Polishing</h3>
-                            <Field label="Finish">
-                                <PillSelect 
-                                    options={[
-                                        {value: 'polished', label: 'Polished'},
-                                        {value: 'mat', label: 'Mat'},
-                                        {value: 'rhodium', label: 'Rhodium'},
-                                    ]} 
-                                    value={finish} 
-                                    onChange={setFinish} 
-                                />
-                            </Field>
+                            <div className="mt-auto">
+                                <Field label="Finish">
+                                    <PillSelect 
+                                        options={[
+                                            {value: 'polished', label: 'Polished'},
+                                            {value: 'mat', label: 'Mat'},
+                                            {value: 'rhodium', label: 'Rhodium'},
+                                        ]} 
+                                        value={finish} 
+                                        onChange={setFinish} 
+                                    />
+                                </Field>
+                            </div>
                         </section>
 
                         {/* Quality Control (Empty Placeholder) */}
-                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 h-[72px] flex items-center">
+                        <section className="bg-white rounded-[8px] border border-slate-200 shadow-sm p-4 flex flex-col h-full justify-center">
                             <h3 className="text-[17px] font-bold text-slate-900 tracking-tight m-0">Quality Control</h3>
                         </section>
 
