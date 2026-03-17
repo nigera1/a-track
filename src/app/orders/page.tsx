@@ -122,6 +122,58 @@ export default function OrdersPage() {
                     </Link>
                 </div>
 
+                {/* ── STUCK IN PRODUCTION BANNER ── */}
+                {(() => {
+                    const stuckOrders = orders.filter(o => {
+                        if (o.status === 'completed') return false;
+                        if (!o.stage_times?.length) return false;
+                        const currentStageLog = o.stage_times.find(s => s.stage === o.status && !s.finished_at);
+                        if (!currentStageLog) return false;
+                        const daysInStage = Math.ceil((Date.now() - new Date(currentStageLog.started_at).getTime()) / 86400000);
+                        return daysInStage >= 7;
+                    }).map(o => {
+                        const currentStageLog = o.stage_times!.find(s => s.stage === o.status && !s.finished_at)!;
+                        const days = Math.ceil((Date.now() - new Date(currentStageLog.started_at).getTime()) / 86400000);
+                        return { ...o, daysStuck: days, stuckStage: getStatusLabel(o.status) };
+                    }).sort((a, b) => b.daysStuck - a.daysStuck);
+
+                    if (stuckOrders.length === 0) return null;
+
+                    return (
+                        <div className="neo-card" style={{
+                            padding: '16px 20px',
+                            borderLeft: '5px solid #ef4444',
+                            background: 'var(--card)',
+                        }}>
+                            <div className="flex items-center gap-2 mb-3">
+                                <AlertTriangle style={{ width: 20, height: 20, color: '#ef4444', flexShrink: 0 }} />
+                                <span style={{ fontWeight: 800, fontSize: 14, textTransform: 'uppercase', letterSpacing: '0.04em', color: '#ef4444' }}>
+                                    {stuckOrders.length} order{stuckOrders.length > 1 ? 's' : ''} stuck in production
+                                </span>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                {stuckOrders.map(o => (
+                                    <div key={o.id}
+                                        className="flex items-center justify-between gap-3 cursor-pointer px-3 py-2 -mx-1 rounded transition-colors"
+                                        style={{ background: 'var(--muted)', border: '1px solid var(--border)' }}
+                                        onClick={() => router.push(`/orders/${o.id}`)}>
+                                        <div className="flex items-center gap-3 flex-wrap">
+                                            <span style={{ fontWeight: 800, fontSize: 13, color: '#ef4444' }}>{o.order_number}</span>
+                                            <span className="status-pill" style={{ color: getStatusColor(o.status) }}>{o.stuckStage}</span>
+                                            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--muted-foreground)' }}>
+                                                {customers.find(c => c.id === o.customer_id)?.name}
+                                            </span>
+                                        </div>
+                                        <span style={{ fontWeight: 800, fontSize: 13, color: '#ef4444', whiteSpace: 'nowrap' }}>
+                                            {o.daysStuck}d
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })()}
+
                 {/* Search + Filter bar */}
                 <div className="neo-card p-4 flex flex-col gap-3">
                     {/* Search */}
