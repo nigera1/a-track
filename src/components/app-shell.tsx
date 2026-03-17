@@ -77,23 +77,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                             <Link key={item.href} href={item.href}
                                 className={`sidebar-link ${active ? 'active' : ''}`}
                                 title={item.label}>
-                                <Icon style={{ width: 18, height: 18 }} className="flex-shrink-0" />
+                                <div className="relative flex-shrink-0 flex items-center justify-center">
+                                    <Icon style={{ width: 18, height: 18 }} />
+                                    {item.href === '/dashboard' && urgent > 0 && (
+                                        <span className="absolute -top-1.5 -right-2 flex-shrink-0 badge-pulse"
+                                            style={{
+                                                background: 'var(--red)',
+                                                color: '#fff',
+                                                fontWeight: 900,
+                                                fontSize: 10,
+                                                minWidth: 16,
+                                                height: 16,
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                borderRadius: '50%',
+                                                boxShadow: '1px 1px 0px var(--background)',
+                                            }}>{urgent}</span>
+                                    )}
+                                </div>
                                 <span className="sidebar-label">{item.label}</span>
-                                {item.href === '/dashboard' && urgent > 0 && (
-                                    <span className="ml-auto flex-shrink-0 badge-pulse"
-                                        style={{
-                                            background: 'var(--red)',
-                                            color: '#fff',
-                                            fontWeight: 900,
-                                            fontSize: 13,
-                                            minWidth: 24,
-                                            height: 24,
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            boxShadow: '2px 2px 0px #ffffff',
-                                        }}>{urgent}</span>
-                                )}
                             </Link>
                         );
                     })}
