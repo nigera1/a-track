@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { LayoutDashboard, Package, Users, BarChart3, LogOut, Menu, X, Plus, ScanLine, Handshake, Building2 } from 'lucide-react';
+import { LayoutDashboard, Package, Users, BarChart3, LogOut, Menu, X, Plus, ScanLine, Handshake, Building2, ChevronsLeft, ChevronsRight, Moon, Sun } from 'lucide-react';
 
 const NAV = [
     { href: '/dashboard', label: 'Orders', icon: LayoutDashboard },
@@ -22,6 +22,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const { currentUser, logout, orders } = useStore();
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [pinned, setPinned] = useState(false);
+    const [dark, setDark] = useState(false);
+
+    // Theme persistence
+    useEffect(() => {
+        const saved = localStorage.getItem('a-track-theme');
+        if (saved === 'dark') { setDark(true); document.documentElement.setAttribute('data-theme', 'dark'); }
+    }, []);
+
+    function toggleTheme() {
+        const next = !dark;
+        setDark(next);
+        document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+        localStorage.setItem('a-track-theme', next ? 'dark' : 'light');
+    }
 
     const urgent = orders.filter(o => {
         if (!o.due_date || o.status === 'completed') return false;
@@ -39,32 +54,33 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex min-h-screen min-h-[100dvh]" style={{ background: 'var(--background)' }}>
 
-            {/* ── Desktop Sidebar ── */}
-            <aside className="sidebar hidden md:flex flex-col w-[220px] flex-shrink-0">
+            {/* ── Desktop Sidebar (collapsible) ── */}
+            <aside className={`sidebar hidden md:flex flex-col flex-shrink-0 ${pinned ? 'sidebar-expanded' : 'sidebar-collapsed'}`}>
                 {/* Logo */}
                 <div className="sidebar-logo">
-                    <Link href="/dashboard" className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm"
+                    <Link href="/dashboard" className="flex items-center gap-2 overflow-hidden">
+                        <div className="w-8 h-8 rounded flex items-center justify-center font-black text-sm flex-shrink-0"
                             style={{ background: '#2563eb', color: '#fff' }}>A</div>
-                        <div>
-                            <div className="font-bold text-sm text-gray-900 leading-tight">A-Track</div>
-                            <div className="text-[10px] text-gray-400 font-medium">Backoffice</div>
+                        <div className="sidebar-label">
+                            <div className="font-bold text-sm text-gray-900 leading-tight whitespace-nowrap">A-Track</div>
+                            <div className="text-[10px] text-gray-400 font-medium whitespace-nowrap">Backoffice</div>
                         </div>
                     </Link>
                 </div>
 
                 {/* Nav */}
-                <nav className="flex-1 px-3 py-2 flex flex-col gap-0.5">
+                <nav className="flex-1 px-2 py-2 flex flex-col gap-0.5">
                     {NAV.map(item => {
                         const Icon = item.icon;
                         const active = pathname.startsWith(item.href);
                         return (
                             <Link key={item.href} href={item.href}
-                                className={`sidebar-link ${active ? 'active' : ''}`}>
-                                <Icon style={{ width: 16, height: 16 }} />
-                                <span>{item.label}</span>
+                                className={`sidebar-link ${active ? 'active' : ''}`}
+                                title={item.label}>
+                                <Icon style={{ width: 18, height: 18 }} className="flex-shrink-0" />
+                                <span className="sidebar-label">{item.label}</span>
                                 {item.href === '/dashboard' && urgent > 0 && (
-                                    <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full font-bold"
+                                    <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full font-bold flex-shrink-0"
                                         style={{ background: '#fee2e2', color: '#ef4444' }}>{urgent}</span>
                                 )}
                             </Link>
@@ -72,19 +88,41 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     })}
                 </nav>
 
+                {/* Pin toggle */}
+                {/* Theme toggle */}
+                <button onClick={toggleTheme} className="sidebar-theme-btn" title={dark ? 'Switch to light' : 'Switch to dark'}>
+                    {dark
+                        ? <Sun style={{ width: 16, height: 16 }} className="flex-shrink-0" />
+                        : <Moon style={{ width: 16, height: 16 }} className="flex-shrink-0" />
+                    }
+                    <span className="sidebar-label">{dark ? 'Light' : 'Dark'}</span>
+                </button>
+
+                {/* Pin toggle */}
+                <button
+                    onClick={() => setPinned(!pinned)}
+                    className="sidebar-pin-btn"
+                    title={pinned ? 'Collapse sidebar' : 'Pin sidebar open'}>
+                    {pinned
+                        ? <ChevronsLeft style={{ width: 16, height: 16 }} className="flex-shrink-0" />
+                        : <ChevronsRight style={{ width: 16, height: 16 }} className="flex-shrink-0" />
+                    }
+                    <span className="sidebar-label">{pinned ? 'Collapse' : 'Expand'}</span>
+                </button>
+
                 {/* User + Logout */}
                 <div className="sidebar-footer">
-                    <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold"
+                    <div className="flex items-center gap-2.5 overflow-hidden">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
                             style={{ background: '#e0e7ff', color: '#4338ca' }}>
                             {initials}
                         </div>
-                        <div className="flex-1 min-w-0">
+                        <div className="sidebar-label flex-1 min-w-0">
                             <div className="text-sm font-semibold text-gray-800 truncate">{currentUser.name}</div>
                             <div className="text-[11px] text-gray-400">Backoffice</div>
                         </div>
                     </div>
-                    <button onClick={doLogout} className="sidebar-logout" title="Sign out">
+                    <button onClick={doLogout} className="sidebar-logout sidebar-label" title="Sign out">
                         <LogOut style={{ width: 14, height: 14 }} />
                     </button>
                 </div>
