@@ -159,46 +159,113 @@ export default function DashboardPage() {
                     ))}
                 </div>
 
-                {/* Urgent banner */}
-                {urgentOrders.length > 0 && (
-                    <div className="rounded-xl p-4 flex gap-3 bg-red-50 border border-red-200">
-                        <AlertTriangle className="flex-shrink-0 mt-0.5" style={{ width: 18, height: 18, color: '#ef4444' }} />
-                        <div>
-                            <div className="font-bold text-sm text-red-700">{urgentOrders.length} order{urgentOrders.length > 1 ? 's' : ''} need attention</div>
-                            <div className="text-xs mt-1 text-red-600/80">
-                                {urgentOrders.map(o => o.order_number).join(', ')}
+                {/* ═══ BIG ATTENTION BANNER ═══ */}
+                {(urgentOrders.length > 0 || readyForPickupOrders.length > 0 || staleOrders.length > 0) && (
+                    <div className="neo-card" style={{
+                        padding: 0,
+                        overflow: 'hidden',
+                        borderLeft: '6px solid #ef4444',
+                    }}>
+                        {/* Header */}
+                        <div style={{
+                            background: '#ef4444',
+                            padding: '16px 24px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 12,
+                        }}>
+                            <AlertTriangle style={{ width: 28, height: 28, color: '#fff', flexShrink: 0 }} />
+                            <div>
+                                <div style={{ fontWeight: 900, fontSize: 18, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                    {urgentOrders.length + readyForPickupOrders.length + staleOrders.length} orders need your attention
+                                </div>
+                                <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.8)', marginTop: 2 }}>
+                                    Overdue, stuck, or awaiting pickup
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
 
-                {/* Pickup banner */}
-                {readyForPickupOrders.length > 0 && (
-                    <div className="rounded-xl p-4 flex gap-3 bg-blue-50 border border-blue-200">
-                        <Package className="flex-shrink-0 mt-0.5" style={{ width: 18, height: 18, color: '#3b82f6' }} />
-                        <div>
-                            <div className="font-bold text-sm text-blue-700">{readyForPickupOrders.length} order{readyForPickupOrders.length > 1 ? 's' : ''} ready for pickup</div>
-                            <div className="text-xs mt-1 text-blue-600/80">
-                                Not in office: {readyForPickupOrders.map(o => o.order_number).join(', ')}
-                            </div>
-                        </div>
-                    </div>
-                )}
+                        <div style={{ padding: '8px 16px 16px' }}>
+                            {/* Overdue / urgent orders */}
+                            {urgentOrders.length > 0 && (
+                                <div style={{ marginTop: 8 }}>
+                                    <div className="section-label" style={{ padding: '8px 8px 6px', color: '#ef4444' }}>
+                                        ⚠ Overdue / Due Soon — {urgentOrders.length}
+                                    </div>
+                                    {urgentOrders.map(o => {
+                                        const customer = customers.find(c => c.id === o.customer_id);
+                                        const daysLeft = o.due_date ? Math.ceil((new Date(o.due_date).getTime() - Date.now()) / 86400000) : null;
+                                        return (
+                                            <div key={o.id}
+                                                className="flex items-center justify-between gap-3 cursor-pointer px-3 py-2.5 transition-colors"
+                                                style={{ background: 'var(--muted)', border: '1px solid var(--border)', marginBottom: 4, borderRadius: 'var(--radius)' }}
+                                                onClick={() => router.push(`/orders/${o.id}`)}>
+                                                <div className="flex items-center gap-3 flex-wrap">
+                                                    <span style={{ fontWeight: 800, fontSize: 14, color: '#ef4444' }}>{o.order_number}</span>
+                                                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--foreground)' }}>{customer?.name}</span>
+                                                    <span className="status-pill" style={{ color: getStatusColor(o.status) }}>{getStatusLabel(o.status)}</span>
+                                                </div>
+                                                <span style={{ fontWeight: 800, fontSize: 14, color: daysLeft !== null && daysLeft < 0 ? '#ef4444' : '#f97316', whiteSpace: 'nowrap' }}>
+                                                    {daysLeft !== null && daysLeft < 0 ? `${Math.abs(daysLeft)}d overdue` : `${daysLeft}d left`}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
 
-                {/* Stale orders banner */}
-                {staleOrders.length > 0 && (
-                    <div className="rounded-xl p-4 flex gap-3 bg-amber-50 border border-amber-200">
-                        <Timer className="flex-shrink-0 mt-0.5" style={{ width: 18, height: 18, color: '#d97706' }} />
-                        <div>
-                            <div className="font-bold text-sm text-amber-800">{staleOrders.length} order{staleOrders.length > 1 ? 's' : ''} stuck in production</div>
-                            <div className="text-xs mt-1 text-amber-700/80 flex flex-col gap-0.5">
-                                {staleOrders.slice(0, 5).map(o => (
-                                    <span key={o.id}>
-                                        <strong>{o.order_number}</strong> — {o.staleDays}d in {o.staleStage}
-                                    </span>
-                                ))}
-                                {staleOrders.length > 5 && <span>…and {staleOrders.length - 5} more</span>}
-                            </div>
+                            {/* Stuck in production */}
+                            {staleOrders.length > 0 && (
+                                <div style={{ marginTop: 12 }}>
+                                    <div className="section-label" style={{ padding: '8px 8px 6px', color: '#d97706' }}>
+                                        ⏱ Stuck in Production — {staleOrders.length}
+                                    </div>
+                                    {staleOrders.map(o => {
+                                        const customer = customers.find(c => c.id === o.customer_id);
+                                        return (
+                                            <div key={o.id}
+                                                className="flex items-center justify-between gap-3 cursor-pointer px-3 py-2.5 transition-colors"
+                                                style={{ background: 'var(--muted)', border: '1px solid var(--border)', marginBottom: 4, borderRadius: 'var(--radius)' }}
+                                                onClick={() => router.push(`/orders/${o.id}`)}>
+                                                <div className="flex items-center gap-3 flex-wrap">
+                                                    <span style={{ fontWeight: 800, fontSize: 14, color: '#d97706' }}>{o.order_number}</span>
+                                                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--foreground)' }}>{customer?.name}</span>
+                                                    <span className="status-pill" style={{ color: getStatusColor(o.status) }}>{o.staleStage}</span>
+                                                </div>
+                                                <span style={{ fontWeight: 800, fontSize: 14, color: '#d97706', whiteSpace: 'nowrap' }}>
+                                                    {o.staleDays}d stuck
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            {/* Ready for pickup */}
+                            {readyForPickupOrders.length > 0 && (
+                                <div style={{ marginTop: 12 }}>
+                                    <div className="section-label" style={{ padding: '8px 8px 6px', color: '#3b82f6' }}>
+                                        📦 Ready for Pickup — {readyForPickupOrders.length}
+                                    </div>
+                                    {readyForPickupOrders.map(o => {
+                                        const customer = customers.find(c => c.id === o.customer_id);
+                                        return (
+                                            <div key={o.id}
+                                                className="flex items-center justify-between gap-3 cursor-pointer px-3 py-2.5 transition-colors"
+                                                style={{ background: 'var(--muted)', border: '1px solid var(--border)', marginBottom: 4, borderRadius: 'var(--radius)' }}
+                                                onClick={() => router.push(`/orders/${o.id}`)}>
+                                                <div className="flex items-center gap-3 flex-wrap">
+                                                    <span style={{ fontWeight: 800, fontSize: 14, color: '#3b82f6' }}>{o.order_number}</span>
+                                                    <span style={{ fontWeight: 700, fontSize: 13, color: 'var(--foreground)' }}>{customer?.name}</span>
+                                                </div>
+                                                <span style={{ fontWeight: 700, fontSize: 12, color: '#3b82f6', whiteSpace: 'nowrap' }}>
+                                                    Awaiting pickup
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
