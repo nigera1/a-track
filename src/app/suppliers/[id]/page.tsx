@@ -62,7 +62,7 @@ export default function SupplierDetailPage() {
                         {supplier.notes && (
                             <div className="flex items-start gap-2 text-sm">
                                 <FileText style={{ width: 13, height: 13, color: 'var(--muted-foreground)', marginTop: 2 }} />
-                                <span className="text-gray-600">{supplier.notes}</span>
+                                <span style={{ color: 'var(--muted-foreground)' }}>{supplier.notes}</span>
                             </div>
                         )}
                         {!supplier.contact && !supplier.notes && (

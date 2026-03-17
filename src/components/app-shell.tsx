@@ -62,8 +62,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         <div className="w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0"
                             style={{ background: 'var(--red)', color: '#fff' }}>A</div>
                         <div className="sidebar-label">
-                            <div className="font-bold text-sm text-gray-900 leading-tight whitespace-nowrap">A-Track</div>
-                            <div className="text-[10px] text-gray-400 font-medium whitespace-nowrap">Backoffice</div>
+                            <div className="font-bold text-sm leading-tight whitespace-nowrap" style={{ color: 'var(--foreground)' }}>A-Track</div>
+                            <div className="text-[10px] font-medium whitespace-nowrap" style={{ color: 'var(--muted-foreground)' }}>Backoffice</div>
                         </div>
                     </Link>
                 </div>
@@ -132,8 +132,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                             {initials}
                         </div>
                         <div className="sidebar-label flex-1 min-w-0">
-                            <div className="text-sm font-semibold text-gray-800 truncate">{currentUser.name}</div>
-                            <div className="text-[11px] text-gray-400">Backoffice</div>
+                            <div className="text-sm font-semibold truncate" style={{ color: 'var(--foreground)' }}>{currentUser.name}</div>
+                            <div className="text-[11px]" style={{ color: 'var(--muted-foreground)' }}>Backoffice</div>
                         </div>
                     </div>
                     <button onClick={doLogout} className="sidebar-logout sidebar-label" title="Sign out">
@@ -151,7 +151,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     <Link href="/dashboard" className="flex items-center gap-2">
                         <div className="w-6 h-6 flex items-center justify-center font-black text-[10px]"
                             style={{ background: 'var(--red)', color: '#fff' }}>A</div>
-                        <span className="font-bold text-sm text-gray-900">A-Track</span>
+                        <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>A-Track</span>
                     </Link>
                     <div className="w-7 h-7 flex items-center justify-center text-[10px] font-bold"
                         style={{ background: 'var(--gold)', color: '#000' }}>
@@ -164,7 +164,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {drawerOpen && (
                 <>
                     <div className="md:hidden fixed inset-0 bg-black/30 z-40" onClick={() => setDrawerOpen(false)} />
-                    <div className="md:hidden fixed left-0 top-0 bottom-0 w-[260px] z-50 bg-white shadow-xl flex flex-col drawer-slide-in">
+                    <div className="md:hidden fixed left-0 top-0 bottom-0 w-[260px] z-50 shadow-xl flex flex-col drawer-slide-in" style={{ background: 'var(--card)' }}>
                         {/* Drawer header */}
                         <div className="flex items-center justify-between px-4 h-14 border-b" style={{ borderColor: 'var(--border)', borderBottomWidth: 'var(--border-width)' }}>
                             <div className="flex items-center gap-2">
@@ -189,7 +189,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                         <span>{item.label}</span>
                                         {item.href === '/dashboard' && urgent > 0 && (
                                             <span className="ml-auto text-[10px] px-1.5 py-0.5 font-bold"
-                                                style={{ background: 'var(--red)', color: '#fff', border: '1px solid #000' }}>{urgent}</span>
+                                                style={{ background: 'var(--red)', color: '#fff', border: '1px solid var(--border)' }}>{urgent}</span>
                                         )}
                                     </Link>
                                 );
@@ -208,8 +208,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                     {initials}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-semibold text-gray-800 truncate">{currentUser.name}</div>
-                                    <div className="text-[11px] text-gray-400">Backoffice</div>
+                                    <div className="text-sm font-semibold truncate" style={{ color: 'var(--foreground)' }}>{currentUser.name}</div>
+                                    <div className="text-[11px]" style={{ color: 'var(--muted-foreground)' }}>Backoffice</div>
                                 </div>
                             </div>
                             <button onClick={doLogout} className="sidebar-logout" title="Sign out">
@@ -229,7 +229,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </main>
 
                 {/* Footer */}
-                <footer className="no-print border-t border-gray-100" style={{ background: 'var(--card)' }}>
+                <footer className="no-print border-t" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
                     <div className="main-content py-3 flex items-center justify-between">
                         <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted-foreground)' }}>
                             © {new Date().getFullYear()} A-Track · Jewelry Workshop

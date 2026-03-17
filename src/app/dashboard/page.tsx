@@ -67,7 +67,7 @@ function OrdersTable({ orders }: { orders: Order[] }) {
                             <div className="text-sm font-medium text-slate-700 dark:text-slate-300">{customer?.name ?? '—'}</div>
                             <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                                 <span className="text-xs font-semibold"
-                                    style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
+                                    style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : 'var(--muted-foreground)' }}>
                                     {formatDate(order.due_date)}
                                 </span>
                                 <span className="text-sm font-bold">{formatCurrency(order.price)}</span>
@@ -93,7 +93,7 @@ function OrdersTable({ orders }: { orders: Order[] }) {
                                 const customer = customers.find(c => c.id === order.customer_id);
                                 const dueStatus = getDueDateStatus(order.due_date);
                                 return (
-                                    <tr key={order.id} className="cursor-pointer transition-colors" style={{ borderBottom: '2px solid #eee' }}
+                                    <tr key={order.id} className="cursor-pointer transition-colors" style={{ borderBottom: '2px solid var(--border)' }}
                                         onClick={() => router.push(`/orders/${order.id}`)}>
                                         <td className="px-5 py-3 font-bold text-xs">
                                             {order.order_number}
@@ -108,7 +108,7 @@ function OrdersTable({ orders }: { orders: Order[] }) {
                                         <td className="px-4 py-2.5">
                                             <ProcessBar currentStatus={order.status} />
                                         </td>
-                                        <td className="px-4 py-2.5" style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : '#888' }}>
+                                        <td className="px-4 py-2.5" style={{ color: dueStatus === 'overdue' ? '#ef4444' : dueStatus === 'urgent' ? '#f97316' : 'var(--muted-foreground)' }}>
                                             {dueStatus === 'overdue' && <AlertTriangle className="inline mr-1" style={{ width: 11, height: 11 }} />}
                                             {formatDate(order.due_date)}
                                         </td>
@@ -157,7 +157,7 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
                         <h1 className="text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white">Dashboard</h1>
-                        <p className="text-sm font-medium" style={{ color: '#888' }}>{orders.length} orders in the workshop</p>
+                        <p className="text-sm font-medium" style={{ color: 'var(--muted-foreground)' }}>{orders.length} orders in the workshop</p>
                     </div>
                     <div className="flex items-center gap-2">
                         {/* View toggle */}

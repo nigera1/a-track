@@ -276,7 +276,7 @@ export default function OrdersPage() {
                     {filtered.length === 0 && (
                         <div className="text-center py-16">
                             <Search style={{ width: 32, height: 32, color: 'var(--muted-foreground)', margin: '0 auto 12px' }} />
-                            <div className="font-semibold text-sm" style={{ color: '#bbb' }}>No orders match your filters</div>
+                            <div className="font-semibold text-sm" style={{ color: 'var(--muted-foreground)' }}>No orders match your filters</div>
                             <button onClick={clearAll} className="neo-btn text-xs mt-3">Clear filters</button>
                         </div>
                     )}
