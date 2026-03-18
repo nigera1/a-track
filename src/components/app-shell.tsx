@@ -201,8 +201,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         </nav>
 
                         {/* Drawer footer */}
-                        <div className="sidebar-footer">
-                            <div className="flex items-center gap-2.5">
+                        <div className="sidebar-footer flex flex-col gap-2">
+                            <button onClick={() => {
+                                const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                                document.documentElement.setAttribute('data-theme', newTheme);
+                                localStorage.setItem('theme', newTheme);
+                            }} className="sidebar-theme-btn w-full justify-between" title="Toggle theme (Light/Dark)">
+                                <span className="flex items-center gap-2"><div style={{ width: 12, height: 12, borderRadius: '50%', border: '1px solid currentColor', background: 'var(--foreground)' }} /> Theme</span>
+                            </button>
+                            <div className="flex items-center gap-2.5 mt-2 pt-2 border-t" style={{ borderColor: 'var(--border)' }}>
                                 <div className="w-8 h-8 flex items-center justify-center text-[11px] font-bold"
                                     style={{ background: 'var(--gold)', color: '#000' }}>
                                     {initials}
@@ -211,10 +218,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                     <div className="text-sm font-semibold truncate" style={{ color: 'var(--foreground)' }}>{currentUser.name}</div>
                                     <div className="text-[11px]" style={{ color: 'var(--muted-foreground)' }}>Backoffice</div>
                                 </div>
+                                <button onClick={doLogout} className="sidebar-logout" title="Sign out">
+                                    <LogOut style={{ width: 14, height: 14 }} />
+                                </button>
                             </div>
-                            <button onClick={doLogout} className="sidebar-logout" title="Sign out">
-                                <LogOut style={{ width: 14, height: 14 }} />
-                            </button>
                         </div>
                     </div>
                 </>
