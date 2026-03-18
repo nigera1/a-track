@@ -18,7 +18,7 @@ function StatCard({ label, value, sub, color }: { label: string; value: string |
             <div className="text-[12px] font-bold uppercase tracking-wide mb-1 text-slate-700 dark:text-slate-300">{label}</div>
             <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white flex items-baseline gap-2" style={{ marginTop: 4 }}>
                 {value}
-                {sub && <span className="text-[11px] font-semibold tracking-tight lowercase text-slate-500 dark:text-slate-400">{sub}</span>}
+                {sub && <span className="text-[11px] font-semibold tracking-normal lowercase text-slate-500 dark:text-slate-400">{sub}</span>}
             </div>
         </div>
     );
@@ -156,7 +156,7 @@ export default function DashboardPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white">Dashboard</h1>
+                        <h1 className="text-2xl font-extrabold uppercase tracking-normal text-slate-900 dark:text-white">Dashboard</h1>
                         <p className="text-sm font-medium" style={{ color: 'var(--muted-foreground)' }}>{orders.length} orders in the workshop</p>
                     </div>
                     <div className="flex items-center gap-2">

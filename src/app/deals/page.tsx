@@ -55,7 +55,7 @@ export default function DealsPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-bold uppercase tracking-tight">Deals Tracking</h1>
+                        <h1 className="text-2xl font-bold uppercase tracking-normal">Deals Tracking</h1>
                         <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Pre-production pipeline</p>
                     </div>
                     <button onClick={() => setShowForm(!showForm)} className="neo-btn neo-btn-primary">
@@ -139,7 +139,7 @@ export default function DealsPage() {
                                         return (
                                             <div key={deal.id} className="neo-card p-3 flex flex-col gap-2 relative group">
                                                 <div className="flex justify-between items-start">
-                                                    <div className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">{deal.title}</div>
+                                                    <div className="font-bold text-sm tracking-normal text-slate-900 dark:text-white">{deal.title}</div>
                                                     <button onClick={() => { if(confirm('Delete deal?')) deleteDeal(deal.id); }} 
                                                         className="opacity-0 group-hover:opacity-100 p-1 text-red-500 hover:bg-red-500/10 rounded transition-all">
                                                         <Trash2 style={{ width: 14, height: 14 }} />

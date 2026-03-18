@@ -112,7 +112,7 @@ export default function OrdersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-bold uppercase tracking-tight">Orders</h1>
+                        <h1 className="text-2xl font-bold uppercase">Orders</h1>
                         <p className="text-sm font-semibold" style={{ color: 'var(--muted-foreground)' }}>
                             {orders.length} active orders
                             {activeFilterCount > 0 && <span style={{ color: '#3b82f6' }}> · {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} active</span>}

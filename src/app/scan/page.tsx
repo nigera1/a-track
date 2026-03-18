@@ -94,7 +94,7 @@ export default function ScanPage() {
         <AppShell>
             <div style={{ maxWidth: 480, margin: '0 auto' }} className="flex flex-col gap-5">
                 <div>
-                    <h1 className="text-2xl font-bold uppercase tracking-tight">QR Scanner</h1>
+                    <h1 className="text-2xl font-bold uppercase tracking-normal">QR Scanner</h1>
                     <p className="text-sm font-semibold" style={{ color: 'var(--muted-foreground)' }}>
                         Scan 1 = start stage timer · Scan 2 = finish and record time
                     </p>

@@ -130,11 +130,11 @@ function OrderForm() {
 
     return (
         <AppShell>
-            <div className="max-w-[1200px] mx-auto pb-12 pt-2 md:pt-4 px-3 md:px-0">
+            <div className="max-w-[1200px] mx-auto pb-12 pt-2 md:pt-4">
                 
                 {/* Header & Breadcrumbs Row */}
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-                    <h1 className="text-[24px] font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>New Order</h1>
+                    <h1 className="text-[24px] font-bold tracking-normal" style={{ color: 'var(--foreground)' }}>New Order</h1>
                     
                     {/* Horizontal process breadcrumbs matching mockup */}
                     <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium overflow-x-auto scroolbar-hide" style={{ color: 'var(--muted-foreground)' }}>
@@ -175,7 +175,7 @@ function OrderForm() {
 
                     {/* Default order fields */}
                     <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-6 mb-4" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                        <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Default order fields</h3>
+                        <h3 className="text-[17px] font-bold tracking-normal mb-4" style={{ color: 'var(--foreground)' }}>Default order fields</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Field label="CRM Order ID">
                                 <input value={crmOrderId} onChange={e => setCrmOrderId(e.target.value)} placeholder="" className={inpClass} style={inpStyle} />
@@ -191,12 +191,12 @@ function OrderForm() {
 
                         {/* 3D (Empty Placeholder) */}
                         <section className="rounded-[8px] shadow-sm p-4 flex flex-col h-full justify-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                            <h3 className="text-[17px] font-bold tracking-tight m-0" style={{ color: 'var(--foreground)' }}>3D</h3>
+                            <h3 className="text-[17px] font-bold tracking-normal m-0" style={{ color: 'var(--foreground)' }}>3D</h3>
                         </section>
 
                         {/* Casting */}
                         <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                            <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Casting</h3>
+                            <h3 className="text-[17px] font-bold tracking-normal mb-4" style={{ color: 'var(--foreground)' }}>Casting</h3>
                             <div className="mt-auto">
                                 <SelectField 
                                     label="Alloy" 
@@ -210,12 +210,12 @@ function OrderForm() {
 
                         {/* Sanding (Empty Placeholder) */}
                         <section className="rounded-[8px] shadow-sm p-4 flex flex-col h-full justify-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                            <h3 className="text-[17px] font-bold tracking-tight m-0" style={{ color: 'var(--foreground)' }}>Sanding</h3>
+                            <h3 className="text-[17px] font-bold tracking-normal m-0" style={{ color: 'var(--foreground)' }}>Sanding</h3>
                         </section>
 
                         {/* Stone Setting */}
                         <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                            <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Stone Setting</h3>
+                            <h3 className="text-[17px] font-bold tracking-normal mb-4" style={{ color: 'var(--foreground)' }}>Stone Setting</h3>
                             <div className="grid grid-cols-1 gap-4 mt-auto">
                                 <Field label="Setting central">
                                     <PillSelect 
@@ -250,7 +250,7 @@ function OrderForm() {
 
                         {/* Polishing */}
                         <section className="rounded-[8px] shadow-sm p-4 md:p-5 pb-5 flex flex-col h-full" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                            <h3 className="text-[17px] font-bold tracking-tight mb-4" style={{ color: 'var(--foreground)' }}>Polishing</h3>
+                            <h3 className="text-[17px] font-bold tracking-normal mb-4" style={{ color: 'var(--foreground)' }}>Polishing</h3>
                             <div className="mt-auto">
                                 <Field label="Finish">
                                     <PillSelect 
@@ -268,7 +268,7 @@ function OrderForm() {
 
                         {/* Quality Control (Empty Placeholder) */}
                         <section className="rounded-[8px] shadow-sm p-4 flex flex-col h-full justify-center" style={{ background: 'var(--card)', border: '1px solid var(--border)' }}>
-                            <h3 className="text-[17px] font-bold tracking-tight m-0" style={{ color: 'var(--foreground)' }}>Quality Control</h3>
+                            <h3 className="text-[17px] font-bold tracking-normal m-0" style={{ color: 'var(--foreground)' }}>Quality Control</h3>
                         </section>
 
                     </div>

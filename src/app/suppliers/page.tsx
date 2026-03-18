@@ -86,7 +86,7 @@ export default function SuppliersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-extrabold uppercase tracking-tight text-slate-900 dark:text-white">Suppliers</h1>
+                        <h1 className="text-2xl font-extrabold uppercase text-slate-900 dark:text-white">Suppliers</h1>
                         <p className="text-sm font-medium" style={{ color: 'var(--muted-foreground)' }}>{suppliers.length} suppliers · Used for casting & setting stages</p>
                     </div>
                     {!showAdd && (

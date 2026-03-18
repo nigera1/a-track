@@ -40,7 +40,7 @@ export default function CustomersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-tight">Customers</h1>
+                        <h1 className="text-2xl font-black uppercase tracking-normal">Customers</h1>
                         <p className="text-sm font-semibold" style={{ color: '#888' }}>{customers.length} clients</p>
                     </div>
                     <button onClick={() => setShowForm(!showForm)} className="neo-btn neo-btn-primary">

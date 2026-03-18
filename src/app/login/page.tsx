@@ -53,7 +53,7 @@ export default function LoginPage() {
             {/* Top bar */}
             <div className="px-6 py-4 flex items-center border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                 <div className="w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0 bg-red-500 text-white mr-2">A</div>
-                <span className="font-bold text-slate-900 dark:text-white italic text-xl tracking-tight">A-TRACK</span>
+                <span className="font-bold text-slate-900 dark:text-white italic text-xl tracking-normal">A-TRACK</span>
                 <span className="ml-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 flex-1">Order Tracking</span>
                 
                 <button onClick={toggleTheme} className="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Toggle Theme">

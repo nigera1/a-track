@@ -117,7 +117,7 @@ export default function AnalyticsPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-bold uppercase tracking-tight">Analytics</h1>
+                        <h1 className="text-2xl font-bold uppercase tracking-normal">Analytics</h1>
                         <p className="text-sm font-semibold" style={{ color: '#888' }}>Workshop performance overview</p>
                     </div>
                     <div className="flex items-center gap-2">
