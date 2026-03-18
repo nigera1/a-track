@@ -40,7 +40,7 @@ export default function SupplierDetailPage() {
                         <ArrowLeft style={{ width: 16, height: 16 }} />
                     </Link>
                     <div className="flex-1">
-                        <h1 className="text-xl font-black tracking-tight">{supplier.name}</h1>
+                        <h1 className="text-xl font-bold tracking-tight">{supplier.name}</h1>
                         <span className="status-pill"
                             style={{ color: specialtyColors[supplier.specialty] }}>
                             {supplier.specialty === 'both' ? 'Casting & Setting' : supplier.specialty.charAt(0).toUpperCase() + supplier.specialty.slice(1)}
@@ -70,14 +70,14 @@ export default function SupplierDetailPage() {
                         )}
                     </div>
                     {/* Stats */}
-                    <div className="neo-card p-4 relative overflow-hidden" style={{ borderLeft: '6px solid var(--blue)' }}>
+                    <div className="neo-card p-4 pl-5 relative overflow-hidden" style={{ borderLeft: '4px solid var(--blue)' }}>
                         <div className="section-label mb-1" style={{ color: 'var(--blue)' }}>ASSIGNED ORDERS</div>
-                        <div className="text-3xl font-black">{assignedOrders.length}</div>
+                        <div className="text-3xl font-bold">{assignedOrders.length}</div>
                         <div className="text-xs font-semibold mt-1" style={{ color: 'var(--muted-foreground)' }}>{activeOrders.length} active · {completedOrders.length} completed</div>
                     </div>
-                    <div className="neo-card p-4 relative overflow-hidden" style={{ borderLeft: '6px solid var(--gold)' }}>
+                    <div className="neo-card p-4 pl-5 relative overflow-hidden" style={{ borderLeft: '4px solid var(--gold)' }}>
                         <div className="section-label mb-1" style={{ color: 'var(--gold)' }}>TOTAL VALUE</div>
-                        <div className="text-3xl font-black">{formatCurrency(totalValue)}</div>
+                        <div className="text-3xl font-bold">{formatCurrency(totalValue)}</div>
                     </div>
                 </div>
 

@@ -112,7 +112,7 @@ export default function OrdersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-tight">Orders</h1>
+                        <h1 className="text-2xl font-bold uppercase tracking-tight">Orders</h1>
                         <p className="text-sm font-semibold" style={{ color: 'var(--muted-foreground)' }}>
                             {orders.length} active orders
                             {activeFilterCount > 0 && <span style={{ color: '#3b82f6' }}> · {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} active</span>}
@@ -142,8 +142,8 @@ export default function OrdersPage() {
 
                     return (
                         <div className="neo-card" style={{
-                            padding: '16px 20px',
-                            borderLeft: '5px solid #ef4444',
+                            padding: '16px 20px 16px 24px',
+                            borderLeft: '4px solid #ef4444',
                             background: 'var(--card)',
                         }}>
                             <div className="flex items-center gap-2 mb-3">

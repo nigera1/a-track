@@ -94,7 +94,7 @@ export default function ScanPage() {
         <AppShell>
             <div style={{ maxWidth: 480, margin: '0 auto' }} className="flex flex-col gap-5">
                 <div>
-                    <h1 className="text-2xl font-black uppercase tracking-tight">QR Scanner</h1>
+                    <h1 className="text-2xl font-bold uppercase tracking-tight">QR Scanner</h1>
                     <p className="text-sm font-semibold" style={{ color: 'var(--muted-foreground)' }}>
                         Scan 1 = start stage timer · Scan 2 = finish and record time
                     </p>
@@ -124,7 +124,7 @@ export default function ScanPage() {
                                     ? <Play style={{ width: 40, height: 40, color: '#3b82f6' }} />
                                     : <CheckCircle style={{ width: 40, height: 40, color: '#22c55e' }} />
                                 }
-                                <span className="font-black text-sm" style={{ color: scanResult.action === 'started' ? '#3b82f6' : '#22c55e' }}>
+                                <span className="font-bold text-sm" style={{ color: scanResult.action === 'started' ? '#3b82f6' : '#22c55e' }}>
                                     {scanResult.action === 'started' ? 'TIMER STARTED' : 'STAGE COMPLETE'}
                                 </span>
                             </div>
@@ -132,7 +132,7 @@ export default function ScanPage() {
                         {status === 'error' && (
                             <div className="flex flex-col items-center justify-center gap-2 absolute inset-0" style={{ background: 'rgba(239,68,68,0.15)' }}>
                                 <AlertCircle style={{ width: 40, height: 40, color: '#ef4444' }} />
-                                <span className="font-black text-sm" style={{ color: '#ef4444' }}>ORDER NOT FOUND</span>
+                                <span className="font-bold text-sm" style={{ color: '#ef4444' }}>ORDER NOT FOUND</span>
                             </div>
                         )}
                     </div>
@@ -150,7 +150,7 @@ export default function ScanPage() {
                         <div className="w-full neo-card p-4 flex flex-col gap-2"
                             style={{ borderColor: scanResult.action === 'started' ? '#3b82f6' : '#22c55e' }}>
                             <div className="flex justify-between items-center">
-                                <span className="font-black">{scanResult.orderNum}</span>
+                                <span className="font-bold">{scanResult.orderNum}</span>
                                 <span className="section-label">{scanResult.stage}</span>
                             </div>
                             {scanResult.action === 'started' ? (
@@ -199,7 +199,7 @@ export default function ScanPage() {
                             { icon: '④', text: 'View average stage times in Analytics' },
                         ].map((step, i) => (
                             <li key={i} className="flex items-start gap-3 text-sm">
-                                <span className="font-black text-xs w-6 h-5 flex-shrink-0 flex items-center">{step.icon}</span>
+                                <span className="font-bold text-xs w-6 h-5 flex-shrink-0 flex items-center">{step.icon}</span>
                                 <span style={{ color: 'var(--muted-foreground)' }}>{step.text}</span>
                             </li>
                         ))}

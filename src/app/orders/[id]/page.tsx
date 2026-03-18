@@ -40,7 +40,7 @@ export default function OrderDetailPage() {
     if (!order) return (
         <AppShell>
             <div className="flex flex-col items-center justify-center h-64 gap-4" style={{ color: 'var(--muted-foreground)' }}>
-                <div className="text-4xl font-black">404</div>
+                <div className="text-4xl font-bold">404</div>
                 <div>Order not found</div>
                 <Link href="/orders" className="neo-btn">← Back to Orders</Link>
             </div>
@@ -168,7 +168,7 @@ export default function OrderDetailPage() {
                     <div className="flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             <div className="section-label mb-1">Order Number</div>
-                            <div className="text-2xl font-black">{order.order_number}</div>
+                            <div className="text-2xl font-bold">{order.order_number}</div>
                             <div className="text-xs font-semibold mt-1" style={{ color: 'var(--muted-foreground)' }}>
                                 Created {formatDate(order.created_at)} · Updated {formatDate(order.updated_at)}
                             </div>
@@ -193,7 +193,7 @@ export default function OrderDetailPage() {
                                             is_ready_for_pickup: !order.is_ready_for_pickup,
                                             pickup_reminder_date: !order.is_ready_for_pickup ? new Date().toISOString() : undefined 
                                         })}
-                                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-black uppercase tracking-wide transition-all mt-1"
+                                        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-bold uppercase tracking-wide transition-all mt-1"
                                         style={{ 
                                             background: order.is_ready_for_pickup ? '#3b82f6' : 'var(--muted)', 
                                             color: order.is_ready_for_pickup ? '#fff' : 'var(--muted-foreground)',
@@ -206,7 +206,7 @@ export default function OrderDetailPage() {
                             </div>
                             
                             {order.price != null && (
-                                <div className="text-xl font-black mt-2">{formatCurrency(order.price)}</div>
+                                <div className="text-xl font-bold mt-2">{formatCurrency(order.price)}</div>
                             )}
                         </div>
                     </div>
@@ -228,7 +228,7 @@ export default function OrderDetailPage() {
                                         border: `3px solid var(--foreground)`,
                                         cursor: 'pointer',
                                     }}>
-                                    <div className="text-[11px] font-black uppercase leading-tight"
+                                    <div className="text-[11px] font-bold uppercase leading-tight"
                                         style={{ color: isCurrent || isPast ? 'var(--background)' : 'var(--foreground)' }}>
                                         {stage.label}
                                     </div>
@@ -244,7 +244,7 @@ export default function OrderDetailPage() {
                     {customer ? (
                         <Link href={`/customers/${customer.id}`} className="flex items-center justify-between group no-print">
                             <div>
-                                <div className="font-black text-base">{customer.name}</div>
+                                <div className="font-bold text-base">{customer.name}</div>
                                 <div className="text-sm font-semibold mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{customer.phone}</div>
                                 {customer.email && <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{customer.email}</div>}
                             </div>
@@ -341,7 +341,7 @@ export default function OrderDetailPage() {
                                         <td className="py-2 pr-4 font-semibold">{STONE_TYPE_LABELS[gem.stone_type]}</td>
                                         <td className="py-2 pr-4">{gem.carat} ct</td>
                                         <td className="py-2 pr-4" style={{ color: 'var(--muted-foreground)' }}>{gem.diameter_mm ? `${gem.diameter_mm} mm` : '—'}</td>
-                                        <td className="py-2 pr-4 font-black">{gem.quantity}</td>
+                                        <td className="py-2 pr-4 font-bold">{gem.quantity}</td>
                                         <td className="py-2 pr-4 text-xs" style={{ color: 'var(--muted-foreground)' }}>{gem.notes ?? '—'}</td>
                                     </tr>
                                 ))}
@@ -391,7 +391,7 @@ export default function OrderDetailPage() {
                                             <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: stageInfo?.color ?? 'var(--muted-foreground)' }} />
                                             <span className="text-xs font-bold" style={{ color: stageInfo?.color }}>{stageInfo?.label}</span>
                                         </div>
-                                        <span className="text-xs font-black" style={{ color: isOpen ? '#3b82f6' : 'var(--foreground)' }}>
+                                        <span className="text-xs font-bold" style={{ color: isOpen ? '#3b82f6' : 'var(--foreground)' }}>
                                             {isOpen ? '⏱ In progress' : durText}
                                         </span>
                                     </div>

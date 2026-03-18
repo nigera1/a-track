@@ -18,7 +18,7 @@ function CustomTooltip({ active, payload, label }: any) {
     if (!active || !payload?.length) return null;
     return (
         <div className="neo-card p-3 text-sm">
-            <div className="font-black mb-1 uppercase text-xs tracking-wide">{label}</div>
+            <div className="font-bold mb-1 uppercase text-xs tracking-wide">{label}</div>
             {payload.map((p: any, i: number) => (
                 <div key={i} style={{ color: p.color, fontWeight: 700 }}>{p.name}: {typeof p.value === 'number' && p.value > 100 ? `€${p.value.toLocaleString()}` : p.value}</div>
             ))}
@@ -117,7 +117,7 @@ export default function AnalyticsPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-tight">Analytics</h1>
+                        <h1 className="text-2xl font-bold uppercase tracking-tight">Analytics</h1>
                         <p className="text-sm font-semibold" style={{ color: '#888' }}>Workshop performance overview</p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -148,7 +148,7 @@ export default function AnalyticsPage() {
                         <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid var(--border)' }}>
                             {([30, 90, 365] as const).map((r, i) => (
                                 <button key={r} onClick={() => setRange(r)}
-                                    className="px-3 py-1.5 text-xs font-black uppercase tracking-wide transition-all"
+                                    className="px-3 py-1.5 text-xs font-bold uppercase tracking-wide transition-all"
                                     style={{ background: range === r ? '#111' : '#fff', color: range === r ? '#fff' : '#111', borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}>
                                     {r === 365 ? '1y' : `${r}d`}
                                 </button>
@@ -165,9 +165,9 @@ export default function AnalyticsPage() {
                         { label: 'Avg. Order', value: formatCurrency(avgPrice), color: '#000' },
                         { label: 'Turnaround', value: `${avgTurnaround}d`, color: 'var(--red)' },
                     ].map((kpi, i) => (
-                        <div key={kpi.label} className="neo-card p-4" style={{ borderLeft: `6px solid ${kpi.color}` }}>
+                        <div key={kpi.label} className="neo-card p-4 pl-5" style={{ borderLeft: `4px solid ${kpi.color}` }}>
                             <div className="section-label mb-1" style={{ color: kpi.color === '#000' ? 'var(--foreground)' : kpi.color }}>{kpi.label}</div>
-                            <div className="text-2xl font-black">{kpi.value}</div>
+                            <div className="text-2xl font-bold">{kpi.value}</div>
                             {kpi.sub && <div className="text-xs font-semibold mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{kpi.sub}</div>}
                         </div>
                     ))}
@@ -275,10 +275,10 @@ export default function AnalyticsPage() {
                                     onMouseEnter={e => (e.currentTarget.style.background = '#fafafa')}
                                     onMouseLeave={e => (e.currentTarget.style.background = '')}>
                                     <td className="px-4 py-2.5 font-semibold flex items-center gap-2">
-                                        <span className="text-xs font-black" style={{ color: ['var(--gold)', 'var(--blue)', 'var(--red)'][i] ?? 'var(--muted-foreground)' }}>#{i + 1}</span> {c.name}
+                                        <span className="text-xs font-bold" style={{ color: ['var(--gold)', 'var(--blue)', 'var(--red)'][i] ?? 'var(--muted-foreground)' }}>#{i + 1}</span> {c.name}
                                     </td>
                                     <td className="px-4 py-2.5 font-bold">{c.orders}</td>
-                                    <td className="px-4 py-2.5 font-black">{formatCurrency(c.spend)}</td>
+                                    <td className="px-4 py-2.5 font-bold">{formatCurrency(c.spend)}</td>
                                 </tr>
                             ))}
                         </tbody>

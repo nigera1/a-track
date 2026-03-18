@@ -26,7 +26,7 @@ function StatCard({ label, value, sub, color }: { label: string; value: string |
 
 function ProcessBar({ currentStatus }: { currentStatus: OrderStatus }) {
     const currentIndex = ORDER_STAGES.findIndex(s => s.key === currentStatus);
-    if (currentStatus === 'completed') return <span className="font-black text-[10px] uppercase tracking-wider" style={{ color: 'var(--blue)' }}>Completed</span>;
+    if (currentStatus === 'completed') return <span className="font-bold text-[10px] uppercase tracking-wider" style={{ color: 'var(--blue)' }}>Completed</span>;
     
     return (
         <div className="flex items-center gap-1" title={getStatusLabel(currentStatus)}>

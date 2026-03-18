@@ -59,7 +59,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {/* Logo */}
                 <div className="sidebar-logo">
                     <Link href="/dashboard" className="flex items-center gap-2 overflow-hidden">
-                        <div className="w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0"
+                        <div className="w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0"
                             style={{ background: 'var(--red)', color: '#fff' }}>A</div>
                         <div className="sidebar-label">
                             <div className="font-bold text-sm leading-tight whitespace-nowrap" style={{ color: 'var(--foreground)' }}>A-Track</div>
@@ -149,7 +149,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         {drawerOpen ? <X style={{ width: 20, height: 20, color: 'var(--foreground)' }} /> : <Menu style={{ width: 20, height: 20, color: 'var(--foreground)' }} />}
                     </button>
                     <Link href="/dashboard" className="flex items-center gap-2">
-                        <div className="w-6 h-6 flex items-center justify-center font-black text-[10px]"
+                        <div className="w-6 h-6 flex items-center justify-center font-bold text-[10px]"
                             style={{ background: 'var(--red)', color: '#fff' }}>A</div>
                         <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>A-Track</span>
                     </Link>
@@ -168,7 +168,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         {/* Drawer header */}
                         <div className="flex items-center justify-between px-4 h-14 border-b" style={{ borderColor: 'var(--border)', borderBottomWidth: 'var(--border-width)' }}>
                             <div className="flex items-center gap-2">
-                                <div className="w-7 h-7 flex items-center justify-center font-black text-xs"
+                                <div className="w-7 h-7 flex items-center justify-center font-bold text-xs"
                                     style={{ background: 'var(--red)', color: '#fff' }}>A</div>
                                 <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>A-Track Backoffice</span>
                             </div>

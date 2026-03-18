@@ -52,8 +52,8 @@ export default function LoginPage() {
         <div className="min-h-screen min-h-[100dvh] flex flex-col bg-slate-50 dark:bg-slate-950">
             {/* Top bar */}
             <div className="px-6 py-4 flex items-center border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                <div className="w-8 h-8 flex items-center justify-center font-black text-sm flex-shrink-0 bg-red-500 text-white mr-2">A</div>
-                <span className="font-black text-slate-900 dark:text-white italic text-xl tracking-tight">A-TRACK</span>
+                <div className="w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0 bg-red-500 text-white mr-2">A</div>
+                <span className="font-bold text-slate-900 dark:text-white italic text-xl tracking-tight">A-TRACK</span>
                 <span className="ml-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 flex-1">Order Tracking</span>
                 
                 <button onClick={toggleTheme} className="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Toggle Theme">
@@ -64,7 +64,7 @@ export default function LoginPage() {
             {/* Center card */}
             <div className="flex-1 flex items-center justify-center p-6">
                 <div className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-[12px] border border-slate-200 dark:border-slate-800 shadow-sm p-6 md:p-8">
-                    <h1 className="text-2xl font-black text-slate-900 dark:text-white mb-1">
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
                         {mode === 'login' ? 'WELCOME BACK' : 'CREATE ACCOUNT'}
                     </h1>
                     <p className="text-sm mb-6 text-slate-500 dark:text-slate-400">
@@ -74,7 +74,7 @@ export default function LoginPage() {
                     {/* Toggle */}
                     <div className="flex rounded-[8px] p-1 mb-6 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                         {(['login', 'register'] as const).map(m => (
-                            <button key={m} onClick={() => setMode(m)} className="flex-1 py-1.5 rounded-[6px] text-xs font-black uppercase tracking-wide transition-all"
+                            <button key={m} onClick={() => setMode(m)} className="flex-1 py-1.5 rounded-[6px] text-xs font-bold uppercase tracking-wide transition-all"
                                 style={{ 
                                     background: mode === m ? 'var(--primary)' : 'transparent', 
                                     color: mode === m ? '#fff' : 'var(--muted-foreground)',

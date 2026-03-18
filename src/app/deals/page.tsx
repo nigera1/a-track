@@ -55,7 +55,7 @@ export default function DealsPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-tight">Deals Tracking</h1>
+                        <h1 className="text-2xl font-bold uppercase tracking-tight">Deals Tracking</h1>
                         <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Pre-production pipeline</p>
                     </div>
                     <button onClick={() => setShowForm(!showForm)} className="neo-btn neo-btn-primary">
@@ -66,20 +66,20 @@ export default function DealsPage() {
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div className="neo-card p-4">
-                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Total Deals</div>
-                        <div className="text-xl font-black text-slate-900 dark:text-white">{totalDeals}</div>
+                        <div className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Total Deals</div>
+                        <div className="text-xl font-bold text-slate-900 dark:text-white">{totalDeals}</div>
                     </div>
-                    <div className="neo-card p-4 border-l-4 border-blue-500">
-                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Active</div>
-                        <div className="text-xl font-black text-slate-900 dark:text-white">{activeDeals}</div>
+                    <div className="neo-card p-4 pl-5 border-l-4 border-blue-500">
+                        <div className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Active</div>
+                        <div className="text-xl font-bold text-slate-900 dark:text-white">{activeDeals}</div>
                     </div>
-                    <div className="neo-card p-4 border-l-4 border-emerald-500">
-                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Won</div>
-                        <div className="text-xl font-black text-slate-900 dark:text-white">{wonDeals}</div>
+                    <div className="neo-card p-4 pl-5 border-l-4 border-emerald-500">
+                        <div className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Won</div>
+                        <div className="text-xl font-bold text-slate-900 dark:text-white">{wonDeals}</div>
                     </div>
-                    <div className="neo-card p-4 border-l-4 border-amber-500">
-                        <div className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Pipeline Val.</div>
-                        <div className="text-xl font-black text-slate-900 dark:text-white">€{pipelineValue.toLocaleString()}</div>
+                    <div className="neo-card p-4 pl-5 border-l-4 border-amber-500">
+                        <div className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Pipeline Val.</div>
+                        <div className="text-xl font-bold text-slate-900 dark:text-white">€{pipelineValue.toLocaleString()}</div>
                     </div>
                 </div>
 
@@ -122,12 +122,12 @@ export default function DealsPage() {
                         return (
                             <div key={stage.key} className="flex flex-col neo-card bg-slate-50/50 dark:bg-slate-900/50 p-3">
                                 {/* Column header */}
-                                <div className="rounded-lg p-3 mb-3 flex items-center justify-between"
+                                <div className="rounded-lg p-3 pl-4 mb-3 flex items-center justify-between"
                                     style={{ border: `1px solid ${stage.color}30`, background: `${stage.color}08`, borderLeft: `3px solid ${stage.color}` }}>
-                                    <span className="text-xs font-black uppercase tracking-wider" style={{ color: stage.color }}>
+                                    <span className="text-xs font-bold uppercase tracking-wider" style={{ color: stage.color }}>
                                         {stage.label}
                                     </span>
-                                    <span className="text-[11px] font-black px-1.5 py-0.5 rounded" style={{ background: stage.color, color: '#fff' }}>
+                                    <span className="text-[11px] font-bold px-1.5 py-0.5 rounded" style={{ background: stage.color, color: '#fff' }}>
                                         {stageDeals.length}
                                     </span>
                                 </div>
@@ -148,7 +148,7 @@ export default function DealsPage() {
                                                 <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">{customer?.name || 'Unknown'}</div>
                                                 
                                                 {deal.estimated_value != null && (
-                                                    <div className="flex items-center gap-1 text-sm font-black mt-1 text-slate-900 dark:text-white">
+                                                    <div className="flex items-center gap-1 text-sm font-bold mt-1 text-slate-900 dark:text-white">
                                                         <DollarSign style={{ width: 12, height: 12, color: stage.color }} />
                                                         €{deal.estimated_value.toLocaleString()}
                                                     </div>
@@ -170,7 +170,7 @@ export default function DealsPage() {
                                                             </a>
                                                         )}
                                                         <select 
-                                                            className="text-[10px] uppercase font-black px-1.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 cursor-pointer border border-slate-200 dark:border-slate-700"
+                                                            className="text-[10px] uppercase font-bold px-1.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 cursor-pointer border border-slate-200 dark:border-slate-700"
                                                             value={deal.status}
                                                             onChange={(e) => updateDeal(deal.id, { status: e.target.value as DealStatus })}
                                                         >

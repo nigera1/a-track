@@ -98,7 +98,7 @@ export default function SuppliersPage() {
 
                 {/* Add form */}
                 {showAdd && (
-                    <div className="neo-card p-5" style={{ borderLeft: '6px solid var(--blue)' }}>
+                    <div className="neo-card p-5 pl-6" style={{ borderLeft: '4px solid var(--blue)' }}>
                         <div className="section-label flex items-center gap-2">
                             <Building2 style={{ width: 13, height: 13, color: 'var(--blue)' }} /> New Supplier
                         </div>
@@ -120,7 +120,7 @@ export default function SuppliersPage() {
                             const isEditing = editingId === s.id;
                             
                             return (
-                                <div key={s.id} className="neo-card p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" style={{ borderLeft: `6px solid ${color}` }}>
+                                <div key={s.id} className="neo-card p-5 pl-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800" style={{ borderLeft: `4px solid ${color}` }}>
                                     <div className="flex items-start justify-between gap-4 flex-wrap">
                                         <div className="flex items-center gap-3">
                                             <div className="w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-md">

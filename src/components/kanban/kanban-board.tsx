@@ -23,11 +23,11 @@ function KanbanCard({ order, isDragging = false }: { order: Order; isDragging?: 
             <div className="kanban-card p-3" style={{ opacity: isDragging ? 0.4 : 1 }}>
                 <div className="flex items-start justify-between gap-2 mb-2">
                     <div>
-                        <div className="text-[11px] font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">{order.order_number}</div>
+                        <div className="text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">{order.order_number}</div>
                         <div className="font-bold text-sm mt-0.5 text-slate-900 dark:text-white">{customer?.name ?? 'Unknown'}</div>
                     </div>
                     {order.item_type && (
-                        <span className="text-[10px] font-black uppercase px-2 py-0.5" style={{ background: 'var(--muted)', border: '2px solid var(--border)', color: 'var(--foreground)', flexShrink: 0 }}>
+                        <span className="text-[10px] font-bold uppercase px-2 py-0.5" style={{ background: 'var(--muted)', border: '2px solid var(--border)', color: 'var(--foreground)', flexShrink: 0 }}>
                             {order.item_type}
                         </span>
                     )}
@@ -103,10 +103,10 @@ export function KanbanBoard() {
                             {/* Column header */}
                             <div className="p-3 mb-3 flex items-center justify-between"
                                 style={{ border: `3px solid var(--border)`, borderBottomWidth: '6px', background: stage.color }}>
-                                <span className="text-[12px] font-black uppercase tracking-wider" style={{ color: 'var(--foreground)' }}>
+                                <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: 'var(--foreground)' }}>
                                     {stage.label}
                                 </span>
-                                <span className="text-[12px] font-black px-2 py-0.5" style={{ background: 'var(--foreground)', color: 'var(--background)' }}>
+                                <span className="text-[12px] font-bold px-2 py-0.5" style={{ background: 'var(--foreground)', color: 'var(--background)' }}>
                                     {stageOrders.length}
                                 </span>
                             </div>
