@@ -85,14 +85,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                                 background: 'var(--red)',
                                                 color: '#fff',
                                                 fontWeight: 900,
-                                                fontSize: 12,
-                                                minWidth: 20,
-                                                height: 20,
+                                                fontSize: 13,
+                                                minWidth: 22,
+                                                height: 22,
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 borderRadius: '50%',
-                                                boxShadow: '1px 1px 0px var(--background)',
+                                                boxShadow: '0 0 0 2px var(--card), 0 2px 6px rgba(0,0,0,0.4)',
                                             }}>{urgent}</span>
                                     )}
                                 </div>

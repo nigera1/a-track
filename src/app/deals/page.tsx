@@ -40,7 +40,7 @@ export default function DealsPage() {
         setShowForm(false);
     }
 
-    const inputCls = "w-full px-3 py-2 rounded-lg border text-sm";
+    const inputCls = "w-full px-4 py-2.5 rounded-lg border text-sm";
 
     const totalDeals = deals.length;
     const { activeDeals, wonDeals, pipelineValue } = useMemo(() => ({

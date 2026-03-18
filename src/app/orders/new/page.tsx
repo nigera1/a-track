@@ -29,7 +29,7 @@ function Field({ label, required, children }: { label: string; required?: boolea
     );
 }
 
-const inpClass = "w-full rounded-[6px] border px-3 py-[9px] text-[14px] focus:outline-none focus:border-blue-400 transition-colors appearance-none";
+const inpClass = "w-full rounded-[6px] border px-4 py-[9px] text-[14px] focus:outline-none focus:border-blue-400 transition-colors appearance-none";
 const inpStyle = { background: 'var(--input)', color: 'var(--foreground)', borderColor: 'var(--border)' };
 
 function SelectField({ label, required, options, value, onChange }: { label: string; required?: boolean; options: {value: string, label: string}[], value: string, onChange: (val: string) => void }) {
