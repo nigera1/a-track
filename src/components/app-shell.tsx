@@ -80,14 +80,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                 <div className="relative flex-shrink-0 flex items-center justify-center">
                                     <Icon style={{ width: 18, height: 18 }} />
                                     {item.href === '/dashboard' && urgent > 0 && (
-                                        <span className="absolute -top-1.5 -right-2 flex-shrink-0 badge-pulse"
+                                        <span className="absolute -top-2 -right-3 flex-shrink-0 badge-pulse"
                                             style={{
                                                 background: 'var(--red)',
                                                 color: '#fff',
                                                 fontWeight: 900,
-                                                fontSize: 10,
-                                                minWidth: 16,
-                                                height: 16,
+                                                fontSize: 12,
+                                                minWidth: 20,
+                                                height: 20,
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
@@ -188,7 +188,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                         <Icon style={{ width: 16, height: 16 }} />
                                         <span>{item.label}</span>
                                         {item.href === '/dashboard' && urgent > 0 && (
-                                            <span className="ml-auto text-[10px] px-1.5 py-0.5 font-bold"
+                                            <span className="ml-auto text-xs px-2 py-0.5 rounded-full font-bold"
                                                 style={{ background: 'var(--red)', color: '#fff', border: '1px solid var(--border)' }}>{urgent}</span>
                                         )}
                                     </Link>
