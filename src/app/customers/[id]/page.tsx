@@ -74,7 +74,7 @@ export default function CustomerDetailPage() {
                 {/* Profile card */}
                 <div className="neo-card p-6">
                     <div className="flex items-start gap-5">
-                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0"
+                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-xl font-bold flex-shrink-0"
                             style={{ background: 'var(--muted)', color: 'var(--muted-foreground)' }}>
                             {customer.name.split(' ').map(n => n[0]).join('')}
                         </div>
@@ -119,7 +119,7 @@ export default function CustomerDetailPage() {
                         { label: 'Lifetime Spend', value: formatCurrency(totalSpend), color: '#8b5cf6' },
                     ].map(stat => (
                         <div key={stat.label} className="neo-card p-4 text-center">
-                            <div className="text-2xl font-black" style={{ color: stat.color }}>{stat.value}</div>
+                            <div className="text-2xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
                             <div className="text-xs mt-1" style={{ color: 'var(--muted-foreground)' }}>{stat.label}</div>
                         </div>
                     ))}

@@ -8,13 +8,12 @@ import { toast } from 'sonner';
 import { LayoutDashboard, Package, Users, BarChart3, LogOut, Menu, X, Plus, ScanLine, Handshake, Building2, ChevronsLeft, ChevronsRight, Moon, Sun } from 'lucide-react';
 
 const NAV = [
-    { href: '/dashboard', label: 'Orders', icon: LayoutDashboard },
-    { href: '/orders', label: 'Order List', icon: Package },
-    { href: '/deals', label: 'Deals', icon: Handshake },
-    { href: '/customers', label: 'Customers', icon: Users },
+    { href: '/dashboard', label: 'Monitor', icon: LayoutDashboard },
+    { href: '/orders', label: 'Orders', icon: Package },
+    { href: '/deals', label: 'Pipeline', icon: Handshake },
+    { href: '/customers', label: 'Directory', icon: Users },
     { href: '/suppliers', label: 'Suppliers', icon: Building2 },
-    { href: '/analytics', label: 'Statistics', icon: BarChart3 },
-    { href: '/scan', label: 'Scan QR', icon: ScanLine },
+    { href: '/analytics', label: 'Intelligence', icon: BarChart3 },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -55,32 +54,38 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="flex min-h-screen min-h-[100dvh]" style={{ background: 'var(--background)' }}>
 
             {/* ── Desktop Sidebar (collapsible) ── */}
-            <aside className={`sidebar hidden md:flex flex-col flex-shrink-0 ${pinned ? 'sidebar-expanded' : 'sidebar-collapsed'}`}>
+            <aside
+                className={`sidebar hidden md:flex flex-col flex-shrink-0 ${pinned ? 'sidebar-expanded' : 'sidebar-collapsed'}`}
+                aria-label="Main navigation"
+            >
                 {/* Logo */}
                 <div className="sidebar-logo">
-                    <Link href="/dashboard" className="flex items-center gap-2 overflow-hidden">
-                        <div className="w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0"
-                            style={{ background: 'var(--red)', color: '#fff' }}>A</div>
+                    <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden group">
+                        <div className="w-8 h-8 flex items-center justify-center font-bold text-xs flex-shrink-0 transition-transform group-hover:rotate-12"
+                            style={{ background: 'var(--foreground)', color: 'var(--background)' }}>A</div>
                         <div className="sidebar-label">
-                            <div className="font-bold text-sm leading-tight whitespace-nowrap" style={{ color: 'var(--foreground)' }}>A-Track</div>
-                            <div className="text-[10px] font-medium whitespace-nowrap" style={{ color: 'var(--muted-foreground)' }}>Backoffice</div>
+                            <div className="font-bold text-sm tracking-tight whitespace-nowrap">A-TRACK</div>
+                            <div className="text-[9px] font-bold tracking-[0.1em] uppercase opacity-50 whitespace-nowrap">Atelier Systems</div>
                         </div>
                     </Link>
                 </div>
 
                 {/* Nav */}
-                <nav className="flex-1 px-2 py-2 flex flex-col gap-0.5">
+                <nav className="flex-1 px-2 py-2 flex flex-col gap-0.5" aria-label="Primary navigation">
                     {NAV.map(item => {
                         const Icon = item.icon;
                         const active = pathname.startsWith(item.href);
                         return (
                             <Link key={item.href} href={item.href}
                                 className={`sidebar-link ${active ? 'active' : ''}`}
-                                title={item.label}>
+                                title={item.label}
+                                aria-current={active ? 'page' : undefined}>
                                 <div className="relative flex-shrink-0 flex items-center justify-center">
-                                    <Icon style={{ width: 18, height: 18 }} />
+                                    <Icon style={{ width: 18, height: 18 }} aria-hidden="true" />
                                     {item.href === '/dashboard' && urgent > 0 && (
                                         <span className="absolute -top-2 -right-3 flex-shrink-0 badge-pulse"
+                                            aria-label={`${urgent} urgent order${urgent !== 1 ? 's' : ''} need attention`}
+                                            role="status"
                                             style={{
                                                 background: 'var(--red)',
                                                 color: '#fff',
@@ -104,12 +109,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
                 {/* Pin toggle */}
                 {/* Theme toggle */}
-                <button onClick={toggleTheme} className="sidebar-theme-btn" title={dark ? 'Switch to light' : 'Switch to dark'}>
+                <button onClick={toggleTheme} className="sidebar-theme-btn" style={{ border: 'none', background: 'transparent' }} title={dark ? 'Switch to light' : 'Switch to dark'}>
                     {dark
-                        ? <Sun style={{ width: 16, height: 16 }} className="flex-shrink-0" />
-                        : <Moon style={{ width: 16, height: 16 }} className="flex-shrink-0" />
+                        ? <Sun style={{ width: 14, height: 14 }} className="flex-shrink-0" />
+                        : <Moon style={{ width: 14, height: 14 }} className="flex-shrink-0" />
                     }
-                    <span className="sidebar-label">{dark ? 'Light' : 'Dark'}</span>
+                    <span className="sidebar-label">{dark ? 'Light Appearance' : 'Dark Appearance'}</span>
                 </button>
 
                 {/* Pin toggle */}
@@ -125,28 +130,33 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </button>
 
                 {/* User + Logout */}
-                <div className="sidebar-footer">
-                    <div className="flex items-center gap-2.5 overflow-hidden">
-                        <div className="w-8 h-8 flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-                            style={{ background: 'var(--gold)', color: '#000' }}>
+                <div className="sidebar-footer" style={{ borderTop: 'none' }}>
+                    <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="w-8 h-8 flex items-center justify-center text-[10px] font-bold flex-shrink-0"
+                            style={{ background: 'var(--muted)', color: 'var(--foreground)', border: '1px solid var(--border)' }}>
                             {initials}
                         </div>
                         <div className="sidebar-label flex-1 min-w-0">
-                            <div className="text-sm font-semibold truncate" style={{ color: 'var(--foreground)' }}>{currentUser.name}</div>
-                            <div className="text-[11px]" style={{ color: 'var(--muted-foreground)' }}>Backoffice</div>
+                            <div className="text-xs font-bold truncate">{currentUser.name}</div>
+                            <div className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Operator</div>
                         </div>
                     </div>
-                    <button onClick={doLogout} className="sidebar-logout sidebar-label" title="Sign out">
+                    <button onClick={doLogout} className="sidebar-logout sidebar-label" title="Sign out" style={{ marginLeft: 'auto' }}>
                         <LogOut style={{ width: 14, height: 14 }} />
                     </button>
                 </div>
             </aside>
 
             {/* ── Mobile Top Bar + Drawer ── */}
-            <div className="md:hidden fixed top-0 left-0 right-0 z-50 mobile-topbar">
+            <div className="md:hidden fixed top-0 left-0 right-0 z-50 mobile-topbar" role="banner">
                 <div className="flex items-center justify-between px-4 h-12">
-                    <button onClick={() => setDrawerOpen(!drawerOpen)} className="p-1.5 -ml-1.5 transition-colors">
-                        {drawerOpen ? <X style={{ width: 20, height: 20, color: 'var(--foreground)' }} /> : <Menu style={{ width: 20, height: 20, color: 'var(--foreground)' }} />}
+                    <button
+                        onClick={() => setDrawerOpen(!drawerOpen)}
+                        className="p-1.5 -ml-1.5 transition-colors"
+                        aria-expanded={drawerOpen}
+                        aria-controls="mobile-drawer"
+                        aria-label={drawerOpen ? 'Close navigation menu' : 'Open navigation menu'}>
+                        {drawerOpen ? <X style={{ width: 20, height: 20, color: 'var(--foreground)' }} aria-hidden="true" /> : <Menu style={{ width: 20, height: 20, color: 'var(--foreground)' }} aria-hidden="true" />}
                     </button>
                     <Link href="/dashboard" className="flex items-center gap-2">
                         <div className="w-6 h-6 flex items-center justify-center font-bold text-[10px]"
@@ -163,8 +173,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {/* ── Mobile Drawer Overlay ── */}
             {drawerOpen && (
                 <>
-                    <div className="md:hidden fixed inset-0 bg-black/30 z-40" onClick={() => setDrawerOpen(false)} />
-                    <div className="md:hidden fixed left-0 top-0 bottom-0 w-[260px] z-50 shadow-xl flex flex-col drawer-slide-in" style={{ background: 'var(--card)' }}>
+                    <div className="md:hidden fixed inset-0 bg-black/30 z-40" onClick={() => setDrawerOpen(false)} aria-hidden="true" />
+                    <div id="mobile-drawer" className="md:hidden fixed left-0 top-0 bottom-0 w-[260px] z-50 shadow-xl flex flex-col drawer-slide-in" style={{ background: 'var(--card)' }} role="dialog" aria-modal="true" aria-label="Navigation menu">
                         {/* Drawer header */}
                         <div className="flex items-center justify-between px-4 h-14 border-b" style={{ borderColor: 'var(--border)', borderBottomWidth: 'var(--border-width)' }}>
                             <div className="flex items-center gap-2">
@@ -205,9 +215,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                             <button onClick={() => {
                                 const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
                                 document.documentElement.setAttribute('data-theme', newTheme);
-                                localStorage.setItem('theme', newTheme);
+                                // Use same key as desktop toggle for consistency
+                                localStorage.setItem('a-track-theme', newTheme);
+                                setDark(newTheme === 'dark');
                             }} className="sidebar-theme-btn w-full justify-between" title="Toggle theme (Light/Dark)">
-                                <span className="flex items-center gap-2"><div style={{ width: 12, height: 12, borderRadius: '50%', border: '1px solid currentColor', background: 'var(--foreground)' }} /> Theme</span>
+                                <span className="flex items-center gap-2"><div style={{ width: 12, height: 12, borderRadius: '50%', border: '1px solid currentColor', background: 'var(--foreground)' }} aria-hidden="true" /> Theme</span>
                             </button>
                             <div className="flex items-center gap-2.5 mt-2 pt-2 border-t" style={{ borderColor: 'var(--border)' }}>
                                 <div className="w-8 h-8 flex items-center justify-center text-[11px] font-bold"
@@ -229,7 +241,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
             {/* ── Main Content ── */}
             <div className="flex-1 flex flex-col min-w-0">
-                <main className="flex-1 overflow-y-auto overflow-x-hidden">
+                <main id="main-content" className="flex-1 overflow-y-auto overflow-x-hidden" tabIndex={-1}>
                     <div className="main-content page-enter pt-14 md:pt-0">
                         {children}
                     </div>
@@ -239,10 +251,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <footer className="no-print border-t" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
                     <div className="main-content py-3 flex items-center justify-between">
                         <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted-foreground)' }}>
-                            © {new Date().getFullYear()} A-Track · Jewelry Workshop
+                            © {new Date().getFullYear()} A-Track · Atelier Systems
                         </span>
-                        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', color: 'var(--muted-foreground)', opacity: 0.6 }}>
-                            v1.0 POC
+                        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', color: 'var(--muted-foreground)', opacity: 0.5 }}>
+                            Powered by A-Track
                         </span>
                     </div>
                 </footer>

@@ -40,7 +40,7 @@ export default function CustomersPage() {
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
-                        <h1 className="text-2xl font-black uppercase tracking-normal">Customers</h1>
+                        <h1 className="text-2xl font-bold uppercase tracking-normal">Customers</h1>
                         <p className="text-sm font-semibold" style={{ color: '#888' }}>{customers.length} clients</p>
                     </div>
                     <button onClick={() => setShowForm(!showForm)} className="neo-btn neo-btn-primary">
@@ -96,12 +96,12 @@ export default function CustomersPage() {
                                 {/* Header */}
                                 <div className="flex items-start justify-between">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded flex items-center justify-center text-xs font-black flex-shrink-0"
+                                        <div className="w-9 h-9 rounded flex items-center justify-center text-xs font-bold flex-shrink-0"
                                             style={{ background: 'var(--muted)', color: 'var(--muted-foreground)' }}>
                                             {customer.name.split(' ').map(n => n[0]).join('')}
                                         </div>
                                         <div>
-                                            <div className="font-black text-sm">{customer.name}</div>
+                                            <div className="font-bold text-sm">{customer.name}</div>
                                             <div className="text-xs mt-0.5" style={{ color: '#888', fontSize: '0.65rem' }}>Since {formatDate(customer.created_at)}</div>
                                         </div>
                                     </div>
@@ -118,15 +118,15 @@ export default function CustomersPage() {
                                 {/* Stats */}
                                 <div className="flex gap-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
                                     <div className="flex-1 text-center">
-                                        <div className="text-sm font-black">{customerOrders.length}</div>
+                                        <div className="text-sm font-bold">{customerOrders.length}</div>
                                         <div className="section-label" style={{ color: 'var(--muted-foreground)' }}>Orders</div>
                                     </div>
                                     <div className="flex-1 text-center">
-                                        <div className="text-sm font-black">{activeOrders}</div>
+                                        <div className="text-sm font-bold">{activeOrders}</div>
                                         <div className="section-label" style={{ color: 'var(--muted-foreground)' }}>Active</div>
                                     </div>
                                     <div className="flex-1 text-center">
-                                        <div className="text-sm font-black" style={{ color: '#22c55e' }}>€{(totalSpend / 1000).toFixed(1)}k</div>
+                                        <div className="text-sm font-bold" style={{ color: '#22c55e' }}>€{(totalSpend / 1000).toFixed(1)}k</div>
                                         <div className="section-label" style={{ color: 'var(--muted-foreground)' }}>Spent</div>
                                     </div>
                                 </div>

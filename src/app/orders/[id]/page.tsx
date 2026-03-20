@@ -5,7 +5,11 @@ import { useStore } from '@/lib/store';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { ArrowLeft, Edit3, Save, X, Trash2, Gem, ChevronRight, Printer, QrCode, Clock, Building2, Package, FileText } from 'lucide-react';
+import { 
+    ChevronLeft, ChevronRight, Edit3, Trash2, Printer, Save, X, Plus, 
+    AlertTriangle, Scale, Gem, Clock, Timer, CheckCircle2, 
+    QrCode, FileText, Package, Building2 
+} from 'lucide-react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 const QRCodeSVG = dynamic(() => import('qrcode.react').then(mod => mod.QRCodeSVG), { ssr: false });
@@ -78,13 +82,14 @@ export default function OrderDetailPage() {
 
     const inputCls = "w-full px-3 py-2 rounded-lg border text-sm";
     const inputStyle = { border: '1px solid var(--border)', background: 'var(--input)' };
-    const field = (label: string, value: React.ReactNode) => (
-        <div>
-            <div className="section-label mb-1">{label}</div>
-            <div className="text-sm font-semibold">{value ?? '—'}</div>
-        </div>
-    );
-
+    function specTile(label: string, value: React.ReactNode) {
+        return (
+            <div className="flex flex-col gap-1">
+                <div className="text-[10px] font-bold uppercase tracking-widest opacity-40">{label}</div>
+                <div className="text-[13px] font-bold tracking-tight">{value || '—'}</div>
+            </div>
+        );
+    }
     const toggleMaterial = (m: MaterialType) => {
         const cur = editData.materials ?? [];
         setEditData(d => ({ ...d, materials: cur.includes(m) ? cur.filter(x => x !== m) : [...cur, m] }));
@@ -113,7 +118,7 @@ export default function OrderDetailPage() {
                 {/* Back + Actions */}
                 <div className="flex items-center justify-between no-print">
                     <Link href="/orders" className="flex items-center gap-2 text-sm font-bold hover:opacity-80 transition-opacity" style={{ color: 'var(--muted-foreground)' }}>
-                        <ArrowLeft style={{ width: 16, height: 16 }} /> Orders
+                        <ChevronLeft style={{ width: 16, height: 16 }} /> Monitor
                     </Link>
                     <div className="flex items-center gap-2 flex-wrap">
                         {/* Print & QR always visible */}
@@ -212,25 +217,35 @@ export default function OrderDetailPage() {
                     </div>
                 </div>
 
-                {/* Stage Timeline */}
-                <div className="neo-card p-5 no-print">
-                    <div className="section-label mb-4">Production Stage — click to move</div>
-                    <div className="flex gap-1 overflow-x-auto pb-1">
+                {/* Status Stepper */}
+                <div className="neo-card p-6 no-print overflow-hidden">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Production Pipeline</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest text-blue-500">{getStatusLabel(order.status)}</div>
+                    </div>
+                    <div className="relative flex justify-between items-start pt-2">
+                        {/* Background line */}
+                        <div className="absolute top-[13px] left-[20px] right-[20px] h-[2px] bg-border transition-all" />
+                        
                         {ORDER_STAGES.map((stage, i) => {
                             const isPast = i < currentStageIndex;
                             const isCurrent = i === currentStageIndex;
                             return (
-                                <button key={stage.key} onClick={() => { updateOrderStatus(id, stage.key); toast.success(`Moved to ${stage.label}`); }}
-                                    className="flex-1 min-w-[70px] flex flex-col items-center gap-2 py-3 px-1 text-center transition-all"
-                                    title={`Move to ${stage.label}`}
-                                    style={{
-                                        background: isCurrent ? stage.color : isPast ? 'var(--foreground)' : 'var(--card)',
-                                        border: `3px solid var(--foreground)`,
-                                        cursor: 'pointer',
-                                    }}>
-                                    <div className="text-[11px] font-bold uppercase leading-tight"
-                                        style={{ color: isCurrent || isPast ? 'var(--background)' : 'var(--foreground)' }}>
-                                        {stage.label}
+                                <button key={stage.key} 
+                                    onClick={() => { updateOrderStatus(id, stage.key); toast.success(`Moved to ${stage.label}`); }}
+                                    className="relative z-10 flex flex-col items-center group flex-1"
+                                    title={`Move to ${stage.label}`}>
+                                    <div className={`w-7 h-7 rounded-sm border-2 flex items-center justify-center transition-all ${
+                                        isCurrent ? 'bg-primary border-primary scale-110' : 
+                                        isPast ? 'bg-foreground border-foreground' : 'bg-card border-border'
+                                    }`}>
+                                        {isPast && <div className="w-1.5 h-1.5 bg-background rotate-45" />}
+                                        {isCurrent && <div className="w-1.5 h-1.5 bg-background rounded-full animate-pulse" />}
+                                    </div>
+                                    <div className={`mt-3 text-[9px] font-bold uppercase tracking-wide text-center px-1 transition-opacity ${
+                                        isCurrent ? 'opacity-100' : 'opacity-40 group-hover:opacity-100'
+                                    }`}>
+                                        {stage.label.split(' ')[0]}
                                     </div>
                                 </button>
                             );
@@ -238,81 +253,101 @@ export default function OrderDetailPage() {
                     </div>
                 </div>
 
-                {/* Customer */}
-                <div className="neo-card p-5">
-                    <div className="section-label mb-3">Customer</div>
-                    {customer ? (
-                        <Link href={`/customers/${customer.id}`} className="flex items-center justify-between group no-print">
-                            <div>
-                                <div className="font-bold text-base">{customer.name}</div>
-                                <div className="text-sm font-semibold mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{customer.phone}</div>
-                                {customer.email && <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{customer.email}</div>}
-                            </div>
-                            <ChevronRight style={{ width: 16, height: 16, color: '#3b82f6' }} className="group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    ) : <div style={{ color: 'var(--muted-foreground)' }}>No customer assigned</div>}
-                </div>
+                {/* Main Data Split */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    {/* Left Column: Customer & Basic Specs */}
+                    <div className="md:col-span-2 flex flex-col gap-5">
+                        {/* Customer */}
+                        <div className="neo-card p-6">
+                            <div className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-4">Client Representative</div>
+                            {customer ? (
+                                <Link href={`/customers/${customer.id}`} className="flex items-center justify-between group no-print">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-10 h-10 flex items-center justify-center font-bold text-xs"
+                                            style={{ background: 'var(--muted)', border: '1px solid var(--border)' }}>
+                                            {customer.name.split(' ').map(n => n[0]).join('')}
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-sm tracking-tight">{customer.name}</div>
+                                            <div className="text-[11px] font-bold opacity-50 uppercase tracking-wider mt-0.5">{customer.phone}</div>
+                                        </div>
+                                    </div>
+                                    <ChevronRight style={{ width: 14, height: 14 }} className="opacity-30 group-hover:opacity-100 transition-all" />
+                                </Link>
+                            ) : <div className="text-sm font-bold opacity-30">No client assigned</div>}
+                        </div>
 
-                {/* Item Details */}
-                <div className="neo-card p-5">
-                    <div className="section-label mb-4">Item Details</div>
-                    {!editing ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                            {field('Item Type', ITEM_TYPE_LABELS[order.item_type])}
-                            {field('Item ID', order.item_id)}
-                            {field('Materials', order.materials?.map(m => MATERIAL_LABELS[m]).join(', ') || '—')}
-                            {field('Start Weight', order.starting_weight ? `${order.starting_weight} g` : '—')}
-                            {field('End Weight', order.end_weight ? `${order.end_weight} g` : '—')}
-                            {field('Price', formatCurrency(order.price))}
-                            {field('Due Date', formatDate(order.due_date))}
-                            {order.notes && <div className="sm:col-span-2 md:col-span-3">{field('Notes', order.notes)}</div>}
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className="section-label mb-1.5 block">Item Type</label>
-                                <select value={editData.item_type} onChange={e => setEditData(d => ({ ...d, item_type: e.target.value as ItemType }))} className={inputCls} style={inputStyle}>
-                                    {Object.entries(ITEM_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="section-label mb-1.5 block">Item ID</label>
-                                <input value={editData.item_id ?? ''} onChange={e => setEditData(d => ({ ...d, item_id: e.target.value }))} className={inputCls} style={inputStyle} />
-                            </div>
-                            <div>
-                                <label className="section-label mb-1.5 block">Start Weight (g)</label>
-                                <input type="number" step="0.01" value={editData.starting_weight ?? ''} onChange={e => setEditData(d => ({ ...d, starting_weight: parseFloat(e.target.value) || undefined }))} className={inputCls} style={inputStyle} />
-                            </div>
-                            <div>
-                                <label className="section-label mb-1.5 block">End Weight (g)</label>
-                                <input type="number" step="0.01" value={editData.end_weight ?? ''} onChange={e => setEditData(d => ({ ...d, end_weight: parseFloat(e.target.value) || undefined }))} className={inputCls} style={inputStyle} />
-                            </div>
-                            <div>
-                                <label className="section-label mb-1.5 block">Price (€)</label>
-                                <input type="number" step="0.01" value={editData.price ?? ''} onChange={e => setEditData(d => ({ ...d, price: parseFloat(e.target.value) || undefined }))} className={inputCls} style={inputStyle} />
-                            </div>
-                            <div>
-                                <label className="section-label mb-1.5 block">Due Date</label>
-                                <input type="date" value={editData.due_date ?? ''} onChange={e => setEditData(d => ({ ...d, due_date: e.target.value }))} className={inputCls} style={inputStyle} />
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label className="section-label mb-1.5 block">Materials</label>
-                                <div className="flex flex-wrap gap-2">
-                                    {(Object.keys(MATERIAL_LABELS) as MaterialType[]).map(m => (
-                                        <button key={m} type="button" onClick={() => toggleMaterial(m)} className="px-3 py-1 rounded-lg text-sm font-bold transition-all"
-                                            style={{ background: editData.materials?.includes(m) ? 'var(--foreground)' : 'var(--muted)', color: editData.materials?.includes(m) ? 'var(--background)' : 'var(--muted-foreground)', border: '1px solid var(--border)' }}>
-                                            {MATERIAL_LABELS[m]}
-                                        </button>
-                                    ))}
+                        {/* Specs Grid */}
+                        <div className="neo-card p-6">
+                            <div className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-6">Technical Specifications</div>
+                            {!editing ? (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-8 gap-x-4">
+                                    {specTile('Reference', order.item_id || 'TBD')}
+                                    {specTile('Type', ITEM_TYPE_LABELS[order.item_type])}
+                                    {specTile('Materials', order.materials?.map(m => MATERIAL_LABELS[m]).join(', ') || 'N/A')}
+                                    {specTile('Start Wt.', order.starting_weight ? `${order.starting_weight}g` : 'TBD')}
+                                    {specTile('Final Wt.', order.end_weight ? `${order.end_weight}g` : 'TBD')}
+                                    {specTile('Delivery', formatDate(order.due_date))}
                                 </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {/* ... (keep editing inputs similarly but in the new layout) ... */}
+                                    <div>
+                                        <label className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1.5 block">Item Type</label>
+                                        <select value={editData.item_type} onChange={e => setEditData(d => ({ ...d, item_type: e.target.value as ItemType }))} style={{ fontSize: 13, fontWeight: 600 }}>
+                                            {Object.entries(ITEM_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1.5 block">Reference ID</label>
+                                        <input value={editData.item_id ?? ''} onChange={e => setEditData(d => ({ ...d, item_id: e.target.value }))} style={{ fontSize: 13, fontWeight: 600 }} />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1.5 block">Entry Weight (g)</label>
+                                        <input type="number" step="0.01" value={editData.starting_weight ?? ''} onChange={e => setEditData(d => ({ ...d, starting_weight: parseFloat(e.target.value) || undefined }))} style={{ fontSize: 13, fontWeight: 600 }} />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1.5 block">Exit Weight (g)</label>
+                                        <input type="number" step="0.01" value={editData.end_weight ?? ''} onChange={e => setEditData(d => ({ ...d, end_weight: parseFloat(e.target.value) || undefined }))} style={{ fontSize: 13, fontWeight: 600 }} />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1.5 block">Contract Price (€)</label>
+                                        <input type="number" step="0.01" value={editData.price ?? ''} onChange={e => setEditData(d => ({ ...d, price: parseFloat(e.target.value) || undefined }))} style={{ fontSize: 13, fontWeight: 600 }} />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1.5 block">Target Date</label>
+                                        <input type="date" value={editData.due_date ?? ''} onChange={e => setEditData(d => ({ ...d, due_date: e.target.value }))} style={{ fontSize: 13, fontWeight: 600 }} />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Right Column: QR & Notes */}
+                    <div className="flex flex-col gap-5">
+                        {/* QR Card */}
+                        <div className="neo-card p-6 flex flex-col items-center gap-4 text-center">
+                            <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Digital Passport</div>
+                            <div className="p-3 bg-white" style={{ border: '1px solid var(--border)' }}>
+                                <QRCodeSVG value={orderUrl || `order-${order.order_number}`} size={120} />
                             </div>
-                            <div className="sm:col-span-2">
-                                <label className="section-label mb-1.5 block">Notes</label>
-                                <textarea value={editData.notes ?? ''} onChange={e => setEditData(d => ({ ...d, notes: e.target.value }))} rows={3}
-                                    className="w-full px-3 py-2 rounded-lg text-sm resize-none" style={inputStyle} />
+                            <div className="text-[10px] font-mono font-bold py-1 px-3 border border-dashed border-border opacity-50">
+                                {order.order_number}
                             </div>
                         </div>
-                    )}
+
+                        {/* Financials / Notes */}
+                        <div className="neo-card p-6">
+                            <div className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-4">Contract Notes</div>
+                            <p className="text-xs leading-relaxed opacity-70">
+                                {order.notes || 'No project notes available for this order.'}
+                            </p>
+                            <div className="mt-8 pt-4 border-t border-dashed border-border">
+                                <div className="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-1">Contract Total</div>
+                                <div className="text-xl font-bold">{formatCurrency(order.price)}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Gemstones */}

@@ -101,7 +101,7 @@ export function KanbanBoard() {
                     return (
                         <div key={stage.key} className="flex flex-col min-w-[210px] flex-shrink-0">
                             {/* Column header */}
-                            <div className="p-3 mb-3 flex items-center justify-between"
+                            <div className="px-4 py-3 mb-3 flex items-center justify-between"
                                 style={{ border: `3px solid var(--border)`, borderBottomWidth: '6px', background: stage.color }}>
                                 <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: 'var(--foreground)' }}>
                                     {stage.label}
