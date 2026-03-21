@@ -6,8 +6,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Sun, Moon } from 'lucide-react';
 
-const inpClass = "w-full rounded-[6px] border border-slate-200 dark:border-slate-700 px-3 py-[9px] text-[14px] text-slate-800 dark:text-slate-100 focus:outline-none focus:border-[#1C7ED6] bg-white dark:bg-slate-800 transition-colors appearance-none";
-
 export default function LoginPage() {
     const [mode, setMode] = useState<'login' | 'register'>('login');
     const [name, setName] = useState('');
@@ -38,89 +36,93 @@ export default function LoginPage() {
         await new Promise(r => setTimeout(r, 300));
         if (mode === 'login') {
             const ok = login(email, password);
-            if (ok) { toast.success('Welcome back'); router.push('/dashboard'); }
-            else toast.error('Invalid credentials');
+            if (ok) { toast.success('Welkom terug'); router.push('/dashboard'); }
+            else toast.error('Ongeldige inloggegevens');
         } else {
             const ok = register(name, email, password, role);
-            if (ok) { toast.success('Account created'); router.push('/dashboard'); }
-            else toast.error('Email already in use');
+            if (ok) { toast.success('Account aangemaakt'); router.push('/dashboard'); }
+            else toast.error('E-mail al in gebruik');
         }
         setLoading(false);
     }
 
+    const inpClass = "w-full border px-3.5 py-2.5 text-[14px] transition-all appearance-none focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F]";
+    const inpLight = `${inpClass} bg-white border-[#e0e0e0] text-[#0A0A0A] placeholder-[#6C757D]`;
+    const inpDark = `${inpClass} bg-[#1a1a1a] border-[#2a2a2a] text-[#f0f0f0] placeholder-[#6C757D]`;
+
     return (
-        <div className="min-h-screen min-h-[100dvh] flex flex-col bg-slate-50 dark:bg-slate-950">
+        <div className="min-h-screen min-h-[100dvh] flex flex-col" style={{ background: 'var(--background)' }}>
             {/* Top bar */}
-            <div className="px-6 py-4 flex items-center border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                <div className="w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0 bg-red-500 text-white mr-2">A</div>
-                <span className="font-bold text-slate-900 dark:text-white italic text-xl tracking-normal">A-TRACK</span>
-                <span className="ml-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 flex-1">Order Tracking</span>
+            <div className="px-6 py-4 flex items-center border-b" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
+                <div className="w-8 h-8 flex items-center justify-center font-bold text-sm flex-shrink-0 text-white mr-2" style={{ background: '#E07A5F', fontFamily: 'Montserrat, sans-serif', fontWeight: 800 }}>A</div>
+                <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 20, color: 'var(--foreground)', letterSpacing: '-0.02em' }}>A-TRACK</span>
+                <span className="ml-3 flex-1" style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-foreground)', fontFamily: 'Montserrat, sans-serif' }}>Atelier Systems</span>
                 
-                <button onClick={toggleTheme} className="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400" title="Toggle Theme">
+                <button onClick={toggleTheme} className="p-2 transition-colors" style={{ color: 'var(--muted-foreground)' }} title="Thema wisselen">
                     {dark ? <Sun style={{ width: 18, height: 18 }} /> : <Moon style={{ width: 18, height: 18 }} />}
                 </button>
             </div>
 
             {/* Center card */}
             <div className="flex-1 flex items-center justify-center p-6">
-                <div className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-[12px] border border-slate-200 dark:border-slate-800 shadow-sm p-6 md:p-8">
-                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
-                        {mode === 'login' ? 'WELCOME BACK' : 'CREATE ACCOUNT'}
+                <div className="w-full max-w-sm p-6 md:p-8 border" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
+                    <h1 style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: 22, color: 'var(--foreground)', marginBottom: 4 }}>
+                        {mode === 'login' ? 'WELKOM TERUG' : 'ACCOUNT AANMAKEN'}
                     </h1>
-                    <p className="text-sm mb-6 text-slate-500 dark:text-slate-400">
-                        {mode === 'login' ? 'Sign in to your account' : 'Set up your workshop account'}
+                    <p className="text-sm mb-6" style={{ color: 'var(--muted-foreground)', fontFamily: 'Source Sans 3, sans-serif' }}>
+                        {mode === 'login' ? 'Log in op uw werkplaats' : 'Stel uw atelier account in'}
                     </p>
 
                     {/* Toggle */}
-                    <div className="flex rounded-[8px] p-1 mb-6 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    <div className="flex p-1 mb-6 border" style={{ borderColor: 'var(--border)', background: 'var(--muted)' }}>
                         {(['login', 'register'] as const).map(m => (
-                            <button key={m} onClick={() => setMode(m)} className="flex-1 py-1.5 rounded-[6px] text-xs font-bold uppercase tracking-wide transition-all"
+                            <button key={m} onClick={() => setMode(m)} className="flex-1 py-1.5 text-xs font-bold uppercase tracking-wide transition-all"
                                 style={{ 
-                                    background: mode === m ? 'var(--primary)' : 'transparent', 
-                                    color: mode === m ? '#fff' : 'var(--muted-foreground)',
-                                    boxShadow: mode === m ? '0 1px 2px rgba(0,0,0,0.1)' : 'none'
+                                    background: mode === m ? 'var(--foreground)' : 'transparent', 
+                                    color: mode === m ? 'var(--background)' : 'var(--muted-foreground)',
+                                    fontFamily: 'Montserrat, sans-serif',
                                 }}>
-                                {m === 'login' ? 'Sign In' : 'Register'}
+                                {m === 'login' ? 'Inloggen' : 'Registreren'}
                             </button>
                         ))}
                     </div>
 
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>
                         {mode === 'register' && (
                             <>
                                 <div>
-                                    <div className="text-[13px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Name</div>
-                                    <input value={name} onChange={e => setName(e.target.value)} required placeholder="Your name" className={inpClass} />
+                                    <label htmlFor="reg-name" className="text-[13px] font-bold mb-1.5 block" style={{ color: 'var(--foreground)' }}>Naam</label>
+                                    <input id="reg-name" value={name} onChange={e => setName(e.target.value)} required placeholder="Uw naam" className={inpLight} style={{ background: 'var(--input)', color: 'var(--foreground)', borderColor: 'var(--border)' }} />
                                 </div>
                                 <div>
-                                    <div className="text-[13px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Role</div>
-                                    <select value={role} onChange={e => setRole(e.target.value as any)} className={inpClass}>
+                                    <label htmlFor="reg-role" className="text-[13px] font-bold mb-1.5 block" style={{ color: 'var(--foreground)' }}>Rol</label>
+                                    <select id="reg-role" value={role} onChange={e => setRole(e.target.value as any)} className={inpLight} style={{ background: 'var(--input)', color: 'var(--foreground)', borderColor: 'var(--border)' }}>
                                         <option value="admin">Admin</option>
-                                        <option value="artisan">Artisan</option>
+                                        <option value="artisan">Ambachtsman</option>
                                     </select>
                                 </div>
                             </>
                         )}
                         <div>
-                            <div className="text-[13px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Email</div>
-                            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="you@example.com" className={inpClass} />
+                            <label htmlFor="login-email" className="text-[13px] font-bold mb-1.5 block" style={{ color: 'var(--foreground)' }}>E-mail</label>
+                            <input id="login-email" type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="u@voorbeeld.nl" className={inpLight} style={{ background: 'var(--input)', color: 'var(--foreground)', borderColor: 'var(--border)' }} />
                         </div>
                         <div>
-                            <div className="text-[13px] font-bold text-slate-700 dark:text-slate-300 mb-1.5">Password</div>
+                            <label htmlFor="login-pw" className="text-[13px] font-bold mb-1.5 block" style={{ color: 'var(--foreground)' }}>Wachtwoord</label>
                             <div className="relative">
-                                <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••" className={`${inpClass} pr-10`} />
-                                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+                                <input id="login-pw" type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••" className={`${inpLight} pr-10`} style={{ background: 'var(--input)', color: 'var(--foreground)', borderColor: 'var(--border)' }} />
+                                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'var(--muted-foreground)' }}>
                                     {showPw ? <EyeOff style={{ width: 14, height: 14 }} /> : <Eye style={{ width: 14, height: 14 }} />}
                                 </button>
                             </div>
                             {mode === 'login' && (
-                                <p className="text-[12px] mt-2 text-slate-500 dark:text-slate-400 font-medium">
-                                    Demo: <span className="text-[#1C7ED6] font-bold cursor-pointer hover:underline" onClick={() => {setEmail('admin@atelier.com'); setPassword('admin');}}>admin@atelier.com</span>
+                                <p className="text-[12px] mt-2 font-medium" style={{ color: 'var(--muted-foreground)' }}>
+                                    Demo: <span className="font-bold cursor-pointer hover:underline" style={{ color: '#E07A5F' }} onClick={() => {setEmail('admin@atelier.com'); setPassword('admin');}}>admin@atelier.com</span>
                                 </p>
                             )}
                         </div>
-                        <button type="submit" disabled={loading} className="w-full py-[10px] rounded-[6px] font-bold text-[14px] transition-all mt-2 bg-[#1C7ED6] hover:bg-[#1971c2] text-white shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
-                            {loading ? 'Please wait…' : mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
+                        <button type="submit" disabled={loading} className="w-full py-2.5 font-bold text-[14px] transition-all mt-2 text-white disabled:opacity-70 disabled:cursor-not-allowed" style={{ background: '#E07A5F', fontFamily: 'Montserrat, sans-serif' }}>
+                            {loading ? 'Even geduld…' : mode === 'login' ? 'INLOGGEN' : 'ACCOUNT AANMAKEN'}
                         </button>
                     </form>
                 </div>

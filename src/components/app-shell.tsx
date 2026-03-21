@@ -61,11 +61,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 {/* Logo */}
                 <div className="sidebar-logo">
                     <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden group">
-                        <div className="w-8 h-8 flex items-center justify-center font-bold text-xs flex-shrink-0 transition-transform group-hover:rotate-12"
-                            style={{ background: 'var(--foreground)', color: 'var(--background)' }}>A</div>
+                        <div className="w-8 h-8 flex items-center justify-center font-bold text-xs flex-shrink-0 transition-transform group-hover:rotate-3"
+                            style={{ background: '#E07A5F', color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 800 }}>A</div>
                         <div className="sidebar-label">
-                            <div className="font-bold text-sm tracking-tight whitespace-nowrap">A-TRACK</div>
-                            <div className="text-[9px] font-bold tracking-[0.1em] uppercase opacity-50 whitespace-nowrap">Atelier Systems</div>
+                            <div className="font-bold text-sm tracking-tight whitespace-nowrap" style={{ fontFamily: 'Montserrat, sans-serif' }}>A-TRACK</div>
+                            <div className="text-[9px] font-bold tracking-[0.1em] uppercase opacity-50 whitespace-nowrap" style={{ fontFamily: 'Montserrat, sans-serif' }}>Atelier Systems</div>
                         </div>
                     </Link>
                 </div>
@@ -83,21 +83,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                                 <div className="relative flex-shrink-0 flex items-center justify-center">
                                     <Icon style={{ width: 18, height: 18 }} aria-hidden="true" />
                                     {item.href === '/dashboard' && urgent > 0 && (
-                                        <span className="absolute -top-2 -right-3 flex-shrink-0 badge-pulse"
+                                        <span className="absolute -top-1.5 -right-2.5 flex-shrink-0 badge-pulse"
                                             aria-label={`${urgent} urgent order${urgent !== 1 ? 's' : ''} need attention`}
                                             role="status"
                                             style={{
                                                 background: 'var(--red)',
                                                 color: '#fff',
-                                                fontWeight: 900,
-                                                fontSize: 13,
-                                                minWidth: 22,
-                                                height: 22,
+                                                fontWeight: 700,
+                                                fontSize: 10,
+                                                lineHeight: '18px',
+                                                minWidth: 18,
+                                                height: 18,
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 borderRadius: '50%',
-                                                boxShadow: '0 0 0 2px var(--card), 0 2px 6px rgba(0,0,0,0.4)',
+                                                boxShadow: '0 0 0 2px var(--card)',
+                                                fontFamily: 'Montserrat, sans-serif',
                                             }}>{urgent}</span>
                                     )}
                                 </div>
@@ -160,11 +162,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     </button>
                     <Link href="/dashboard" className="flex items-center gap-2">
                         <div className="w-6 h-6 flex items-center justify-center font-bold text-[10px]"
-                            style={{ background: 'var(--red)', color: '#fff' }}>A</div>
-                        <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>A-Track</span>
+                            style={{ background: '#E07A5F', color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 800 }}>A</div>
+                        <span className="font-bold text-sm" style={{ color: 'var(--foreground)', fontFamily: 'Montserrat, sans-serif' }}>A-Track</span>
                     </Link>
                     <div className="w-7 h-7 flex items-center justify-center text-[10px] font-bold"
-                        style={{ background: 'var(--gold)', color: '#000' }}>
+                        style={{ background: '#E07A5F', color: '#fff', fontFamily: 'Montserrat, sans-serif' }}>
                         {initials}
                     </div>
                 </div>
@@ -179,8 +181,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         <div className="flex items-center justify-between px-4 h-14 border-b" style={{ borderColor: 'var(--border)', borderBottomWidth: 'var(--border-width)' }}>
                             <div className="flex items-center gap-2">
                                 <div className="w-7 h-7 flex items-center justify-center font-bold text-xs"
-                                    style={{ background: 'var(--red)', color: '#fff' }}>A</div>
-                                <span className="font-bold text-sm" style={{ color: 'var(--foreground)' }}>A-Track Backoffice</span>
+                                    style={{ background: '#E07A5F', color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 800 }}>A</div>
+                                <span className="font-bold text-sm" style={{ color: 'var(--foreground)', fontFamily: 'Montserrat, sans-serif' }}>A-Track Backoffice</span>
                             </div>
                             <button onClick={() => setDrawerOpen(false)} className="p-1" style={{ color: 'var(--foreground)' }}>
                                 <X style={{ width: 18, height: 18, color: 'currentColor' }} />
@@ -223,7 +225,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                             </button>
                             <div className="flex items-center gap-2.5 mt-2 pt-2 border-t" style={{ borderColor: 'var(--border)' }}>
                                 <div className="w-8 h-8 flex items-center justify-center text-[11px] font-bold"
-                                    style={{ background: 'var(--gold)', color: '#000' }}>
+                                    style={{ background: '#E07A5F', color: '#fff', fontFamily: 'Montserrat, sans-serif' }}>
                                     {initials}
                                 </div>
                                 <div className="flex-1 min-w-0">
