@@ -1,40 +1,41 @@
 'use client';
 
 import { useState } from 'react';
-import { Check } from 'lucide-react';
 import Link from 'next/link';
 
 export default function PricingPage() {
     const [isAnnual, setIsAnnual] = useState(true);
 
     return (
-        <div className="flex-1 bg-slate-950 pt-24 pb-32 px-6">
+        <div className="flex-1 bg-[#0A0A0A] pt-24 pb-32 px-6">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-                        Simple, transparent <span className="text-amber-500">pricing.</span>
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-[#F9F9F9] tracking-tight mb-6" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                        Eenvoudige, transparante <span className="text-[#E07A5F]">prijzen.</span>
                     </h1>
-                    <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                        Whether you are a solo artisan or a scaled production house, we have a plan to fit your workflow.
+                    <p className="text-lg text-[#6C757D] max-w-2xl mx-auto" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>
+                        Of u nu een solist bent of een volledig atelier runt — wij hebben een plan dat bij uw werkstroom past.
                     </p>
                 </div>
 
                 {/* TOGGLE */}
                 <div className="flex justify-center mb-16">
-                    <div className="flex bg-slate-900 p-1.5 rounded-xl border border-slate-800 shadow-inner">
+                    <div className="flex bg-[#1a1a1a] p-1.5 border border-[#2a2a2a]">
                         <button
                             onClick={() => setIsAnnual(false)}
                             aria-pressed={!isAnnual}
-                            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all focus-visible:ring-2 focus-visible:ring-amber-500 outline-none ${!isAnnual ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+                            className={`px-6 py-2.5 text-sm font-bold transition-all focus-visible:ring-2 focus-visible:ring-[#E07A5F] outline-none ${!isAnnual ? 'bg-[#3A3A3A] text-white' : 'text-[#6C757D] hover:text-white'}`}
+                            style={{ fontFamily: 'Montserrat, sans-serif' }}
                         >
-                            Monthly
+                            Maandelijks
                         </button>
                         <button
                             onClick={() => setIsAnnual(true)}
                             aria-pressed={isAnnual}
-                            className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all focus-visible:ring-2 focus-visible:ring-amber-500 outline-none flex items-center gap-2 ${isAnnual ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+                            className={`px-6 py-2.5 text-sm font-bold transition-all focus-visible:ring-2 focus-visible:ring-[#E07A5F] outline-none flex items-center gap-2 ${isAnnual ? 'bg-[#3A3A3A] text-white' : 'text-[#6C757D] hover:text-white'}`}
+                            style={{ fontFamily: 'Montserrat, sans-serif' }}
                         >
-                            Annually <span className="text-amber-500 font-extrabold">-20%</span>
+                            Jaarlijks <span className="text-[#E07A5F] font-extrabold">-20%</span>
                         </button>
                     </div>
                 </div>
@@ -43,60 +44,60 @@ export default function PricingPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                     
                     {/* Starter */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col">
-                        <h3 className="text-xl font-bold text-white mb-2">Starter</h3>
-                        <p className="text-slate-400 text-sm mb-6 h-10">Perfect for solo jewelers starting to organize.</p>
+                    <div className="bg-[#1a1a1a] border border-[#2a2a2a] p-8 flex flex-col">
+                        <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>Starter</h3>
+                        <p className="text-[#6C757D] text-sm mb-6 h-10" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>Perfect voor solo juweliers die willen organiseren.</p>
                         <div className="flex items-baseline gap-1 mb-8">
-                            <span className="text-5xl font-extrabold text-white">${isAnnual ? '29' : '39'}</span>
-                            <span className="text-slate-400 font-medium">/mo</span>
+                            <span className="text-5xl font-extrabold text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>€{isAnnual ? '29' : '39'}</span>
+                            <span className="text-[#6C757D] font-medium">/mo</span>
                         </div>
-                        <Link href="/checkout?plan=starter" className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors text-center focus-visible:ring-2 focus-visible:ring-amber-500 mb-8 border border-slate-700">
-                            Start Free Trial
+                        <Link href="/checkout?plan=starter" className="w-full py-3.5 bg-[#3A3A3A] hover:bg-[#4a4a4a] text-white font-bold transition-colors text-center focus-visible:ring-2 focus-visible:ring-[#E07A5F] mb-8 border border-[#4a4a4a]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                            Start Gratis
                         </Link>
-                        <ul className="space-y-4 text-slate-300 text-sm flex-1">
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Up to 50 active orders</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Basic Kanban board</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> 1 staff member</li>
+                        <ul className="space-y-4 text-[#9ca3af] text-sm flex-1" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Tot 50 actieve orders</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Basis Kanban-bord</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> 1 medewerker</li>
                         </ul>
                     </div>
 
                     {/* Pro (Highlighted) */}
-                    <div className="bg-slate-800 border-2 border-amber-500 rounded-3xl p-8 flex flex-col relative transform md:-translate-y-4 shadow-[0_0_40px_-10px_theme(colors.amber.500)]">
-                        <div className="absolute top-0 right-8 -translate-y-1/2 bg-amber-500 text-slate-950 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
-                            Most Popular
+                    <div className="bg-[#1a1a1a] border-2 border-[#E07A5F] p-8 flex flex-col relative transform md:-translate-y-4 shadow-[0_0_40px_-10px_rgba(224,122,95,0.4)]">
+                        <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#E07A5F] text-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                            Populairste
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Pro</h3>
-                        <p className="text-amber-200/80 text-sm mb-6 h-10">For growing ateliers that need advanced analytics.</p>
+                        <h3 className="text-2xl font-bold text-white mb-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>Pro</h3>
+                        <p className="text-[#E07A5F]/70 text-sm mb-6 h-10" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>Voor groeiende ateliers met geavanceerde analyses.</p>
                         <div className="flex items-baseline gap-1 mb-8">
-                            <span className="text-5xl font-extrabold text-white">${isAnnual ? '79' : '99'}</span>
-                            <span className="text-amber-200/50 font-medium">/mo</span>
+                            <span className="text-5xl font-extrabold text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>€{isAnnual ? '79' : '99'}</span>
+                            <span className="text-[#E07A5F]/50 font-medium">/mo</span>
                         </div>
-                        <Link href="/checkout?plan=pro" className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-colors text-center focus-visible:ring-2 focus-visible:ring-amber-500 mb-8 shadow-lg">
-                            Get Started
+                        <Link href="/checkout?plan=pro" className="w-full py-3.5 bg-[#E07A5F] hover:bg-[#c96a52] text-white font-bold transition-colors text-center focus-visible:ring-2 focus-visible:ring-[#E07A5F] mb-8" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                            Start Nu
                         </Link>
-                        <ul className="space-y-4 text-slate-200 text-sm flex-1">
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Unlimited active orders</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Advanced Workshop Analytics</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Up to 5 staff members</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Priority 24/7 support</li>
+                        <ul className="space-y-4 text-[#d1d5db] text-sm flex-1" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Onbeperkt actieve orders</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Geavanceerde werkplaats analyses</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Tot 5 medewerkers</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Prioriteit 24/7 support</li>
                         </ul>
                     </div>
 
                     {/* Enterprise */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col">
-                        <h3 className="text-xl font-bold text-white mb-2">Enterprise</h3>
-                        <p className="text-slate-400 text-sm mb-6 h-10">Custom workflows for multi-location operations.</p>
+                    <div className="bg-[#1a1a1a] border border-[#2a2a2a] p-8 flex flex-col">
+                        <h3 className="text-xl font-bold text-white mb-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>Enterprise</h3>
+                        <p className="text-[#6C757D] text-sm mb-6 h-10" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>Aangepaste workflows voor meerdere locaties.</p>
                         <div className="flex items-baseline gap-1 mb-8">
-                            <span className="text-5xl font-extrabold text-white">Custom</span>
+                            <span className="text-5xl font-extrabold text-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>Op Maat</span>
                         </div>
-                        <Link href="mailto:sales@atrack.com" className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors text-center focus-visible:ring-2 focus-visible:ring-amber-500 mb-8 border border-slate-700">
-                            Contact Sales
+                        <Link href="mailto:info@a-track.nl" className="w-full py-3.5 bg-[#3A3A3A] hover:bg-[#4a4a4a] text-white font-bold transition-colors text-center focus-visible:ring-2 focus-visible:ring-[#E07A5F] mb-8 border border-[#4a4a4a]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                            Neem Contact Op
                         </Link>
-                        <ul className="space-y-4 text-slate-300 text-sm flex-1">
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Everything in Pro</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Custom integrations (ERP/CRM)</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Unlimited staff members</li>
-                            <li className="flex gap-3 items-start"><Check className="w-5 h-5 text-amber-500 shrink-0" /> Dedicated account manager</li>
+                        <ul className="space-y-4 text-[#9ca3af] text-sm flex-1" style={{ fontFamily: 'Source Sans 3, sans-serif' }}>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Alles in Pro</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Aangepaste integraties (ERP/CRM)</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Onbeperkt medewerkers</li>
+                            <li className="flex gap-3 items-start"><span className="text-[#E07A5F] font-bold">✓</span> Toegewezen accountmanager</li>
                         </ul>
                     </div>
 

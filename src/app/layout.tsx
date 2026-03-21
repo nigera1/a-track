@@ -4,33 +4,30 @@ import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'A-Track — Jewelry Workshop Management',
-  description: 'Precision production tracking for jewellery ateliers. Manage orders, track production stages, monitor deadlines, and analyse workshop performance.',
-  keywords: ['jewelry workshop', 'order tracking', 'production management', 'atelier', 'goldsmith'],
+  description: 'Robuust, betrouwbaar, schoon order-tracking voor juweliers ateliers. Beheer bestellingen, volg productiestappen, en analyseer werkplaatsprestaties.',
+  keywords: ['juwelier werkplaats', 'order tracking', 'productie beheer', 'atelier', 'goudsmid', 'jewelry workshop'],
   authors: [{ name: 'Atelier Systems' }],
   openGraph: {
     title: 'A-Track — Jewelry Workshop Management',
-    description: 'Precision production tracking for jewellery ateliers.',
+    description: 'Robuust, betrouwbaar, schoon order-tracking voor juweliers ateliers.',
     type: 'website',
     siteName: 'A-Track',
   },
   other: {
-    'theme-color': '#18181b',
+    'theme-color': '#0A0A0A',
   }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="nl" suppressHydrationWarning>
       <head>
-        {/* viewport: removed maximum-scale=1 — it blocks accessibility zoom (WCAG 1.4.4) */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* font-display=swap prevents invisible text during font load (FCP perf + accessibility) */}
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        {/* Skip navigation — WCAG 2.4.1: allows keyboard users to bypass repeated nav */}
         <a href="#main-content" className="skip-nav">Skip to main content</a>
         <Providers>{children}</Providers>
       </body>
