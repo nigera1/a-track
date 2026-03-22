@@ -220,31 +220,44 @@ export default function OrderDetailPage() {
                 {/* Status Stepper */}
                 <div className="neo-card p-6 no-print overflow-hidden">
                     <div className="flex items-center justify-between mb-6">
-                        <div className="text-[10px] font-bold uppercase tracking-widest opacity-60">Production Pipeline</div>
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-blue-500">{getStatusLabel(order.status)}</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest opacity-60" style={{ fontFamily: 'Montserrat, sans-serif' }}>Production Pipeline</div>
+                        <div className="text-[10px] font-bold uppercase tracking-widest" style={{ color: stageColor, fontFamily: 'Montserrat, sans-serif' }}>{getStatusLabel(order.status)}</div>
                     </div>
                     <div className="relative flex justify-between items-start pt-2">
-                        {/* Background line */}
-                        <div className="absolute top-[13px] left-[20px] right-[20px] h-[2px] bg-border transition-all" />
+                        {/* Background track */}
+                        <div className="absolute top-[13px] left-[20px] right-[20px] h-[2px]" style={{ background: 'var(--border)' }} />
+                        {/* Progress fill */}
+                        <div className="absolute top-[13px] left-[20px] h-[2px] transition-all duration-500" style={{ 
+                            width: `${currentStageIndex / (ORDER_STAGES.length - 1) * 100}%`, 
+                            maxWidth: 'calc(100% - 40px)',
+                            background: 'var(--accent, #E07A5F)' 
+                        }} />
                         
                         {ORDER_STAGES.map((stage, i) => {
                             const isPast = i < currentStageIndex;
                             const isCurrent = i === currentStageIndex;
+                            const isFuture = i > currentStageIndex;
                             return (
                                 <button key={stage.key} 
                                     onClick={() => { updateOrderStatus(id, stage.key); toast.success(`Moved to ${stage.label}`); }}
                                     className="relative z-10 flex flex-col items-center group flex-1"
                                     title={`Move to ${stage.label}`}>
-                                    <div className={`w-7 h-7 rounded-sm border-2 flex items-center justify-center transition-all ${
-                                        isCurrent ? 'bg-primary border-primary scale-110' : 
-                                        isPast ? 'bg-foreground border-foreground' : 'bg-card border-border'
-                                    }`}>
-                                        {isPast && <div className="w-1.5 h-1.5 bg-background rotate-45" />}
-                                        {isCurrent && <div className="w-1.5 h-1.5 bg-background rounded-full animate-pulse" />}
+                                    <div className="w-7 h-7 rounded-sm border-2 flex items-center justify-center transition-all"
+                                        style={{
+                                            background: isCurrent ? stage.color : isPast ? stage.color : 'var(--card)',
+                                            borderColor: isCurrent ? stage.color : isPast ? stage.color : 'var(--border)',
+                                            transform: isCurrent ? 'scale(1.15)' : 'scale(1)',
+                                            opacity: isFuture ? 0.4 : 1,
+                                        }}>
+                                        {isPast && <CheckCircle2 style={{ width: 14, height: 14, color: '#fff' }} />}
+                                        {isCurrent && <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />}
                                     </div>
-                                    <div className={`mt-3 text-[9px] font-bold uppercase tracking-wide text-center px-1 transition-opacity ${
-                                        isCurrent ? 'opacity-100' : 'opacity-40 group-hover:opacity-100'
-                                    }`}>
+                                    <div className="mt-3 text-[9px] font-bold uppercase tracking-wide text-center px-1 transition-all"
+                                        style={{ 
+                                            color: isCurrent ? stage.color : isPast ? stage.color : 'var(--foreground)', 
+                                            opacity: isCurrent ? 1 : isPast ? 0.8 : 0.3,
+                                            fontFamily: 'Montserrat, sans-serif',
+                                        }}>
                                         {stage.label.split(' ')[0]}
                                     </div>
                                 </button>
